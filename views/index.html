@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel = "stylesheet" type = "text/css" href = "/stylesheets/bootstrap.css">
+    <title>Welcome to the message board!</title>
+</head>
+
+<body style = "margin-left: 15px">
+
+    <h1> Welcome to the Message Board</h1>
+    <form action="/message" method="post">
+        <div class = "form-group">
+        	<span style = "font-size: 25px">Email: </span><input style = "width: 30%" class = "form-control" type="text" name="email">
+        	<span style = "font-size: 25px">Content: </span> <textarea style = "width: 30%; margin-bottom: 10px" rows = "6  " class = "form-control" name="content"></textarea>
+        	<input type="submit" class = "btn btn-default" value="Submit">
+        </div>
+    </form>
+
+
+   
+    {{#if data}}
+    <h3>My Messages</h3>
+    <table>
+    	<thead style = "font-size: 50px; font-decoration: underline;">
+    		<th>Email</th>
+    		<th>Content</th>
+    		<th>Date</th>
+    	</thead>
+    	<tbody>
+    		{{#each data}}
+    		<div id = "messageWrapper" style = "width: 100%; border: 5px solid black; background-color: yellow; margin-bottom: 5px; padding-left: 10px">
+                <h1>From: {{email}}</h1>
+                <h2>{{content}}</h2>
+                <h3>{{created}}</h3>
+            </div>
+    		{{/each}}
+    	</tbody>
+    </table>
+    {{/if}}
+</body>
+
+</html>
