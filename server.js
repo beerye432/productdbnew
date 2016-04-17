@@ -40,6 +40,15 @@ app.get('/db', function (request, response) {
   });
 })
 
+app.get('/create', function(result, res){
+	pg.connect(process.env.DATABASE_URL, function(err, client, done){
+		client.query('INSERT INTO test_table VALUES (1);');
+		done();
+		if(err) console.error(err);
+		else res.render('index');
+	})
+})
+
 // Start Server
 http.createServer(app).listen(app.get("port"), function() {
     console.log("Express server listening on port " + app.get("port"));
