@@ -11,7 +11,8 @@ var sessions = require('express-session');
 var app = express();
 
 var router = {
-    index: require("./routes/index")
+    index: require("./routes/index"),
+    category: require("./routes/category")
 };
 
 var parser = {
@@ -36,6 +37,8 @@ app.get("/signup", function(req, res){
   res.render("signup");
 });
 
+app.get("/categories", router.category.view);
+
 app.get('/db', function (request, response) {
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
     client.query('SELECT * FROM test_table', function(err, result) {
@@ -48,7 +51,7 @@ app.get('/db', function (request, response) {
   });
 })
 
-app.get('/create', function(result, res){
+app.get('/create', function(req, res){
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 		client.query('INSERT INTO test_table VALUES (1);');
 		done();
@@ -59,6 +62,8 @@ app.get('/create', function(result, res){
 
 app.post("/validatelogin", router.index.validatelogin);
 app.post("/validate", router.index.validate);
+app.post("/addcategory", router.category.add);
+
 
 // Start Server
 http.createServer(app).listen(app.get("port"), function() {

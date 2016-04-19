@@ -33,7 +33,7 @@ exports.validatelogin = function(req, res){
 	var name = req.body.name;
 
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
-		client.query("SELECT * FROM users WHERE name = '"+name+"';", function(err, results));
+		client.query("SELECT * FROM users WHERE name = '"+name+"';");
 		done();
 
 		if(err){
