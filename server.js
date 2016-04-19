@@ -57,6 +57,7 @@ app.get('/create', function(result, res){
 	})
 })
 
+app.post("/validatelogin", router.index.validatelogin);
 app.post("/validate", router.index.validate);
 
 // Start Server

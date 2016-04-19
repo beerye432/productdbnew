@@ -22,9 +22,32 @@ exports.validate = function(req, res){
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 		client.query("INSERT INTO users VALUES ('"+name+"','"+role+"',"+age+",'"+state+"');");
 		done();
+
 		if(err) res.render('failure', err);
 		else res.render('index');
 	})
+}
+
+exports.validatelogin = function(req, res){
+
+	var name = req.body.name;
+
+	pg.connect(process.env.DATABASE_URL, function(err, client, done){
+		client.query("SELECT * FROM users WHERE name = '"+name+"';", function(err, results));
+		done();
+
+		if(err){
+			res.render('login', err);
+		}
+		else{
+			if(results.fields.length == 0){
+				res.render('login', 'there was not a user with ' + name + 'in the database');
+			}
+			else{
+				res.render('index');
+			}
+		}
+	});
 }
 
 //{data: [{...}, {...}]} for purposes of using handlebars
