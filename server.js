@@ -2,9 +2,11 @@
 const http = require("http");
 const path = require("path");
 
+//app dependencies
 var express = require('express');
 var handlebars = require('express-handlebars');
 var pg = require('pg');
+var sessions = require('express-session');
 
 var app = express();
 
@@ -22,11 +24,17 @@ app.engine("html", handlebars());
 app.set("view engine", "html");
 app.set("views", __dirname + "/views");
 app.use(express.static(path.join(__dirname, "public")));
-app.use(parser.body.urlencoded({ extended: false }));
+app.use(parser.body.urlencoded({ extended: true }));
 app.use(parser.body.json());
 
 // Routes
-app.get("/", router.index.view);
+app.get("/", router.index.view); 
+
+app.get("/login", router.index.login);
+
+app.get("/signup", function(req, res){
+  res.render("signup");
+});
 
 app.get('/db', function (request, response) {
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
@@ -48,6 +56,8 @@ app.get('/create', function(result, res){
 		else res.render('index');
 	})
 })
+
+app.post("/validate", router.index.validate);
 
 // Start Server
 http.createServer(app).listen(app.get("port"), function() {
