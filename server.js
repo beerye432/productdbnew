@@ -66,7 +66,7 @@ app.get('/create', function(req, res){
 app.post("/validatelogin", router.index.validatelogin);
 app.post("/validate", router.index.validate);
 app.post("/addcategory", router.category.add);
-app.post("/addprodcut", router.product.add);
+app.post("/addproduct", router.product.add);
 
 
 // Start Server
