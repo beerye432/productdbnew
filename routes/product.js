@@ -19,6 +19,8 @@ exports.view = function(req, res){
 			else categories = results.rows;
 		});
 
+		console.log(products);
+		console.log(categories);
 		res.render("products", {products: products, categories: categories});
 	})
 }
