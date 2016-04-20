@@ -2,8 +2,22 @@ var pg = require("pg");
 
 exports.view = function(req, res){
 
-	//check our session to render either categories or categoriesowner
-	res.render("categories");
+	var categories = [];
+
+	pg.connect(process.env.DATABASE_URL, function(err, client, done){
+
+
+		var query = client.query("SELECT * FROM category;");
+
+		query.on('row', function(row){
+			categories.push(row);
+		});
+
+		query.on('end', function(){
+			done();
+			res.render("categories", {categories: categories});
+		});
+	});
 }
 
 exports.add = function(req, res){
