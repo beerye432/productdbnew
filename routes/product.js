@@ -18,7 +18,7 @@ exports.view = function(req, res){
 	
 		//console.log(products);
 		console.log(categories);
-		res.render("products", {categores: categories});//, {products: products, categories: categories});
+		res.render("products", {categories: categories});//, {products: products, categories: categories});
 	});
 }
 
