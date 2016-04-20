@@ -2,20 +2,24 @@ var pg = require("pg");
 
 exports.view = function(req, res){
 
+	var categories = [];
+
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
-		var categories;
+		var query = client.query("SELECT * FROM product");
 
-		client.query("SELECT * FROM product", function(err, results){
-			done();
-			if(err) console.log(err);
-			else categories = results.rows;
+		query.on('row', function(row){
+			categories.push(row);
 		});
 
+		query.on('end', function(){
+			done();
+		});
+	
 		//console.log(products);
 		console.log(categories);
 		res.render("products");//, {products: products, categories: categories});
-	})
+	});
 }
 
 exports.add = function(req, res){
