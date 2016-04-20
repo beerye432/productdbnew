@@ -12,7 +12,8 @@ var app = express();
 
 var router = {
     index: require("./routes/index"),
-    category: require("./routes/category")
+    category: require("./routes/category"),
+    product: require("./routes/product")
 };
 
 var parser = {
@@ -38,6 +39,8 @@ app.get("/signup", function(req, res){
 });
 
 app.get("/categories", router.category.view);
+
+app.get("/products", router.product.view);
 
 app.get('/db', function (request, response) {
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {

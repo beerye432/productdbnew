@@ -3,7 +3,7 @@ var pg = require("pg");
 exports.view = function(req, res){
 
 	//check our session to render either categories or categoriesowner
-	res.render("categoriesowner");
+	res.render("categories");
 }
 
 exports.add = function(req, res){
@@ -16,6 +16,6 @@ exports.add = function(req, res){
 		done();
 
 		if(err) console.log(err);
-		else res.redirect("categoriesowner");
+		else res.redirect("categories");
 	})
 }
