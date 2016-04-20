@@ -6,7 +6,7 @@ exports.view = function(req, res){
 
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
-		var query = client.query("SELECT * FROM product");
+		var query = client.query("SELECT * FROM product;");
 
 		query.on('row', function(row){
 			categories.push(row);
