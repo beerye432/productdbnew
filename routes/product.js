@@ -2,21 +2,17 @@ var pg = require("pg");
 
 exports.view = function(req, res){
 
-	var products = [];
-
-	var categories = [];
-
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
 		client.query("SELECT * FROM product", function(err, results){
 			done();
 			if(err) console.log(err);
-			else categories[0] = results.rows;
+			else var categories = results.rows;
 		});
 
-		console.log(products);
+		//console.log(products);
 		console.log(categories);
-		res.render("products", {products: products, categories: categories});
+		res.render("products");//, {products: products, categories: categories});
 	})
 }
 
