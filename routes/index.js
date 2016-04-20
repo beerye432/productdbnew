@@ -37,6 +37,8 @@ exports.validatelogin = function(req, res){
 
 			done();
 
+			console.log(results);
+
 			if(err){
 				res.render('login', err);
 			}
