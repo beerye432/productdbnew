@@ -42,7 +42,7 @@ exports.validatelogin = function(req, res){
 			}
 			else{
 				if(results.rows.length == 0){
-					res.render('login', 'there was not a user with ' + name + 'in the database');
+					res.render('login', {message: 'There is no user named ' + name + ' in the database'});
 				}
 				else{
 					res.render('index');

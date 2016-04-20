@@ -5,6 +5,11 @@
 	</head>
 
 	<body>
+
+		{{#if message}}
+		<h3 style = "font-color: red">{{message}}</h3>
+		{{/if}}
+		
 		<form action = "/validatelogin" id = "login" method = "post">
 			<label for = "name">Hello, Type in your name to log in: </label>
 			<input type = "text" name = "name" placeholder="Name">
