@@ -33,20 +33,22 @@ exports.validatelogin = function(req, res){
 	var name = req.body.name;
 
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
-		client.query("SELECT * FROM users WHERE name = '"+name+"';");
-		done();
+		client.query("SELECT * FROM users WHERE name = '"+name+"';", function(err, results){
 
-		if(err){
-			res.render('login', err);
-		}
-		else{
-			if(results.fields.length == 0){
-				res.render('login', 'there was not a user with ' + name + 'in the database');
+			done();
+
+			if(err){
+				res.render('login', err);
 			}
 			else{
-				res.render('index');
+				if(results.fields.length == 0){
+					res.render('login', 'there was not a user with ' + name + 'in the database');
+				}
+				else{
+					res.render('index');
+				}
 			}
-		}
+		});
 	});
 }
 
