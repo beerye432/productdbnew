@@ -4,12 +4,21 @@ exports.view = function(req, res){
 
 	var categories = [];
 
+	var products = [];
+
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
-		var query = client.query("SELECT * FROM product;");
+
+		var query = client.query("SELECT * FROM category;");
 
 		query.on('row', function(row){
 			categories.push(row);
+		});
+
+		query = client.query("SELECT * FROM product;");
+
+		query.on('row', function(row){
+			products.push(row);
 		});
 
 		query.on('end', function(){
@@ -18,7 +27,7 @@ exports.view = function(req, res){
 	
 		//console.log(products);
 		console.log(categories);
-		res.render("products", {categories: categories});//, {products: products, categories: categories});
+		res.render("products", {products: products, categories: categories});//, {products: products, categories: categories});
 	});
 }
 
