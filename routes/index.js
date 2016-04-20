@@ -37,13 +37,11 @@ exports.validatelogin = function(req, res){
 
 			done();
 
-			console.log(results);
-
 			if(err){
 				res.render('login', err);
 			}
 			else{
-				if(results.fields.length == 0){
+				if(results.rows.length == 0){
 					res.render('login', 'there was not a user with ' + name + 'in the database');
 				}
 				else{
