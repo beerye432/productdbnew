@@ -32,6 +32,10 @@ exports.view = function(req, res){
 		});
 	});
 
+	console.log(products);
+
+	console.log(categories);
+
 	res.render("products", {products: products, categories: categories});
 }
 
