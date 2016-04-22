@@ -66,6 +66,10 @@ app.get("/sesserror", function(req, res){
 
 });
 
+app.get("/failure", function(req, res){
+  res.render("failure");
+});
+
 app.get("/categories", restrict,  router.category.view);
 
 app.get("/products", restrict, router.product.view);
