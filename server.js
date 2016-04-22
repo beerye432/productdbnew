@@ -53,27 +53,6 @@ app.get("/categories", router.category.view);
 
 app.get("/products", router.product.view);
 
-app.get('/db', function (request, response) {
-  pg.connect(process.env.DATABASE_URL, function(err, client, done) {
-    client.query('SELECT * FROM test_table', function(err, result) {
-      done();
-      if (err)
-       { console.error(err); response.send("Error " + err); }
-      else
-       { response.render('index', {results: result.rows} ); }
-    });
-  });
-})
-
-app.get('/create', function(req, res){
-	pg.connect(process.env.DATABASE_URL, function(err, client, done){
-		client.query('INSERT INTO test_table VALUES (1);');
-		done();
-		if(err) console.error(err);
-		else res.render('index');
-	})
-})
-
 app.post("/validatelogin", function(req, res){
 
   var name = req.body.name;
@@ -98,7 +77,7 @@ app.post("/validatelogin", function(req, res){
             req.session.role = results.rows[0].role;
           });
 
-          res.render('index');
+          res.render('index', {name: req.session.user});
         }
       }
     });

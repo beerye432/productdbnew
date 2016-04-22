@@ -45,7 +45,7 @@ exports.validatelogin = function(req, res){
 					res.render('login', {message: 'There is no user named ' + name + ' in the database'});
 				}
 				else{
-					res.render('index');
+					res.render('index', {name: results.rows[0].name});
 				}
 			}
 		});
