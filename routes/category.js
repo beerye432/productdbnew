@@ -36,11 +36,6 @@ exports.add = function(req, res){
 }
 
 exports.delete = function(req, res){
-	console.log(req.query.name);
-}
-
-/*
-exports.delete = function(req, res){
 
 	var name = req.query.name;
 
@@ -48,23 +43,21 @@ exports.delete = function(req, res){
 
 		client.query("SELECT * FROM product WHERE name = '"+name+"';", function(err, results){
 
-			done();
-
 			if(err){
 				res.render('failure', {message: err});
 			}
 			else{
-				if(results.rows.length == 0){
-					res.render('login', {message: 'There is no user named ' + name + ' in the database'});
+				if(results.rows.length != 0){
+					return res.render('failure', {message: 'There are still products left in this category!'});
 				}
 			}
 		});
 
-		client.query("DELETE FROM category WHERE name_del='"+name+"';");
+		client.query("DELETE FROM category WHERE name='"+name+"';");
 
 		done();
 
 		if(err) req.session.err = "Failure to delete category"
+		else res.redirect("categories");
 	});
 }
-*/
