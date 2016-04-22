@@ -79,7 +79,14 @@ exports.delete = function(req, res){
 			return res.render("failure", {message: 'Error deleting product!'});
 		});
 
-		done();
+		query = client.query("UPDATE category SET pnum = pnum - 1 WHERE name = '"+category[0].category+"';");
+
+		query.on('end', function(results){
+
+			done();
+
+			res.redirect("products");
+		});
 
 	});
 
