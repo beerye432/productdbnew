@@ -34,9 +34,10 @@ exports.add = function(req, res){
 	var sku = req.body.sku;
 	var category = req.body.category;
 	var price = parseFloat(req.body.price);
+	var name_del = req.body.name.replace(/ /g,"_").toLowerCase();
 
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
-		client.query("INSERT INTO product VALUES ('"+name+"','"+sku+"','"+category+"',"+price+");");
+		client.query("INSERT INTO product VALUES ('"+name+"','"+sku+"','"+category+"',"+price+",'"+name_del+"');");
 		done();
 
 		if(err) console.log(err);

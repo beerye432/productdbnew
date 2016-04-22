@@ -54,7 +54,7 @@ function restrict(req, res, next){
     next();
   }
   else{
-    res.redirect("/failure");
+    res.render("/failure", {message: "This page is available to owners only"});
   }
 }
 
@@ -77,6 +77,8 @@ app.get("/failure", function(req, res){
 app.get("/categories", restrict,  router.category.view);
 
 app.get("/products", restrict, router.product.view);
+
+app.get("/deletecat", restrict, router.category.delete);
 
 app.post("/validatelogin", function(req, res){
 

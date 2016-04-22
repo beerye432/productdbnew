@@ -24,12 +24,47 @@ exports.add = function(req, res){
 
 	var name = req.body.name;
 	var description = req.body.description;
+	var name_del = req.body.name.replace(/ /g,"_").toLowerCase();
 
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
-		client.query("INSERT INTO category VALUES ('"+name+"','"+description+"');");
+		client.query("INSERT INTO category VALUES ('"+name+"','"+description+"','"+name_del+"');");
 		done();
 
 		if(err) req.session.err = "Failure to insert new product";
 		else res.redirect("categories");
-	})
+	});
 }
+
+exports.delete = function(req, res){
+	console.log(req.query.name);
+}
+
+/*
+exports.delete = function(req, res){
+
+	var name = req.query.name;
+
+	pg.connect(process.env.DATABASE_URL, function(err, client, done){
+
+		client.query("SELECT * FROM product WHERE name = '"+name+"';", function(err, results){
+
+			done();
+
+			if(err){
+				res.render('failure', {message: err});
+			}
+			else{
+				if(results.rows.length == 0){
+					res.render('login', {message: 'There is no user named ' + name + ' in the database'});
+				}
+			}
+		});
+
+		client.query("DELETE FROM category WHERE name_del='"+name+"';");
+
+		done();
+
+		if(err) req.session.err = "Failure to delete category"
+	});
+}
+*/
