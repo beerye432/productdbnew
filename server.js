@@ -75,11 +75,9 @@ app.post("/validatelogin", function(req, res){
           req.session.regenerate(function(){
             req.session.user = results.rows[0].name;
             req.session.role = results.rows[0].role;
-          });
 
-          console.log("Row [0] = " + results.rows);
-
-          res.render('index', {name: req.session.user});
+            res.render('index', {name: req.session.user});
+          }); 
         }
       }
     });
