@@ -26,7 +26,7 @@ exports.add = function(req, res){
 	var description = req.body.description;
 
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
-		client.query("INSERT INTO category VALUES ('"+name+"','"+description+"');");
+		client.query("INSERT INTO category VALUES ('"+name+"','"+description+"', 0);");
 		done();
 
 		if(err) req.session.err = "Failure to insert new product";
@@ -52,11 +52,16 @@ exports.delete = function(req, res){
 			}
 		});
 
-		client.query("DELETE FROM category WHERE name='"+name+"';");
+		client.query("DELETE FROM category WHERE name='"+name+"';", function(err, results){
 
-		done();
+			done();
 
-		if(err) req.session.err = "Failure to delete category"
-		else res.redirect("categories");
+			if(err){
+				req.session.err = "Can't Delete that!";
+				res.redirect("categories");
+			}
+			else res.redirect("categories");
+
+		});
 	});
 }

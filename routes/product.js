@@ -36,10 +36,18 @@ exports.add = function(req, res){
 	var price = parseFloat(req.body.price);
 
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
-		client.query("INSERT INTO product VALUES ('"+name+"','"+sku+"','"+category+"',"+price+");");
-		done();
+		client.query("INSERT INTO product VALUES ('"+name+"','"+sku+"','"+category+"',"+price+");", function(err, results){
 
-		if(err) console.log(err);
-		else res.redirect("products");
-	});
+			if(err) console.log(err);
+			
+			else{
+
+				client.query("UPDATE category SET pnum = pnum + 1 WHERE name = '"+category+"'");
+
+				done();
+
+				res.redirect("products");
+			}
+		});
+	});	
 }
