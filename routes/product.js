@@ -63,7 +63,7 @@ exports.delete = function(req, res){
 		client.query("SELECT category FROM product WHERE name = '"+name+	"';", function(err, results){
 
 			if(err) return res.render("failure", {message: "Failure deleting product"});
-			else category.push(result.rows);
+			else category.push(results.rows);
 		});
 
 		client.query("DELETE FROM product WHERE name='"+name+"';", function(err, results){
@@ -72,7 +72,7 @@ exports.delete = function(req, res){
 		});
 
 		console.log(category[0].category);
-		
+
 		client.query("UPDATE category SET pnum = pnum - 1 WHERE name='"+category[0].category+"'");
 	});
 }
