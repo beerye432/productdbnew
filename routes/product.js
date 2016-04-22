@@ -39,7 +39,7 @@ exports.add = function(req, res){
 		client.query("INSERT INTO product VALUES ('"+name+"','"+sku+"','"+category+"',"+price+");", function(err, results){
 
 			if(err) console.log(err);
-			
+
 			else{
 
 				client.query("UPDATE category SET pnum = pnum + 1 WHERE name = '"+category+"'");
@@ -50,4 +50,29 @@ exports.add = function(req, res){
 			}
 		});
 	});	
+}
+
+exports.delete = function(req, res){
+
+	var name = req.query.name;
+
+	var category = [];
+
+	pg.connect(process.env.DATABASE_URL, function(err, client, done){
+
+		client.query("SELECT category FROM product WHERE name = '"+name+	"';", function(err, results){
+
+			if(err) return res.render("failure", {message: "Failure deleting product"});
+			else category.push(result.rows);
+		});
+
+		client.query("DELETE FROM product WHERE name='"+name+"';", function(err, results){
+
+			if(err) return res.render("failure", {message: "Failure deleting product"});
+		});
+
+		console.log(category[0].category);
+		
+		client.query("UPDATE category SET pnum = pnum - 1 WHERE name='"+category[0].category+"'");
+	});
 }

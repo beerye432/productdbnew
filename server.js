@@ -80,6 +80,8 @@ app.get("/products", restrict, router.product.view);
 
 app.get("/deletecat", restrict, router.category.delete);
 
+app.get("/deleteproduct", restrict, router.product.delete);
+
 app.post("/validatelogin", function(req, res){
 
   var name = req.body.name;
