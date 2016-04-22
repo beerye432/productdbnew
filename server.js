@@ -101,7 +101,7 @@ app.post("/validatelogin", function(req, res){
             req.session.user = results.rows[0].name;
             req.session.role = results.rows[0].role;
 
-            res.redirect("index");
+            res.redirect("/");
           }); 
         }
       }
