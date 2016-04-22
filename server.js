@@ -67,7 +67,7 @@ app.get("/sesserror", function(req, res){
 });
 
 app.get("/getname", function(req, res){
-  res.json({name: res.session.user});
+  res.json({name: req.session.user});
 });
 
 app.get("/failure", function(req, res){
