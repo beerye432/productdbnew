@@ -49,9 +49,26 @@ app.get("/signup", function(req, res){
   res.render("signup");
 });
 
-app.get("/categories", router.category.view);
+function restrict(req, res, next){
+  if(req.session.role == "owner"){
+    next();
+  }
+  else{
+    res.redirect("/failure");
+  }
+}
 
-app.get("/products", router.product.view);
+app.get("/sesserror", function(req, res){
+
+  res.json({message: req.session.err});
+
+  req.session.err = "";
+
+});
+
+app.get("/categories", restrict,  router.category.view);
+
+app.get("/products", restrict, router.product.view);
 
 app.post("/validatelogin", function(req, res){
 
@@ -85,7 +102,9 @@ app.post("/validatelogin", function(req, res){
 });
 
 app.post("/validate", router.index.validate);
+
 app.post("/addcategory", router.category.add);
+
 app.post("/addproduct", router.product.add);
 
 

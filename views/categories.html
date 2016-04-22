@@ -5,8 +5,11 @@
 </head>
 <body>
 
-	<div>
+	<div id = "error">
 
+	</div>
+
+	<div>
 		<h1> Add a new category: </h1>
 		<form action = "/addcategory" id = "category" method = "post">
 			<label for = "name">Category Name:</label>
@@ -26,5 +29,17 @@
 
 	</div>
 
+	<script   src="https://code.jquery.com/jquery-2.2.3.min.js"   integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="   crossorigin="anonymous"></script>
+
+	<script>
+
+		$.get('/sesserror', function(response){
+
+			if(response.retStatus === 'success'){
+				$("#error").append("<h1>"+response.message+"</h1>");
+			}
+		});
+
+	</script>
 </body>
 </html>

@@ -29,7 +29,7 @@ exports.add = function(req, res){
 		client.query("INSERT INTO category VALUES ('"+name+"','"+description+"');");
 		done();
 
-		if(err) console.log(err);
+		if(err) req.session.err = "Failure to insert new product";
 		else res.redirect("categories");
 	})
 }
