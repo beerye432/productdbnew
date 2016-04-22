@@ -24,10 +24,9 @@ exports.add = function(req, res){
 
 	var name = req.body.name;
 	var description = req.body.description;
-	var name_del = req.body.name.replace(/ /g,"_").toLowerCase();
 
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
-		client.query("INSERT INTO category VALUES ('"+name+"','"+description+"','"+name_del+"');");
+		client.query("INSERT INTO category VALUES ('"+name+"','"+description+"');");
 		done();
 
 		if(err) req.session.err = "Failure to insert new product";
