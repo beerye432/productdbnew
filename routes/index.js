@@ -24,7 +24,7 @@ exports.validate = function(req, res){
 		done();
 
 		if(err) res.render('failure', err);
-		else res.redirect('index');
+		else res.redirect('/');
 	})
 }
 
