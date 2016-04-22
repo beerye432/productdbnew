@@ -60,7 +60,36 @@ exports.delete = function(req, res){
 
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
-		client.query("SELECT category FROM product WHERE name = '"+name+	"';", function(err, results){
+		var query = client.query("SELECT category FROM product WHERE name = '"+name+"';");
+
+		query.on('row', function(row){
+			category.push(row);
+			console.log(category);
+		});
+
+		query.on('error', function(error){
+			done();
+			return res.render("failure", {message: 'Error deleting product!'});
+		});
+
+		query = client.query("DELETE FROM product WHERE name='"+name+"';");
+
+		query.on('error', function(error){
+			done();
+			return res.render("failure", {message: 'Error deleting product!'});
+		});
+
+		done();
+
+	});
+
+/*
+		query = client.query("UPDATE")
+
+
+	pg.connect(process.env.DATABASE_URL, function(err, client, done){
+
+		client.query("SELECT category FROM product WHERE name = '"+name+"';", function(err, results){
 
 			if(err) return res.render("failure", {message: "Failure deleting product"});
 			else category.push(results.rows);
@@ -75,4 +104,7 @@ exports.delete = function(req, res){
 
 		client.query("UPDATE category SET pnum = pnum - 1 WHERE name='"+category[0].category+"'");
 	});
+
+	*/
+
 }
