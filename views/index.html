@@ -19,13 +19,12 @@
 <script>
 
 	$.get("/getname", function(response){
-		if(response.retStatus === 'success'){
-			$("#name").append("<h1>Welcome "+response.message+"</h1>");
-		}
-		else{
-			$("#name").append("<h1>Welcome</h1");
-		}
+
+		console.log(response);
+		
+		$("#name").append("<h1>Welcome "+response.message+"</h1>");
 	});
+	
 </script>
 
 </html>
