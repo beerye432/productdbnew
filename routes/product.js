@@ -71,7 +71,7 @@ exports.delete = function(req, res){
 			if(err) return res.render("failure", {message: "Failure deleting product"});
 		});
 
-		console.log(category[0].category);
+		console.log(category);
 
 		client.query("UPDATE category SET pnum = pnum - 1 WHERE name='"+category[0].category+"'");
 	});
