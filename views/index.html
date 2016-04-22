@@ -8,12 +8,24 @@
 
 <body style = "margin-left: 15px">
 
-    {{#if name}}
-    <h1> Welcome {{name}} </h1>
-    {{else}}
-    <h1> Welcome </h1>
-    {{/if}}
+	<div id = "name">
+	 
+	</div>
 
 </body>
+
+<script src="https://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
+
+<script>
+
+	$.get("/getname", function(response){
+		if(response.retStatus === 'success'){
+			$("#name").append("<h1>Welcome "+response.message+"</h1>");
+		}
+		else{
+			$("#name").append("<h1>Welcome</h1");
+		}
+	});
+</script>
 
 </html>

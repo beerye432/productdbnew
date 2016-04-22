@@ -66,6 +66,10 @@ app.get("/sesserror", function(req, res){
 
 });
 
+app.get("/getname", function(req, res){
+  res.json({name: res.session.user});
+});
+
 app.get("/failure", function(req, res){
   res.render("failure");
 });
@@ -97,7 +101,7 @@ app.post("/validatelogin", function(req, res){
             req.session.user = results.rows[0].name;
             req.session.role = results.rows[0].role;
 
-            res.render('index', {name: req.session.user});
+            res.redirect("index");
           }); 
         }
       }
