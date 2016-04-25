@@ -50,7 +50,7 @@ exports.viewcart = function(req, res){
 
 		query.on('end', function(){
 
-			client.query("SELECT * FROM cart WHERE name = '"+req.session.user+"'");
+			query = client.query("SELECT * FROM cart WHERE name = '"+req.session.user+"'");
 
 			query.on('row', function(row){
 				cart.push(row);
