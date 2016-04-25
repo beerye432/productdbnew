@@ -38,7 +38,7 @@ exports.viewcart = function(req, res){
 
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
-		client.query("SELECT * FROM product WHERE name = '"+name+"'");
+		var query = client.query("SELECT * FROM product WHERE name = '"+name+"'");
 
 		query.on('row', function(row){
 			currentProduct.push(row);
