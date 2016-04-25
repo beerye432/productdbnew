@@ -28,6 +28,46 @@ exports.view = function(req, res){
 	});
 }
 
+exports.viewcart = function(req, res){
+
+	var currentProduct = [];
+
+	var cart = [];
+
+	var name = req.query.name; //name of current item
+
+	pg.connect(process.env.DATABASE_URL, function(err, client, done){
+
+		client.query("SELECT * FROM product WHERE name = '"+name+"'");
+
+		query.on('row', function(row){
+			currentProduct.push(row);
+		});
+
+		query.on("error", function(err){
+			return res.render("failure");
+		});
+
+		query.on('end', function(){
+
+			client.query("SELECT * FROM cart WHERE name = '"+req.session.user+"'");
+
+			query.on('row', function(row){
+				cart.push(row);
+			});
+
+			query.on("error", function(err){
+				return res.render("failure");
+			});
+
+			query.on('end', function(){
+				done();
+				res.render("productorder", {current: currentProduct, cart: cart});
+			});
+		});
+	});
+}
+
 exports.add = function(req, res){
 
 	var name = req.body.name;

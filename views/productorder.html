@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel = "stylesheet" type = "text/css" href = "/stylesheets/bootstrap.css">
+    <title>Product Order</title>
+</head>
+
+<body style = "margin-left: 15px">
+
+	<div id = "name">
+	 
+	</div>
+
+	<div id = "current product">
+
+	</div>
+
+	<div id = "cart">
+
+	</div>
+
+</body>
+
+<script src="https://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
+
+<script>
+
+	$.get("/getname", function(response){
+
+		//console.log(response);
+		
+		$("#name").append("<h1>Welcome "+response.name+"</h1>");
+	});
+
+</script>
+
+</html>

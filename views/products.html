@@ -10,17 +10,17 @@
 		<h1> Add a new product: </h1>
 		<form action = "/addproduct" id = "product" method = "post">
 			<label for = "name">Product Name:</label>
-			<input type = "text" name = "name" placeholder="Category Name">
+			<input type = "text" name = "name" placeholder="Product Name" required>
 			<label for = "Description">SKU:</label>
-			<input type = "text" name = "sku" placeholder="SKU">
+			<input type = "text" name = "sku" placeholder="SKU"required >
 			<label for = "Category">Category:</label>
-			<select name = "category" id = "category">
+			<select name = "category" id = "category" required>
 				{{#each categories}}
 				<option>{{name}}</option>
 				{{/each}}
 			</select>
 			<label for = "Price">Price:</label>
-			<input type = "text" name = "price" placeholder="Price">
+			<input type = "text" name = "price" placeholder="Price" required>
 			<input type = "submit" placeholder="Submit" value = "Submit">
 		</form>
 
