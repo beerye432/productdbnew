@@ -15,13 +15,14 @@
 	<div id = "current product">
 
 		{{#each current}}
-		<form action = "/addtocart?product={{name}}" id = "product" method = "post">
-			<label for = "quantity">Quantity to Add to Cart: </label>
-			<input type = "number" name = "quantity" id = "quantity">
-		</form>
 		<h1> {{name}} </h1>
 		<p> {{price}} </p>
 		{{/each}}
+		<form action = "/addtocart?product={{name}}" id = "product" method = "post">
+			<label for = "quantity">Quantity to Add to Cart: </label>
+			<input type = "number" name = "quantity" id = "quantity">
+			<input type = "submit" placeholder="Submit" value = "Submit">
+		</form>
 
 	</div>
 
