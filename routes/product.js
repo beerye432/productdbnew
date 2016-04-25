@@ -68,6 +68,13 @@ exports.viewcart = function(req, res){
 	});
 }
 
+exports.addtocart = function(req, res){
+
+	console.log(req.body.name);
+	console.log(req.body.product);
+	console.log(req.session.user);
+}
+
 exports.add = function(req, res){
 
 	var name = req.body.name;
