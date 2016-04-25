@@ -70,8 +70,8 @@ exports.viewcart = function(req, res){
 
 exports.addtocart = function(req, res){
 
-	console.log(req.body.name);
-	console.log(req.body.product);
+	console.log(req.query.quantity);
+	console.log(req.query.product);
 	console.log(req.session.user);
 }
 
