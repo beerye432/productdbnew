@@ -27,8 +27,9 @@
 		<div>
 
 			{{#each products}}
-				<a href = "/addtocart?name={{name}}"><h1>{{name}}</h1></a>
+				<h1>{{name}}</h1>
 				<a href = "/deleteproduct?name={{name}}">Delete</a>
+				<a href = "/addtocart?name={{name}}">Add to Cart</a>
 			{{/each}}
 		</div>
 	</div>
