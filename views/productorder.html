@@ -43,6 +43,14 @@
 		$("#name").append("<h1>Welcome "+response.name+"</h1>");
 	});
 
+	var place = window.location.href.split("=")[1];
+
+	console.log(place);
+
+	var input = $("<input>").attr("type", "hidden").attr("name", "name").val(place);
+
+	$('#product').append($(input));
+
 </script>
 
 </html>
