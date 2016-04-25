@@ -54,7 +54,7 @@ function restrict(req, res, next){
     next();
   }
   else{
-    res.render("/failure", {message: "This page is available to owners only"});
+    res.render("failure", {message: "This page is available to owners only"});
   }
 }
 
