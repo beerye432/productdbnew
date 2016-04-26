@@ -94,7 +94,7 @@ exports.addtocart = function(req, res){
 			//first time item is added to cart
 			if(cart.length == 0){
 
-				query = client.query("INSERT INTO cart VALUES('"+name+"', '"+pname+"', "+price+", "+quantity+";");
+				query = client.query("INSERT INTO cart VALUES('"+name+"', '"+pname+"', "+price+", "+quantity+");");
 
 				query.on('error', function(err){
 					res.render("failure", {message: err + "here"});
@@ -108,7 +108,7 @@ exports.addtocart = function(req, res){
 			//adding additional quantity onto existing cart item
 			else{
 
-				query = client.query("UPDATE cart SET quantity = quantity +"+price+" WHERE name = '"+name+"' AND pname = '"+pname+"';");
+				query = client.query("UPDATE cart SET quantity = quantity +"+quantity+" WHERE name = '"+name+"' AND pname = '"+pname+"';");
 
 				query.on('error', function(err){
 					res.render("failure", {message: err});
