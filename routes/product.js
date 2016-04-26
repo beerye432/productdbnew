@@ -72,7 +72,7 @@ exports.addtocart = function(req, res){
 
 	var quantity = req.body.quantity; 
 	var pname = req.body.name;
-	var name = req.body.user;
+	var name = req.session.user;
 	var price = parseFloat(req.body.price);
 
 	var cart = [];
