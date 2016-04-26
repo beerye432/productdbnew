@@ -97,7 +97,7 @@ exports.addtocart = function(req, res){
 				query = client.query("INSERT INTO cart VALUES('"+name+"', '"+pname+"', "+price+", "+quantity+";");
 
 				query.on('error', function(err){
-					res.render("failure", {message: "There was an error adding to cart"});
+					res.render("failure", {message: err});
 				});
 
 				query.on('end', function(){
@@ -111,7 +111,7 @@ exports.addtocart = function(req, res){
 				query = client.query("UPDATE cart SET quantity = quantity +"+price+" WHERE name = '"+name+"' AND pname = '"+pname+"';");
 
 				query.on('error', function(err){
-					res.render("failure", {message: "There was an error adding to cart"});
+					res.render("failure", {message: err});
 				});
 
 				query.on('end', function(){
