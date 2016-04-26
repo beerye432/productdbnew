@@ -97,7 +97,7 @@ exports.addtocart = function(req, res){
 				query = client.query("INSERT INTO cart VALUES('"+name+"', '"+pname+"', "+price+", "+quantity+";");
 
 				query.on('error', function(err){
-					res.render("failure", {message: err});
+					res.render("failure", {message: err + "here"});
 				});
 
 				query.on('end', function(){
