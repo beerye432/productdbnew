@@ -73,11 +73,8 @@ exports.addtocart = function(req, res){
 	var quantity = req.body.quantity; 
 	var pname = req.body.name;
 	var name = req.body.user;
-	var price = req.body.price;
+	var price = parseFloat(req.body.price);
 
-	console.log(price);
-
-	/*
 	var cart = [];
 
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
@@ -94,13 +91,36 @@ exports.addtocart = function(req, res){
 
 		query.on("end", function(err){
 
+			//first time item is added to cart
 			if(cart.length == 0){
 
-				query = client.query("INSERT INTO cart VALUES(")
+				query = client.query("INSERT INTO cart VALUES('"+name+"', '"+pname+"', "+price+", "+quantity+";");
+
+				query.on('error', function(err){
+					res.render("failure", {message: "There was an error adding to cart"});
+				});
+
+				query.on('end', function(){
+					done();
+					res.redirect("products");
+				});
 			}
-		})
-	})
-	*/
+			//adding additional quantity onto existing cart item
+			else{
+
+				query = client.query("UPDATE cart SET quantity = quantity +"+price+" WHERE name = '"+name+"' AND pname = '"+pname+"';");
+
+				query.on('error', function(err){
+					res.render("failure", {message: "There was an error adding to cart"});
+				});
+
+				query.on('end', function(){
+					done();
+					res.redirect("products");
+				});
+			}
+		});
+	});
 }
 
 exports.add = function(req, res){
