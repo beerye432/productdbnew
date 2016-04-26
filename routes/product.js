@@ -70,11 +70,37 @@ exports.viewcart = function(req, res){
 
 exports.addtocart = function(req, res){
 
-	console.log(req.body.quantity);
-	console.log(req.body.name);
-	console.log(req.session.user);
+	var quantity = req.body.quantity; 
+	var pname = req.body.name;
+	var name = req.body.user;
+	var price = req.body.price;
 
-	res.redirect("products");
+	console.log(price);
+
+	/*
+	var cart = [];
+
+	pg.connect(process.env.DATABASE_URL, function(err, client, done){
+
+		var query = client.query("SELECT * FROM cart WHERE name = '"+name+"' AND pname = '"+pname+"';");
+
+		query.on('row', function(row){
+			cart.push(row);
+		});
+
+		query.on("error", function(err){
+			return res.render("failure", {message: "There was a problem adding to cart"});
+		});
+
+		query.on("end", function(err){
+
+			if(cart.length == 0){
+
+				query = client.query("INSERT INTO cart VALUES(")
+			}
+		})
+	})
+	*/
 }
 
 exports.add = function(req, res){
