@@ -30,6 +30,14 @@
 
 	<div id = "cart">
 
+	<h1> Your Cart: </h1>
+
+		{{#each cart}}
+			<h1> {{pname}} </h1>
+			<p> {{price}} </p>
+			<p> Quantity: {{quantity}}</p>
+		{{/each}}
+
 	</div>
 
 </body>
@@ -43,6 +51,7 @@
 		//console.log(response);
 		
 		$("#name").append("<h1>Welcome "+response.name+"</h1>");
+
 	});
 
 	var place = window.location.href.split("=")[1];
