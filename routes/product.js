@@ -221,7 +221,6 @@ exports.browse = function(req, res){
 
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
-
 		var query = client.query("SELECT * FROM category;");
 
 		query.on('row', function(row){
@@ -262,7 +261,7 @@ exports.browsecategory = function(req, res){
 
 	var products = [];
 
-	pg.connect(process.env.DATABASE_URL, function(err, cleint, done){
+	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
 		var query = client.query("SELECT * FROM category");
 
