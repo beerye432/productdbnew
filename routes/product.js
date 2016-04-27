@@ -15,15 +15,28 @@ exports.view = function(req, res){
 			categories.push(row);
 		});
 
-		query = client.query("SELECT * FROM product;");
-
-		query.on('row', function(row){
-			products.push(row);
+		query.on("error", function(err){
+			done();
+			return res.render("failure", {message: err});
 		});
 
 		query.on('end', function(){
-			done();
-			res.render("products", {products: products, categories: categories});
+
+			query = client.query("SELECT * FROM product;");
+
+			query.on('row', function(row){
+				products.push(row);
+			});
+
+			query.on("error", function(err){
+				done();
+				return res.render("failure", {message: err});
+			});
+
+			query.on('end', function(){
+				done();
+				res.render("products", {products: products, categories: categories});
+			});
 		});
 	});
 }
@@ -45,7 +58,8 @@ exports.viewcart = function(req, res){
 		});
 
 		query.on("error", function(err){
-			return res.render("failure");
+			done();
+			return res.render("failure", {message: err});
 		});
 
 		query.on('end', function(){
@@ -57,7 +71,8 @@ exports.viewcart = function(req, res){
 			});
 
 			query.on("error", function(err){
-				return res.render("failure");
+				done();
+				return res.render("failure", {message: err});
 			});
 
 			query.on('end', function(){
@@ -196,21 +211,76 @@ exports.delete = function(req, res){
 			});
 		});
 	});
+}
 
-	exports.browsecategory = function(req, res){
+exports.browse = function(req, res){
 
-		var name = req.query.cat;
+	var categories = [];
 
-		var category = [];
+	var products = [];
 
-		var products = [];
+	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
-		pg.connect(process.env.DATABASE_URL, function(err, cleint, done){
 
-			var query = client.query("SELECT * FROM category");
+		var query = client.query("SELECT * FROM category;");
+
+		query.on('row', function(row){
+			categories.push(row);
+		});
+
+		query.on("error", function(err){
+			done();
+			return res.render("failure", {message: err});
+		});
+
+		query.on('end', function(){
+
+			query = client.query("SELECT * FROM product;");
 
 			query.on('row', function(row){
-				category.push(row);
+				products.push(row);
+			});
+
+			query.on("error", function(err){
+				done();
+				return res.render("failure", {message: err});
+			});
+
+			query.on('end', function(){
+				done();
+				res.render("productbrowse", {products: products, categories: categories});
+			});
+		});
+	});
+}
+
+exports.browsecategory = function(req, res){
+
+	var name = req.query.cat;
+
+	var category = [];
+
+	var products = [];
+
+	pg.connect(process.env.DATABASE_URL, function(err, cleint, done){
+
+		var query = client.query("SELECT * FROM category");
+
+		query.on('row', function(row){
+			category.push(row);
+		});
+
+		query.on('error', function(error){
+			done();
+			return res.render("failure", {message: error});
+		});
+
+		query.on('end', function(){
+
+			query = client.query("SELECT * FROM product WHERE category='"+name+"';");
+
+			query.on('row', function(row){
+				products.push(row);
 			});
 
 			query.on('error', function(error){
@@ -219,24 +289,11 @@ exports.delete = function(req, res){
 			});
 
 			query.on('end', function(){
-
-				query = client.query("SELECT * FROM product WHERE category='"+name+"';");
-
-				query.on('row', function(row){
-					products.push(row);
-				});
-
-				query.on('error', function(error){
-					done();
-					return res.render("failure", {message: error});
-				});
-
-				query.on('end', function(){
-					res.render("productbrowse", {categories: category, products: products});
-				});
+				res.render("productbrowse", {categories: category, products: products});
 			});
-		})
-	}
+		});
+	})
+}
 
 /*
 		query = client.query("UPDATE")
@@ -261,5 +318,3 @@ exports.delete = function(req, res){
 	});
 
 	*/
-
-}

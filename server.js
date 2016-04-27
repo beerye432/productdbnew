@@ -88,7 +88,7 @@ app.get("/productorder", router.product.viewcart);
 
 app.get("/deleteproduct", restrict, router.product.delete);
 
-app.get("/browsecategory", router.product.viewcategory);
+app.get("/browsecategory", router.product.browsecategory);
 
 app.get("/browseproducts", router.product.browse);
 
