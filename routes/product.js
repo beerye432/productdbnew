@@ -162,6 +162,16 @@ exports.add = function(req, res){
 	});	
 }
 
+exports.update = function(req, res){
+
+	var name = req.body.name;
+	var price = parseFloat(req.body.price);
+
+	console.log(name);
+
+	console.log(price);
+}
+
 exports.delete = function(req, res){
 
 	var name = req.query.name;
