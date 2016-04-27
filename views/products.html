@@ -2,7 +2,7 @@
 <html>
 <head>
 	<title>Product Page</title>
-	 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+	 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 
 </head>
 <body>
@@ -35,9 +35,9 @@
 				<form action = "/updateproduct" id = "categoryupdate" method = "post">
 
 					<label for = "name"> Name: </label>
-					<input type = "text" name = "name" required>
+					<input id = "nameinput" type = "text" name = "name" required>
 					<label for = "price"> Price: </label>
-					<input type = "text" name = "price" required>
+					<input id = "priceinput" type = "text" name = "price" required>
 					<input type = "submit" value = "Submit">
 
 				</form>
@@ -73,6 +73,10 @@
 		function update(name, price){
 
 			$("#updateform").css("display", "block");
+
+			$("#nameinput").attr("placeholder", name);
+
+			$("#priceinput").attr("placeholder", price);
 
 			dialog.dialog("open");
 
