@@ -2,6 +2,8 @@
 <html>
 <head>
 	<title>Product Page</title>
+	 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
 </head>
 <body>
 
@@ -28,9 +30,13 @@
 
 			<div id="updateform" style="display:none" title="">
 				
+				<h2> Update Product: </h2>
 
 				<form action = "/updateproduct" id = "categoryupdate" method = "post">
+
+					<label for = "name"> Name: </label>
 					<input type = "text" name = "name" required>
+					<label for = "price"> Price: </label>
 					<input type = "text" name = "price" required>
 					<input type = "submit" value = "Submit">
 
