@@ -12,6 +12,13 @@
 	 
 	</div>
 
+	<div id = "links">
+
+		<a href = "/browseproducts">Browse Products</a>
+
+	</div>
+
+
 </body>
 
 <script src="https://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
@@ -23,6 +30,15 @@
 		//console.log(response);
 		
 		$("#name").append("<h1>Welcome "+response.name+"</h1>");
+	});
+
+	$.get("/getuser", function(response){
+
+		if(response.role == "owner"){
+
+			$('#links').prepend("<a href = '/products'>Products</a>");
+			$('#links').prepend("<a href = '/categories'>Categories</a>");
+		}
 	});
 
 </script>

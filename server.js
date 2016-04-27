@@ -70,6 +70,10 @@ app.get("/getname", function(req, res){
   res.json({name: req.session.user});
 });
 
+app.get("/getuser", function(req, res){
+  res.json({role: req.session.role});
+});
+
 app.get("/failure", function(req, res){
   res.render("failure");
 });
