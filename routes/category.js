@@ -38,31 +38,40 @@ exports.delete = function(req, res){
 
 	var name = req.query.name;
 
+	var products = [];
+
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
-		client.query("SELECT * FROM product WHERE name = '"+name+"';", function(err, results){
+		var query = client.query("SELECT * FROM product WHERE name = '"+name+"';");
 
-			if(err){
-				done();
-				res.render('failure', {message: err});
-			}
-			else{
-				if(results.rows.length != 0){
-					return res.render('failure', {message: 'There are still products left in this category!'});
-				}
-			}
+		query.on('row', function(row){
+			products.push(row);
 		});
 
-		client.query("DELETE FROM category WHERE name='"+name+"';", function(err, results){
-
+		query.on('error', function(error){
 			done();
+			return res.render("failure", {message: error});
+		});
 
-			if(err){
-				req.session.err = "Can't Delete that!";
-				res.redirect("categories");
+		query.on('end', function(){
+
+			if(products.length > 0){
+				done();
+				res.render("failure", {message: "You can't delete a category with products still inside"});
 			}
-			else res.redirect("categories");
+			else{
+				query = client.query("DELETE FROM category WHERE name='"+name+"';");
 
+				query.on('error', function(error){
+					done();
+					return res.render("failure", {message: error});
+				});
+
+				query.on('end', function(){
+					done();
+					res.redirect("categories")
+				});
+			}
 		});
 	});
 }
