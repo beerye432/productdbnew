@@ -38,6 +38,7 @@
 					<input id = "nameinput" type = "text" name = "name" required>
 					<label for = "price"> Price: </label>
 					<input id = "priceinput" type = "text" name = "price" required>
+					<input id = "nameO" type = "hidden" name = "nameO">
 					<input type = "submit" value = "Submit">
 
 				</form>
@@ -77,6 +78,8 @@
 			$("#nameinput").val(name);
 
 			$("#priceinput").val(price);
+
+			$("#nameO").val(name);
 
 			dialog.dialog("open");
 

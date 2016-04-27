@@ -166,10 +166,22 @@ exports.update = function(req, res){
 
 	var name = req.body.name;
 	var price = parseFloat(req.body.price);
+	var nameO = req.body.nameO;
 
-	console.log(name);
+	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
-	console.log(price);
+		var query = client.query("UPDATE product SET name = '"+name+"', price = "+price+" WHERE name = '"+nameO+"';");
+
+		query.on('error', function(error){
+			done();
+			return res.render("failure", {message: error});
+		});
+
+		query.on('end', function(){
+			done();
+			res.redirect("products");
+		});
+	});
 }
 
 exports.delete = function(req, res){
