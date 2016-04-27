@@ -27,7 +27,7 @@ exports.add = function(req, res){
 
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 		client.query("INSERT INTO category VALUES ('"+name+"','"+description+"', 0);");
-		done();products
+		done();
 
 		if(err) req.session.err = "Failure to insert new product";
 		else res.redirect("categories");
@@ -43,6 +43,7 @@ exports.delete = function(req, res){
 		client.query("SELECT * FROM product WHERE name = '"+name+"';", function(err, results){
 
 			if(err){
+				done();
 				res.render('failure', {message: err});
 			}
 			else{
