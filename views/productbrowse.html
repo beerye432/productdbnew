@@ -1,0 +1,23 @@
+<html>
+<head>
+	<title>Browse Products</title>
+</head>
+<body>
+
+		<div id = "categories">
+
+			{{#each categories}}
+				<a href = "/browsecategory?cat={{name}}">{{name}}</a>
+			{{/each}}
+
+		<div>
+
+			{{#each products}}
+				<h1>{{name}}</h1>
+				<a href = "/deleteproduct?name={{name}}">Delete</a>
+				<a href = "/productorder?name={{name}}">Add to Cart</a>
+			{{/each}}
+		</div>
+
+</body>
+</html>

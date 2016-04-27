@@ -183,7 +183,12 @@ exports.delete = function(req, res){
 				//update category count
 				query = client.query("UPDATE category SET pnum = pnum - 1 WHERE name = '"+category[0].category+"';");
 
-				query.on('end', function(results){
+				query.on('error', function(error){
+					done();
+					res.render("failure", {message: error});
+				});
+
+				query.on('end', function(){
 
 					done();
 					res.redirect("products");
@@ -191,6 +196,47 @@ exports.delete = function(req, res){
 			});
 		});
 	});
+
+	exports.browsecategory = function(req, res){
+
+		var name = req.query.cat;
+
+		var category = [];
+
+		var products = [];
+
+		pg.connect(process.env.DATABASE_URL, function(err, cleint, done){
+
+			var query = client.query("SELECT * FROM category");
+
+			query.on('row', function(row){
+				category.push(row);
+			});
+
+			query.on('error', function(error){
+				done();
+				return res.render("failure", {message: error});
+			});
+
+			query.on('end', function(){
+
+				query = client.query("SELECT * FROM product WHERE category='"+name+"';");
+
+				query.on('row', function(row){
+					products.push(row);
+				});
+
+				query.on('error', function(error){
+					done();
+					return res.render("failure", {message: error});
+				});
+
+				query.on('end', function(){
+					res.render("productbrowse", {categories: category, products: products});
+				});
+			});
+		})
+	}
 
 /*
 		query = client.query("UPDATE")

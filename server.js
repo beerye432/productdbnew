@@ -88,6 +88,10 @@ app.get("/productorder", router.product.viewcart);
 
 app.get("/deleteproduct", restrict, router.product.delete);
 
+app.get("/browsecategory", router.product.viewcategory);
+
+app.get("/browseproducts", router.product.browse);
+
 app.post("/validatelogin", function(req, res){
 
   var name = req.body.name;
