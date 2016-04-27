@@ -64,7 +64,7 @@ exports.delete = function(req, res){
 
 				query.on('error', function(error){
 					done();
-					return res.render("failure", {message: error});
+					return res.render("failure", {message: "Can't delete a category with products still inside"});
 				});
 
 				query.on('end', function(){
