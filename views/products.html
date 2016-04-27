@@ -26,13 +26,34 @@
 
 		<div>
 
+			<div id="updateform" style="display:none" title=""></div>
+
 			{{#each products}}
-				<h1>{{name}}</h1>
-				<a href = "/deleteproduct?name={{name}}">Delete</a>
-				<a href = "/productorder?name={{name}}">Add to Cart</a>
+
+				<div id = "{{name}}">
+					<h1>{{name}}</h1>
+					<h2>${{price}}</h2>
+					<a id="myLink" href="#" onclick="update({{name}}, {{price}});">Update</a>
+					<a href = "/deleteproduct?name={{name}}">Delete</a>
+					<a href = "/productorder?name={{name}}">Add to Cart</a>
+				</div>
+
 			{{/each}}
 		</div>
 	</div>
+
+	<script src="https://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
+
+	<script>
+
+		function update(name, price){
+
+			console.log(name);
+
+			console.log(price);
+		}
+
+	</script>	
 
 </body>
 </html>
