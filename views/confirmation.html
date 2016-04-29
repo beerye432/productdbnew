@@ -3,7 +3,7 @@
 
 <head>
     <link rel = "stylesheet" type = "text/css" href = "/stylesheets/bootstrap.css">
-    <title>Buy Cart</title>
+    <title>Confirmation</title>
 </head>
 
 <body style = "margin-left: 15px">
@@ -14,7 +14,7 @@
 
 	<div id = "cart">
 
-	<h1> Your Cart: </h1>
+	<h1> Your Order: </h1>
 
 		{{#each cart}}
 			<div id = "ordercell">
@@ -29,13 +29,8 @@
 
 	<h1>Grand Total: ${{total}}</h1>
 
-	<form action = "/checkout" id = "checkout" method = "post">
+	<a href = "/browseproducts"> Back to Product Browsing </a>
 
-		<label for = "creditcard"> Credit Card Number </label>
-		<input type = "text" name = "creditcard" required>
-		<input type = "submit" value = "Submit">
-
-	</form>
 
 </body>
 

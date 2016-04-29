@@ -347,3 +347,55 @@ exports.browsecategory = function(req, res){
 		});
 	})
 }
+
+exports.checkout = function(req, res){
+
+	var card = req.body.creditcard;
+
+	var cart = [];
+
+	pg.connect(process.env.DATABASE_URL, function(err, client, done){
+
+		var query = client.query("SELECT * FROM cart WHERE name = '"+req.session.user+"'");
+
+		query.on('row', function(row){
+			cart.push(row);
+		});
+
+		query.on('error', function(error){
+			done();
+			return res.render("failure", {message: error});
+		});
+
+		query.on('end', function(){
+
+			for(var i = 0; i < cart.length; i++){
+				cart[i].total = cart[i].price * cart[i].quantity;
+				total += cart[i].price * cart[i].quantity;
+			}
+
+			res.render("confirmation", {cart: cart, total: total.toFixed(2)});
+
+			//insert into cartdata the data from the purchased cart and a timestamp
+			query = client.query("INSERT INTO cartdata SELECT name, pname, price, quantity, CURRENT_TIMESTAMP FROM cart WHERE name = '"+req.session.user+"';");
+
+			query.on('error', function(error){
+				done();
+				return res.render("failure", {message: error});
+			});
+
+			query.on('end', function(){
+				query = client.query("DELETE FROM cart WHERE name = '"+req.session.user+"';");
+
+				query.on('error', function(error){
+					done();
+					return res.render("failure", {message: error});
+				});
+
+				query.on('end', function(){
+					done();
+				});
+			});
+		});
+	});
+}

@@ -137,6 +137,8 @@ app.post("/updateproduct", router.product.update);
 
 app.post("/updatecat", router.category.update);
 
+app.post("/checkout", router.product.checkout);
+
 // Start Server
 http.createServer(app).listen(app.get("port"), function() {
     console.log("Express server listening on port " + app.get("port"));
