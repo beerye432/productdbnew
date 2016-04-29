@@ -110,7 +110,7 @@ exports.buycart = function(req, res){
 				total += cart[i].price * cart[i].quantity;
 			}
 
-			res.render("buycart", {cart: cart, total: total});
+			res.render("buycart", {cart: cart, total: total.toFixed(2)});
 		});
 	});
 }
