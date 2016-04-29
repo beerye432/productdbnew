@@ -83,6 +83,30 @@ exports.viewcart = function(req, res){
 	});
 }
 
+exports.buycart = function(req, res){
+
+	var cart = [];
+
+	pg.connect(process.env.DATABASE_URL, function(err, client, done){
+
+		var query = client.query("SELECT * FROM cart WHERE name = '"+req.session.user+"'");
+
+		query.on('row', function(row){
+			cart.push(row);
+		});
+
+		query.on("error", function(err){
+			done();
+			return res.render("failure", {message: err});
+		});
+
+		query.on('end', function(){
+			done();
+			res.render("buycart", {cart: cart});
+		});
+	});
+}
+
 exports.addtocart = function(req, res){
 
 	var quantity = req.body.quantity; 

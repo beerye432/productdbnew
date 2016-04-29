@@ -86,6 +86,8 @@ app.get("/deletecat", restrict, router.category.delete);
 
 app.get("/productorder", router.product.viewcart);
 
+app.get("/buycart", router.product.buycart);
+
 app.get("/deleteproduct", restrict, router.product.delete);
 
 app.get("/browsecategory", router.product.browsecategory);

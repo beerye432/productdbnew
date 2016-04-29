@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel = "stylesheet" type = "text/css" href = "/stylesheets/bootstrap.css">
+    <title>Buy Cart</title>
+</head>
+
+<body style = "margin-left: 15px">
+
+	<div id = "name">
+	 
+	</div>
+
+	<div id = "cart">
+
+	<h1> Your Cart: </h1>
+
+		{{#each cart}}
+			<h1> {{pname}} </h1>
+			<p> ${{price}} </p>
+			<p> Quantity: {{quantity}}</p>
+		{{/each}}
+
+	</div>
+
+</body>
+
+<script src="https://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
+
+<script>
+
+	$.get("/getname", function(response){
+
+		//console.log(response);
+		
+		$("#name").append("<h1>"+response.name+"</h1>");
+
+	});
+
+</script>
+
+</html>
