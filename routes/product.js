@@ -354,6 +354,8 @@ exports.checkout = function(req, res){
 
 	var cart = [];
 
+	var total = 0;
+
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
 		var query = client.query("SELECT * FROM cart WHERE name = '"+req.session.user+"'");
