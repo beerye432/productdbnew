@@ -34,6 +34,17 @@ exports.add = function(req, res){
 	});
 }
 
+exports.update = function(req, res){
+
+	var name = req.body.name;
+
+	var description = req.body.desc;
+
+	console.log(name);
+
+	console.log(description);
+}
+
 exports.delete = function(req, res){
 
 	var name = req.query.name;

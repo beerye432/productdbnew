@@ -9,6 +9,10 @@
 
 	<div>
 
+		<div id = "name">
+
+		</div>
+
 		<h1> Add a new product: </h1>
 		<form action = "/addproduct" id = "product" method = "post">
 			<label for = "name">Product Name:</label>
@@ -64,6 +68,14 @@
 
 	<script>
 
+		$.get("/getname", function(response){
+
+			//console.log(response);
+			
+			$("#name").append("<h1>"+response.name+"</h1>");
+
+		});
+
 		dialog = $( "#updateform" ).dialog({
 	      autoOpen: false,
 	      height: 300,
@@ -83,9 +95,6 @@
 
 			dialog.dialog("open");
 
-			console.log(name);
-
-			console.log(price);
 		}
 
 	</script>	

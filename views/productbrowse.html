@@ -4,6 +4,9 @@
 </head>
 <body>
 
+		<div id = "name">
+
+		</div>
 		<div id = "categories">
 
 			<h1> Choose a category </h1>
@@ -24,6 +27,18 @@
 				<a href = "/productorder?name={{name}}">Add to Cart</a>
 			{{/each}}
 		</div>
+
+		<script>
+
+		$.get("/getname", function(response){
+
+			//console.log(response);
+			
+			$("#name").append("<h1>"+response.name+"</h1>");
+
+		});
+
+		</script>
 
 </body>
 </html>

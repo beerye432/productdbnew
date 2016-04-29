@@ -8,6 +8,27 @@
 
 	</div>
 
+	<div id = "name">
+
+	</div>
+
+	<div id="updateform" style="display:none" title="">
+				
+		<h2> Update Category: </h2>
+
+		<form action = "/updateproduct" id = "categoryupdate" method = "post">
+
+			<label for = "name"> Name: </label>
+			<input id = "nameinput" type = "text" name = "name" required>
+			<label for = "desc"> Description: </label>
+			<input id = "descinput" type = "textarea" name = "desc" required>
+			<input id = "nameO" type = "hidden" name = "nameO">
+			<input type = "submit" value = "Submit">
+
+		</form>
+
+	</div>
+
 	<div>
 		<h1> Add a new category: </h1>
 		<form action = "/addcategory" id = "category" method = "post">
@@ -24,6 +45,7 @@
 		{{#each categories}}
 		<h2>{{name}}</h2>
 		<p>{{description}}</p>
+		<a id="myLink" href="#" onclick="update('{{name}}', {{description}});">Update</a>
 		<a href = "/deletecat?name={{name}}"> Delete </a>
 		{{/each}}
 
@@ -33,12 +55,41 @@
 
 	<script>
 
+		$.get("/getname", function(response){
+
+			//console.log(response);
+			
+			$("#name").append("<h1>"+response.name+"</h1>");
+
+		});
+
 		$.get('/sesserror', function(response){
 
 			if(response.retStatus === 'success'){
 				$("#error").append("<h1>"+response.message+"</h1>");
 			}
 		});
+
+		dialog = $( "#updateform" ).dialog({
+	      autoOpen: false,
+	      height: 300,
+	      width: 350,
+	      modal: true
+	    });
+
+		function update(name, description){
+
+			$("#updateform").css("display", "block");
+
+			$("#nameinput").val(name);
+
+			$("#descinput").val(description);
+
+			$("#nameO").val(name);
+
+			dialog.dialog("open");
+
+		}
 
 	</script>
 </body>

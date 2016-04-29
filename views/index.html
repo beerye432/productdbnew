@@ -29,7 +29,7 @@
 
 		//console.log(response);
 		
-		$("#name").append("<h1>Welcome "+response.name+"</h1>");
+		$("#name").append("<h1>"+response.name+"</h1>");
 	});
 
 	$.get("/getuser", function(response){
