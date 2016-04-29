@@ -301,7 +301,7 @@ exports.browse = function(req, res){
 
 			query.on('end', function(){
 				done();
-				res.render("browseproduct", {products: products, categories: categories});
+				res.render("browseproducts", {products: products, categories: categories});
 			});
 		});
 	});
