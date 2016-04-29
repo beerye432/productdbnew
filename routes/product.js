@@ -87,6 +87,8 @@ exports.buycart = function(req, res){
 
 	var cart = [];
 
+	var total = 0;
+
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
 		var query = client.query("SELECT * FROM cart WHERE name = '"+req.session.user+"'");
@@ -102,7 +104,13 @@ exports.buycart = function(req, res){
 
 		query.on('end', function(){
 			done();
-			res.render("buycart", {cart: cart});
+
+			for(var i = 0; i < cart.length; i++){
+				cart[i].total = cart[i].price * cart[i].quantity;
+				total += cart[i].price * cart[i].quantity;
+			}
+
+			res.render("buycart", {cart: cart, total: total});
 		});
 	});
 }
@@ -293,7 +301,7 @@ exports.browse = function(req, res){
 
 			query.on('end', function(){
 				done();
-				res.render("productbrowse", {products: products, categories: categories});
+				res.render("browseproduct", {products: products, categories: categories});
 			});
 		});
 	});
@@ -339,27 +347,3 @@ exports.browsecategory = function(req, res){
 		});
 	})
 }
-
-/*
-		query = client.query("UPDATE")
-
-
-	pg.connect(process.env.DATABASE_URL, function(err, client, done){
-
-		client.query("SELECT category FROM product WHERE name = '"+name+"';", function(err, results){
-
-			if(err) return res.render("failure", {message: "Failure deleting product"});
-			else category.push(results.rows);
-		});
-
-		client.query("DELETE FROM product WHERE name='"+name+"';", function(err, results){
-
-			if(err) return res.render("failure", {message: "Failure deleting product"});
-		});
-
-		console.log(category);
-
-		client.query("UPDATE category SET pnum = pnum - 1 WHERE name='"+category[0].category+"'");
-	});
-
-	*/

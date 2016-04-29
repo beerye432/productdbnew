@@ -1,6 +1,7 @@
 <html>
 <head>
 	<title>Category Page</title>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 </head>
 <body>
 
@@ -62,6 +63,8 @@
 			//console.log(response);
 			
 			$("#name").append("<h1>"+response.name+"</h1>");
+			$("#name").append("<a href = '/buycart'>Buy Cart</a>");
+
 
 		});
 
