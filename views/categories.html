@@ -45,7 +45,7 @@
 		{{#each categories}}
 		<h2>{{name}}</h2>
 		<p>{{description}}</p>
-		<a id="myLink" href="#" onclick="update('{{name}}', {{description}});">Update</a>
+		<a id="myLink" href="#" onclick="update('{{name}}', '{{description}}');">Update</a>
 		<a href = "/deletecat?name={{name}}"> Delete </a>
 		{{/each}}
 
