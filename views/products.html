@@ -36,7 +36,7 @@
 				
 				<h2> Update Product: </h2>
 
-				<form action = "/updateproduct" id = "categoryupdate" method = "post">
+				<form action = "/updateproduct" id = "productupdate" method = "post">
 
 					<label for = "name"> Name: </label>
 					<input id = "nameinput" type = "text" name = "name" required>
@@ -51,7 +51,7 @@
 
 			{{#each products}}
 
-				<div id = "xxzz{{name}}">
+				<div id = "{{name}}">
 					<h1>{{name}}</h1>
 					<h2>${{price}}</h2>
 					<a id="myLink" href="#" onclick="update('{{name}}', {{price}});">Update</a>
@@ -95,6 +95,9 @@
 
 			dialog.dialog("open");
 
+			console.log(name);
+
+			console.log(price);
 		}
 
 	</script>	
