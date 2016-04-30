@@ -55,6 +55,10 @@
 				{{/each}}
 			</div>
 
+			<input id = "search" type = "text">
+
+			<button id = "searchbutton" onclick = "search();">Search</button>
+
 			{{#each products}}
 
 				<div id = "{{name}}">
@@ -73,6 +77,17 @@
 	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 
 	<script>
+
+		function search(){
+
+			var searchTerm = $("#search").val();
+
+			var cat = window.href.split("?")[1].split("&")[0].split("=")[1];
+
+			console.log(cat);
+
+			//$.get("/products?cat="+cat+"&product="+searchTerm);
+		}
 
 		$.get("/getname", function(response){
 

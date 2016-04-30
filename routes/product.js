@@ -8,8 +8,11 @@ exports.view = function(req, res){
 
 	console.log(req.query);
 
-	pg.connect(process.env.DATABASE_URL, function(err, client, done){
+	var search = req.query.product;
 
+	var category = req.query.cat;
+
+	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
 		var query = client.query("SELECT * FROM category;");
 
@@ -24,7 +27,10 @@ exports.view = function(req, res){
 
 		query.on('end', function(){
 
-			query = client.query("SELECT * FROM product;");
+			if(category == '')
+				query = client.query("SELECT * FROM product WHERE name LIKE '%"+search+"%';");
+			else
+				query = client.query("SELECT * FROM product WHERE name LIKE '%"+search+"%' AND category = '"+category+"';");
 
 			query.on('row', function(row){
 				products.push(row);
