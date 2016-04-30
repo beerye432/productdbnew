@@ -40,9 +40,22 @@ exports.update = function(req, res){
 
 	var description = req.body.desc;
 
-	console.log(name);
+	var nameO = req.body.nameO;
 
-	console.log(description);
+	pg.connect(process.env.DATABASE_URL, function(err, client, done){
+
+		var query = client.query("UPDATE category SET name = '"+name+"', description = "+description+" WHERE name = '"+nameO+"';");
+
+		query.on('error', function(error){
+			done();
+			return res.render("failure", {message: error});
+		});
+
+		query.on('end', function(){
+			done();
+			res.redirect("categories");
+		});
+	});
 }
 
 exports.delete = function(req, res){
