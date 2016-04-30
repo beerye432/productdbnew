@@ -55,21 +55,26 @@
 				{{/each}}
 			</div>
 
+
+
 			<input id = "search" type = "text">
 
 			<button id = "searchbutton" onclick = "search();">Search</button>
 
-			{{#each products}}
+			<div>
 
-				<div id = "{{name}}">
-					<h1>{{name}}</h1>
-					<h2>${{price}}</h2>
-					<a id="myLink" href="#" onclick="update('{{name}}', {{price}});">Update</a>
-					<a href = "/deleteproduct?name={{name}}">Delete</a>
-					<a href = "/productorder?name={{name}}">Add to Cart</a>
-				</div>
+				{{#each products}}
 
-			{{/each}}
+					<div id = "{{name}}">
+						<h1>{{name}}</h1>
+						<h2>${{price}}</h2>
+						<a id="myLink" href="#" onclick="update('{{name}}', {{price}});">Update</a>
+						<a href = "/deleteproduct?name={{name}}">Delete</a>
+						<a href = "/productorder?name={{name}}">Add to Cart</a>
+					</div>
+
+				{{/each}}
+			</div>
 		</div>
 	</div>
 
