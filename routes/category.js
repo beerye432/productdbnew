@@ -44,7 +44,7 @@ exports.update = function(req, res){
 
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
-		var query = client.query("UPDATE category SET name = '"+name+"', description = "+description+" WHERE name = '"+nameO+"';");
+		var query = client.query("UPDATE category SET name = '"+name+"', description = '"+description+"' WHERE name = '"+nameO+"';");
 
 		query.on('error', function(error){
 			done();
