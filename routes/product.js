@@ -6,6 +6,8 @@ exports.view = function(req, res){
 
 	var products = [];
 
+	console.log(req.query);
+
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
 

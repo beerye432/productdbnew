@@ -48,6 +48,13 @@
 
 			</div>
 
+			<div>
+
+				{{#each categories}}
+					<a href = "/products?cat={{name}}&product=">{{name}}</a>
+				{{/each}}
+			</div>
+
 			{{#each products}}
 
 				<div id = "{{name}}">

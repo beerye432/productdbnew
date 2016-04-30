@@ -1,0 +1,6 @@
+
+
+Notes: 
+
+- Take off the foreign key restriction on product -> category so we can update the category. 
+
