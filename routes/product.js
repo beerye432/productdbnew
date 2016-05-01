@@ -54,8 +54,8 @@ exports.search = function(req, res){
 
 	var product = req.body.search;
 
-	console.log(category);
-	console.log(product);
+	res.redirect("/products?cat="+category+"&product="+product);
+
 }
 
 exports.viewcart = function(req, res){
