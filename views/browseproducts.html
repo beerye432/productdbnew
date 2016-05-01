@@ -11,35 +11,56 @@
 
 			<h1> Choose a category </h1>
 
-			<a href = "/browseproducts"> All Products</a>
+			<a href = "/browseproducts?cat=&product="> All Products</a>
 
 			{{#each categories}}
-				<a href = "/browsecategory?cat={{name}}">{{name}}</a>
+				<a href = "/browseproducts?cat={{name}}&product=">{{name}}</a>
 			{{/each}}
 
+		</div>
+
+		<div>
+			<form action="searchcustomer" method="post">
+				<label for = "search">Looking for a specific product?</label>
+				<input type = "text" name = "search">
+				<input id = "cat" type = "hidden" name = "category">
+			    <input type="submit" value="Statistics">
+			</form>
+
+			<button onclick = "reset()">Reset</button>
 		</div>
 
 		<div>
 
 			{{#each products}}
 				<h1>{{name}}</h1>
-				<a href = "/deleteproduct?name={{name}}">Delete</a>
+				<h2>{{price}}</h2>
 				<a href = "/productorder?name={{name}}">Add to Cart</a>
 			{{/each}}
 		</div>
 
+		<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+		<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
 		<script>
 
-		$.get("/getname", function(response){
+		$(function() {
+		    var cat = window.location.href.split("?")[1].split("&")[0].split("=")[1];
 
-			//console.log(response);
-			
-			$("#name").append("<h1>"+response.name+"</h1>");
-			$("#name").append("<a href = '/buycart'>Buy Cart</a>");
+			$("#cat").val(cat);
 
+			$.get("/getname", function(response){
+				$("#name").append("<h1>"+response.name+"</h1>");
+				$("#name").append("<a href = '/buycart'>Buy Cart</a>");
+			});
 		});
+
+		function reset(){
+
+			window.location.href = "/browseproducts?cat=&product=";
+		}
 
 		</script>
 
-</body>
+	</body>
 </html>

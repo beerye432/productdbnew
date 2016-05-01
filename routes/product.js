@@ -48,6 +48,54 @@ exports.view = function(req, res){
 	});
 }
 
+exports.browse = function(req, res){
+
+	var categories = [];
+
+	var products = [];
+
+	var search = req.query.product;
+
+	var category = req.query.cat;
+
+	req.session.category = category;
+
+	req.session.product = search;
+
+	pg.connect(process.env.DATABASE_URL, function(err, client, done){
+
+		var query = client.query("SELECT * FROM category;");
+
+		query.on('row', function(row){
+			categories.push(row);
+		});
+
+		query.on("error", function(err){
+			done();
+			return res.render("failure", {message: err});
+		});
+
+		query.on('end', function(){
+
+			query = client.query("SELECT * FROM product WHERE name LIKE '%"+search+"%' AND category LIKE '%"+category+"%';");
+
+			query.on('row', function(row){
+				products.push(row);
+			});
+
+			query.on("error", function(err){
+				done();
+				return res.render("failure", {message: err});
+			});
+
+			query.on('end', function(){
+				done();
+				res.render("browseproducts", {products: products, categories: categories});
+			});
+		});
+	});
+}
+
 exports.search = function(req, res){
 
 	var category = req.body.category;
@@ -56,6 +104,15 @@ exports.search = function(req, res){
 
 	res.redirect("/products?cat="+category+"&product="+product);
 
+}
+
+exports.searchcustomer = function(req, res){
+
+	var category = req.body.category;
+
+	var product = req.body.search;
+
+	res.redirect("/browseproducts?cat="+category+"&product="+product);
 }
 
 exports.viewcart = function(req, res){
@@ -278,46 +335,6 @@ exports.delete = function(req, res){
 					done();
 					res.redirect("/products?cat="+req.session.category+"&product="+req.session.product);
 				});
-			});
-		});
-	});
-}
-
-exports.browse = function(req, res){
-
-	var categories = [];
-
-	var products = [];
-
-	pg.connect(process.env.DATABASE_URL, function(err, client, done){
-
-		var query = client.query("SELECT * FROM category;");
-
-		query.on('row', function(row){
-			categories.push(row);
-		});
-
-		query.on("error", function(err){
-			done();
-			return res.render("failure", {message: err});
-		});
-
-		query.on('end', function(){
-
-			query = client.query("SELECT * FROM product;");
-
-			query.on('row', function(row){
-				products.push(row);
-			});
-
-			query.on("error", function(err){
-				done();
-				return res.render("failure", {message: err});
-			});
-
-			query.on('end', function(){
-				done();
-				res.render("browseproducts", {products: products, categories: categories});
 			});
 		});
 	});
