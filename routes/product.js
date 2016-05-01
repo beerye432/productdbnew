@@ -12,6 +12,10 @@ exports.view = function(req, res){
 
 	var category = req.query.cat;
 
+	req.session.category = category;
+
+	req.session.product = search;
+
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
 		var query = client.query("SELECT * FROM category;");
@@ -154,7 +158,7 @@ exports.addtocart = function(req, res){
 
 				query.on('end', function(){
 					done();
-					res.redirect("products");
+					res.redirect("/products?cat=&product=");
 				});
 			}
 			//adding additional quantity onto existing cart item
@@ -168,7 +172,7 @@ exports.addtocart = function(req, res){
 
 				query.on('end', function(){
 					done();
-					res.redirect("products");
+					res.redirect("/products?cat=&product=");
 				});
 			}
 		});
@@ -193,7 +197,7 @@ exports.add = function(req, res){
 
 				done();
 
-				res.redirect("/products?cat=&product=");
+				res.redirect("/products?cat="+req.session.category+"&product="+req.session.product);
 			}
 		});
 	});	
@@ -216,7 +220,7 @@ exports.update = function(req, res){
 
 		query.on('end', function(){
 			done();
-			res.redirect("products");
+			res.redirect("/products?cat="+req.session.category+"&product="+req.session.product);
 		});
 	});
 }
@@ -265,7 +269,7 @@ exports.delete = function(req, res){
 				query.on('end', function(){
 
 					done();
-					res.redirect("products");
+					res.redirect("/products?cat="+req.session.category+"&product="+req.session.product);
 				});
 			});
 		});
