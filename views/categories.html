@@ -52,10 +52,13 @@
 	<div>
 
 		{{#each categories}}
-		<h2>{{name}}</h2>
-		<p>{{description}}</p>
-		<a id="myLink" href="#" onclick="update('{{name}}', '{{description}}');">Update</a>
-		<a href = "/deletecat?name={{name}}"> Delete </a>
+		<div class = "categories">
+			<h2>{{name}}</h2>
+			<p>{{description}}</p>
+			<p class = "pnum">{{pnum}} items in {{name}}</p>
+			<a id="myLink" href="#" onclick="update('{{name}}', '{{description}}');">Update</a>
+			<a href = "/deletecat?name={{name}}"> Delete </a>
+		</div>
 		{{/each}}
 
 	</div>
@@ -64,6 +67,16 @@
 	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 
 	<script>
+
+
+		$(function() {
+		    
+		    $(".categories").each(function(i, category){
+
+		    	console.log(category.find('.pnum').text());
+		    	//if(category.find('.pnum').text())
+		    });
+		});
 
 		$.get("/getname", function(response){
 
