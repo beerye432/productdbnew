@@ -54,9 +54,7 @@
 
 	});
 
-	var place = window.location.href.split("=")[1];
-
-	console.log(place);
+	var place = window.location.href.split("=")[1].replace(/%20/g, " ");;
 
 	var input = $("<input>").attr("type", "hidden").attr("name", "name").val(place);
 
