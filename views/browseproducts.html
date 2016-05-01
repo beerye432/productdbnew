@@ -11,10 +11,10 @@
 
 			<h1> Choose a category </h1>
 
-			<a href = "/browseproducts?cat=&product="> All Products</a>
+			<a onclick='search("all")'> All Products</a>
 
 			{{#each categories}}
-				<a href = "/browseproducts?cat={{name}}&product=">{{name}}</a>
+				<a onclick = 'search({{name}})'>{{name}}</a> 
 			{{/each}}
 
 		</div>
@@ -54,6 +54,18 @@
 				$("#name").append("<a href = '/buycart'>Buy Cart</a>");
 			});
 		});
+
+		function search(category){
+
+			var product = window.location.href.split("?")[1].split("&")[1].split("=")[1];
+
+			if(term == all){
+				window.location.href = "/browseproducts?cat=&product="+product;
+			}
+			else{
+				window.location.href = "/browseproducts?cat="+category+"&product="+product;
+			}
+		}
 
 		function reset(){
 
