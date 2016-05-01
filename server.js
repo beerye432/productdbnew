@@ -26,7 +26,8 @@ app.set("port", process.env.PORT || 3000);
 app.engine("html", handlebars());
 app.set("view engine", "html");
 app.set("views", __dirname + "/views");
-app.use(express.static(path.join(__dirname, "public")));
+//app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(__dirname + '/public', { redirect : false }));
 app.use(parser.body.urlencoded({ extended: true }));
 app.use(parser.body.json());
 app.use(cookieParser());
@@ -41,7 +42,7 @@ app.use(session({
 app.use(function(req, res, next) {
     if (req.session.user == null){
 // if user is not logged-in redirect back to login page //
-        res.redirect('login');
+        res.redirect('/login');
     }   else{
         next();
     }
