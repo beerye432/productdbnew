@@ -116,6 +116,8 @@ app.post("/validatelogin", function(req, res){
           req.session.regenerate(function(){
             req.session.user = results.rows[0].name;
             req.session.role = results.rows[0].role;
+            req.session.category = "";
+            req.session.product = "";
 
             res.redirect("/");
           }); 
