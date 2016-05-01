@@ -26,8 +26,8 @@ app.set("port", process.env.PORT || 3000);
 app.engine("html", handlebars());
 app.set("view engine", "html");
 app.set("views", __dirname + "/views");
-//app.use(express.static(path.join(__dirname, "public")));
-app.use(express.static(__dirname + '/public', { redirect : false }));
+app.use(express.static(path.join(__dirname, "public")));
+//app.use(express.static(__dirname + '/public', { redirect : false }));
 app.use(parser.body.urlencoded({ extended: true }));
 app.use(parser.body.json());
 app.use(cookieParser());
@@ -38,25 +38,16 @@ app.use(session({
   secret: 'qwerty'
 }));
 
-//session middleware
-app.use(function(req, res, next) {
-    if (req.session.user == null){
-// if user is not logged-in redirect back to login page //
-        res.redirect('/login');
-    }   else{
-        next();
-    }
-});
+function auth(req, res, next){
 
+  if(req.session.user == null){
 
-// Routes
-app.get("/", router.index.view); 
-
-app.get("/login", router.index.login);
-
-app.get("/signup", function(req, res){
-  res.render("signup");
-});
+    res.redirect("/login");
+  }
+  else{
+    next();
+  }
+}
 
 function restrict(req, res, next){
   if(req.session.role == "owner"){
@@ -66,6 +57,15 @@ function restrict(req, res, next){
     res.render("failure", {message: "This page is available to owners only"});
   }
 }
+
+// Routes
+app.get("/", auth, router.index.view); 
+
+app.get("/login", router.index.login);
+
+app.get("/signup", function(req, res){
+  res.render("signup");
+});
 
 app.get("/sesserror", function(req, res){
 
@@ -87,21 +87,21 @@ app.get("/failure", function(req, res){
   res.render("failure");
 });
 
-app.get("/categories", restrict,  router.category.view);
+app.get("/categories", auth, restrict,  router.category.view);
 
-app.get("/products", restrict, router.product.view);
+app.get("/products", auth, restrict, router.product.view);
 
-app.get("/deletecat", restrict, router.category.delete);
+app.get("/deletecat", auth, restrict, router.category.delete);
 
-app.get("/productorder", router.product.viewcart);
+app.get("/productorder", auth, router.product.viewcart);
 
-app.get("/buycart", router.product.buycart);
+app.get("/buycart", auth, router.product.buycart);
 
-app.get("/deleteproduct", restrict, router.product.delete);
+app.get("/deleteproduct", auth, restrict, router.product.delete);
 
-app.get("/browsecategory", router.product.browsecategory);
+app.get("/browsecategory", auth, router.product.browsecategory);
 
-app.get("/browseproducts", router.product.browse);
+app.get("/browseproducts", auth, router.product.browse);
 
 app.post("/validatelogin", function(req, res){
 
