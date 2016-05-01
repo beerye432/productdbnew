@@ -59,7 +59,11 @@
 
 			var product = window.location.href.split("?")[1].split("&")[1].split("=")[1];
 
-			if(term == all){
+			console.log(product);
+
+			console.log(category);
+
+			if(category == all){
 				window.location.href = "/browseproducts?cat=&product="+product;
 			}
 			else{
