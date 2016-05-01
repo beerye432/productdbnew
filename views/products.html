@@ -90,17 +90,15 @@
 
 	<script>
 
-		var cat = window.location.href.split("?")[1].split("&")[0].split("=")[1];
+		$(function() {
+		    var cat = window.location.href.split("?")[1].split("&")[0].split("=")[1];
 
-		$("#cat").val(cat);
+			$("#cat").val(cat);
 
-		$.get("/getname", function(response){
-
-			//console.log(response);
-			
-			$("#name").append("<h1>"+response.name+"</h1>");
-			$("#name").append("<a href = '/buycart'>Buy Cart</a>");
-
+			$.get("/getname", function(response){
+				$("#name").append("<h1>"+response.name+"</h1>");
+				$("#name").append("<a href = '/buycart'>Buy Cart</a>");
+			});
 		});
 
 		function reset(){
