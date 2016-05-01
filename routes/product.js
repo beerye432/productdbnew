@@ -6,8 +6,6 @@ exports.view = function(req, res){
 
 	var products = [];
 
-	console.log(req.query);
-
 	var search = req.query.product;
 
 	var category = req.query.cat;
@@ -48,6 +46,16 @@ exports.view = function(req, res){
 			});
 		});
 	});
+}
+
+exports.search = function(req, res){
+
+	var category = req.body.category;
+
+	var product = req.body.search;
+
+	console.log(category);
+	console.log(product);
 }
 
 exports.viewcart = function(req, res){
@@ -238,7 +246,6 @@ exports.delete = function(req, res){
 
 		query.on('row', function(row){
 			category.push(row);
-			console.log(category);
 		});
 
 		query.on('error', function(error){
