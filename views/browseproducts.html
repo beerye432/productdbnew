@@ -14,7 +14,7 @@
 			<button onclick = "search('all')"> All Products </button>
 
 			{{#each categories}}
-				<button onclick = "search('{{name}}')"> All Products </button>
+				<button onclick = "search('{{name}}')">{{name}}</button>
 			{{/each}}
 
 		</div>
@@ -63,7 +63,7 @@
 
 			console.log(category);
 
-			if(category == all){
+			if(category == 'all'){
 				window.location.href = "/browseproducts?cat=&product="+product;
 			}
 			else{
