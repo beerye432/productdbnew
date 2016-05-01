@@ -63,6 +63,8 @@
 					<input id = "cat" type = "hidden" name = "category">
 				    <input type="submit" value="Statistics">
 				</form>
+
+				<button onclick = "reset()">Reset</button>
 			</div>
 
 			<div>
@@ -100,6 +102,11 @@
 			$("#name").append("<a href = '/buycart'>Buy Cart</a>");
 
 		});
+
+		function reset(){
+
+			window.location.href = "/products?cat=&product=";
+		}
 
 		var dialog = $( "#updateform" ).dialog({
 	      autoOpen: false,
