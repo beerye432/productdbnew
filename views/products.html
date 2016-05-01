@@ -8,6 +8,10 @@
 
 	<div>
 
+		<div id = "message">
+
+		</div>
+
 		<div id = "name">
 
 		</div>
@@ -100,6 +104,13 @@
 			$.get("/getname", function(response){
 				$("#name").append("<h1>"+response.name+"</h1>");
 				$("#name").append("<a href = '/buycart'>Buy Cart</a>");
+			});
+
+			$.get("/sesserror", function(response){
+
+				if(response.message != ""){
+					$("#message").append("<h2>"+response.message+"</h2>");
+				}
 			});
 		});
 

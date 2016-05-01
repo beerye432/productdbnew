@@ -254,13 +254,20 @@ exports.add = function(req, res){
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 		client.query("INSERT INTO product VALUES ('"+name+"','"+sku+"','"+category+"',"+price+");", function(err, results){
 
-			if(err) console.log(err);
+			if(err){
+
+				req.session.error = "Failure to insert new product";
+				
+				res.redirect("/products?cat="+req.session.category+"&product="+req.session.product);
+			}
 
 			else{
 
 				client.query("UPDATE category SET pnum = pnum + 1 WHERE name = '"+category+"'");
 
 				done();
+
+				req.session.error = "Product inserted successfully";
 
 				res.redirect("/products?cat="+req.session.category+"&product="+req.session.product);
 			}

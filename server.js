@@ -42,7 +42,7 @@ function auth(req, res, next){
 
   if(req.session.user == null){
 
-    res.redirect("/login");
+    res.redirect("/login", {message: "No user logged in! Please log in"});
   }
   else{
     next();
