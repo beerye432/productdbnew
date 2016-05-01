@@ -256,8 +256,8 @@ exports.add = function(req, res){
 
 			if(err){
 
-				req.session.error = "Failure to insert new product";
-				
+				req.session.err = "Failure to insert new product";
+
 				res.redirect("/products?cat="+req.session.category+"&product="+req.session.product);
 			}
 
@@ -267,7 +267,7 @@ exports.add = function(req, res){
 
 				done();
 
-				req.session.error = "Product inserted successfully";
+				req.session.err = "Product inserted successfully";
 
 				res.redirect("/products?cat="+req.session.category+"&product="+req.session.product);
 			}
