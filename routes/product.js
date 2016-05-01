@@ -193,7 +193,7 @@ exports.add = function(req, res){
 
 				done();
 
-				res.redirect("products");
+				res.redirect("/products?cat=&product=");
 			}
 		});
 	});	
