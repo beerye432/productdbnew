@@ -71,9 +71,10 @@
 
 		$(function() {
 		    
-		    $(".pnum").each(function(i, num){
+		    $(".categories").each(function(i, num){
 
-		    	console.log($(this).text().split(" ")[0] > 1);
+		    	console.log($(this).find(".pnum").text().split(" ")[0]);
+		    	
 		    });
 		});
 
