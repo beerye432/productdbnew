@@ -280,14 +280,17 @@ exports.update = function(req, res){
 	var name = req.body.name;
 	var price = parseFloat(req.body.price);
 	var nameO = req.body.nameO;
+	var sku = req.body.sku;
+	var category = req.body.category;
 
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
-		var query = client.query("UPDATE product SET name = '"+name+"', price = "+price+" WHERE name = '"+nameO+"';");
+		var query = client.query("UPDATE product SET name = '"+name+"', sku = '"+sku+"', category = '"+category+"', price = "+price+" WHERE name = '"+nameO+"';");
 
 		query.on('error', function(error){
 			done();
-			return res.render("failure", {message: error});
+			req.session.err = "Failure to update product";
+			res.redirect("/products?cat="+req.session.category+"&product="+req.session.product);
 		});
 
 		query.on('end', function(){

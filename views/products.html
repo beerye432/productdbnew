@@ -16,6 +16,13 @@
 
 		</div>
 
+		<div id = "links">
+			<a href = '/'>Home</a>
+			<a href = '/categories'>Categories</a>
+			<a href = '/products?cat=&product='>Products</a>
+			<a href = "/browseproducts?cat=&product=">Browse Products</a>
+		</div>
+
 		<h1> Add a new product: </h1>
 		<form action = "/addproduct" id = "product" method = "post">
 			<label for = "name">Product Name:</label>
@@ -25,7 +32,7 @@
 			<label for = "Category">Category:</label>
 			<select name = "category" id = "category" required>
 				{{#each categories}}
-				<option>{{name}}</option>
+					<option>{{name}}</option>
 				{{/each}}
 			</select>
 			<label for = "Price">Price:</label>
@@ -45,6 +52,12 @@
 					<input id = "nameinput" type = "text" name = "name" required>
 					<label for = "price"> Price: </label>
 					<input id = "priceinput" type = "text" name = "price" required>
+					<input id = "sku" type = "text" name = "sku">
+					<select name = "category" id = "category">
+						{{#each categories}}
+							<option>{{name}}</option>
+						{{/each}}
+					</select>
 					<input id = "nameO" type = "hidden" name = "nameO">
 					<input type = "submit" value = "Submit">
 
@@ -79,7 +92,8 @@
 					<div id = "{{name}}">
 						<h1>{{name}}</h1>
 						<h2>${{price}}</h2>
-						<a id="myLink" href="#" onclick="update('{{name}}', {{price}});">Update</a>
+						<h3>{{sku}}</h3>
+						<a id="myLink" href="#" onclick="update('{{name}}', {{price}}), '{{sku}}';">Update</a>
 						<a href = "/deleteproduct?name={{name}}">Delete</a>
 						<a href = "/productorder?name={{name}}">Add to Cart</a>
 					</div>
@@ -138,7 +152,7 @@
 	      modal: true
 	    });
 
-		function update(name, price){
+		function update(name, price, sku){
 
 			$("#updateform").css("display", "block");
 
@@ -147,6 +161,8 @@
 			$("#priceinput").val(price);
 
 			$("#nameO").val(name);
+
+			$("#sku").val(sku);
 
 			dialog.dialog("open");
 
