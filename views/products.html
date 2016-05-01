@@ -76,7 +76,7 @@
 			</div>
 
 		</div>
-		
+
 	</div>
 
 	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
@@ -92,7 +92,7 @@
 
 			console.log(cat);
 
-			//$.get("/products?cat="+cat+"&product="+searchTerm);
+			$.get("/products?cat="+cat+"&product="+searchTerm);
 		}
 
 		$.get("/getname", function(response){
