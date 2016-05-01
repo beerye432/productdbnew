@@ -90,7 +90,7 @@
 
 			var cat = window.location.href.split("?")[1].split("&")[0].split("=")[1];
 
-			console.log(cat);
+			console.log(searchTerm);
 
 			$.get("/products?cat="+cat+"&product="+searchTerm);
 		}
