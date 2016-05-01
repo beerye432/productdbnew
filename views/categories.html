@@ -75,7 +75,7 @@
 
 		    	var name = $(this).find(".name").text();
 
-		    	if($(this).find(".pnum").text().split(" ")[0] != 0){
+		    	if($(this).find(".pnum").text().split(" ")[0] == 0){
 		    		$(this).append("<a href = /deletecat?name="+name);
 		    	}
 		    	
