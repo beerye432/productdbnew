@@ -11,10 +11,10 @@
 
 			<h1> Choose a category </h1>
 
-			<a href = "#" onclick='search("all")'> All Products</a>
+			<button onclick = "search('all')"> All Products </button>
 
 			{{#each categories}}
-				<a href = "#" onclick = 'search({{name}})'>{{name}}</a> 
+				<button onclick = "search({{name}})"> All Products </button>
 			{{/each}}
 
 		</div>
