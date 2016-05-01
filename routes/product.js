@@ -42,6 +42,8 @@ exports.view = function(req, res){
 			});
 
 			query.on('end', function(){
+
+				console.log(products);
 				done();
 				res.render("products", {products: products, categories: categories});
 			});
