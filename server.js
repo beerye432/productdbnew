@@ -69,7 +69,7 @@ app.get("/signup", function(req, res){
 
 app.get("/sesserror", function(req, res){
 
-  if(req.session.err = null)
+  if(req.session.err == null)
     res.json({message: ""});
   else
     res.json({message: req.session.err});
