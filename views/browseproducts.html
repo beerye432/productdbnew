@@ -14,7 +14,7 @@
 			<button onclick = "search('all')"> All Products </button>
 
 			{{#each categories}}
-				<button onclick = "search('{{name}}')">{{name}}</button>
+				<button onclick = "search('{{name}}')">{{name}}</but	on>
 			{{/each}}
 
 		</div>
@@ -24,10 +24,15 @@
 				<label for = "search">Looking for a specific product?</label>
 				<input type = "text" name = "search">
 				<input id = "cat" type = "hidden" name = "category">
-			    <input type="submit" value="Statistics">
+			    <input type="submit" value="Search">
 			</form>
 
 			<button onclick = "reset()">Reset</button>
+
+		</div>
+
+		<div id = "results">
+
 		</div>
 
 		<div>
@@ -47,6 +52,14 @@
 		$(function() {
 		    var cat = window.location.href.split("?")[1].split("&")[0].split("=")[1];
 
+		    var product = window.location.href.split("?")[1].split("&")[1].split("=")[1];
+
+		    if(product != ''){
+
+		    	$("#results").append("<h3> Showing results for '"+product+"'");
+
+		    }
+
 			$("#cat").val(cat);
 
 			$.get("/getname", function(response){
@@ -58,10 +71,6 @@
 		function search(category){
 
 			var product = window.location.href.split("?")[1].split("&")[1].split("=")[1];
-
-			console.log(product);
-
-			console.log(category);
 
 			if(category == 'all'){
 				window.location.href = "/browseproducts?cat=&product="+product;

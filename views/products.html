@@ -50,8 +50,10 @@
 
 			<div>
 
+				<button onclick = "search('all')"> All Products </button>
+
 				{{#each categories}}
-					<a href = "/products?cat={{name}}&product=">{{name}}</a>
+					<button onclick = "search('{{name}}')">{{name}}</but	on>
 				{{/each}}
 			</div>
 
@@ -100,6 +102,18 @@
 				$("#name").append("<a href = '/buycart'>Buy Cart</a>");
 			});
 		});
+
+		function search(category){
+
+			var product = window.location.href.split("?")[1].split("&")[1].split("=")[1];
+
+			if(category == 'all'){
+				window.location.href = "/products?cat=&product="+product;
+			}
+			else{
+				window.location.href = "/products?cat="+category+"&product="+product;
+			}
+		}
 
 		function reset(){
 
