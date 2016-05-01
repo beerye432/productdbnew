@@ -57,7 +57,6 @@
 			<p>{{description}}</p>
 			<p class = "pnum">{{pnum}} items in {{name}}</p>
 			<a id="myLink" href="#" onclick="update('{{name}}', '{{description}}');">Update</a>
-			<a href = "/deletecat?name={{name}}"> Delete </a>
 		</div>
 		{{/each}}
 
@@ -74,6 +73,8 @@
 		    $(".categories").each(function(i, num){
 
 		    	var name = $(this).find(".name").text();
+
+		    	console.log($(this).find(".pnum").text().split(" ")[0]);
 
 		    	if($(this).find(".pnum").text().split(" ")[0] == 0){
 		    		$(this).append("<a href = /deletecat?name="+name);
