@@ -49,6 +49,17 @@ function auth(req, res, next){
   }
 }
 
+function auth2(req, res, next){
+
+  if(req.session.user == null){
+
+    res.render("login");
+  }
+  else{
+    next();
+  }
+}
+
 function restrict(req, res, next){
   if(req.session.role == "owner"){
     next();
@@ -59,7 +70,7 @@ function restrict(req, res, next){
 }
 
 // Routes
-app.get("/", auth, router.index.view); 
+app.get("/", auth2, router.index.view); 
 
 app.get("/login", router.index.login);
 

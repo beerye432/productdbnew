@@ -178,7 +178,7 @@ exports.buycart = function(req, res){
 
 		query.on('end', function(){
 			done();
-
+			
 			for(var i = 0; i < cart.length; i++){
 				cart[i].total = cart[i].price * cart[i].quantity;
 				total += cart[i].price * cart[i].quantity;
@@ -195,6 +195,7 @@ exports.addtocart = function(req, res){
 	var pname = req.body.name;
 	var name = req.session.user;
 	var price = parseFloat(req.body.price);
+	var sku = req.body.sku;
 
 	var cart = [];
 
@@ -215,7 +216,7 @@ exports.addtocart = function(req, res){
 			//first time item is added to cart
 			if(cart.length == 0){
 
-				query = client.query("INSERT INTO cart VALUES('"+name+"', '"+pname+"', "+price+", "+quantity+");");
+				query = client.query("INSERT INTO cart VALUES('"+name+"', '"+pname+"', "+price+", "+quantity+", '"+sku+"');");
 
 				query.on('error', function(err){
 					res.render("failure", {message: err + "here"});
@@ -252,6 +253,7 @@ exports.add = function(req, res){
 	var price = parseFloat(req.body.price);
 
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
+
 		client.query("INSERT INTO product VALUES ('"+name+"','"+sku+"','"+category+"',"+price+");", function(err, results){
 
 			if(err){
@@ -422,7 +424,7 @@ exports.checkout = function(req, res){
 			res.render("confirmation", {cart: cart, total: total.toFixed(2)});
 
 			//insert into cartdata the data from the purchased cart and a timestamp
-			query = client.query("INSERT INTO cartdata SELECT name, pname, price, quantity, CURRENT_TIMESTAMP FROM cart WHERE name = '"+req.session.user+"';");
+			query = client.query("INSERT INTO cartdata SELECT name, pname, price, quantity, CURRENT_TIMESTAMP, sku FROM cart WHERE name = '"+req.session.user+"';");
 
 			query.on('error', function(error){
 				done();
@@ -439,6 +441,35 @@ exports.checkout = function(req, res){
 
 				query.on('end', function(){
 					done();
+	pg.connect(process.env.DATABASE_URL, function(err, client, done){
+
+		var query = client.query("SELECT * FROM category;");
+
+		query.on('row', function(row){
+			categories.push(row);
+		});
+
+		query.on("error", function(err){
+			done();
+			return res.render("failure", {message: err});
+		});
+
+		query.on('end', function(){
+
+			query = client.query("SELECT * FROM product WHERE name LIKE '%"+search+"%' AND category LIKE '%"+category+"%';");
+
+			query.on('row', function(row){
+				products.push(row);
+			});
+
+			query.on("error", function(err){
+				done();
+				return res.render("failure", {message: err});
+			});
+
+			query.on('end', function(){
+				done();
+				res.render("products", {products: products, categ
 				});
 			});
 		});

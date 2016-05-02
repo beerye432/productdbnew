@@ -48,7 +48,9 @@ exports.update = function(req, res){
 
 		query.on('error', function(error){
 			done();
-			return res.render("failure", {message: error});
+			req.session.err = "Failure to update category";
+
+			res.redirect("categories");
 		});
 
 		query.on('end', function(){
