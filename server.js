@@ -82,14 +82,13 @@ app.get("/sesserror", function(req, res){
 
   var err = req.session.err;
 
-  if(req.session.err == null){
-    req.session.err = "";
+  if(req.session.err == null)
     res.json({message: ""});
-  }
-  else{
-    req.session.err = "";
-    res.json({message: err});
-  }
+  else
+    res.json({message: req.session.err});
+
+  req.session.err = "";
+
 });
 
 app.get("/getname", function(req, res){
