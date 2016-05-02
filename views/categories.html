@@ -74,30 +74,24 @@
 
 		    	var name = $(this).find(".name").text();
 
-		    	console.log($(this).find(".pnum").text().split(" ")[0]);
-
 		    	if($(this).find(".pnum").text().split(" ")[0] == 0){
 		    		$(this).append("<a href = '/deletecat?name="+name+"'> Delete </a>");
 		    	}
 		    	
 		    });
-		});
 
-		$.get("/getname", function(response){
-
-			//console.log(response);
-			
-			$("#name").append("<h1>"+response.name+"</h1>");
-			$("#name").append("<a href = '/buycart'>Buy Cart</a>");
+		    $.get("/getname", function(response){
+				$("#name").append("<h1>"+response.name+"</h1>");
+				$("#name").append("<a href = '/buycart'>Buy Cart</a>");
 
 
-		});
+			});
 
-		$.get('/sesserror', function(response){
+			$.get('/sesserror', function(response){
 
-			if(response.retStatus === 'success'){
-				$("#error").append("<h1>"+response.message+"</h1>");
-			}
+				if(response.message != "")
+					$("#error").append("<h1>"+response.message+"</h1>");
+			});
 		});
 
 		var dialog = $( "#updateform" ).dialog({
