@@ -254,27 +254,40 @@ exports.add = function(req, res){
 
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
-		client.query("INSERT INTO product VALUES ('"+name+"','"+sku+"','"+category+"',"+price+");", function(err, results){
+		var query = client.query("INSERT INTO product VALUES ('"+name+"','"+sku+"','"+category+"',"+price+");");
 
-			if(err){
+		query.on("error", function(error){
+
+			done();
+
+			req.session.err = "Failure to insert new product";
+
+			return res.redirect("/products?cat="+req.session.category+"&product="+req.session.product);
+		});
+
+		query.on("end", function(){
+
+			query = client.query("UPDATE category SET pnum = pnum + 1 WHERE name = '"+category+"'");
+
+			query.on("error", function(error){
+
+				done();
 
 				req.session.err = "Failure to insert new product";
 
-				res.redirect("/products?cat="+req.session.category+"&product="+req.session.product);
-			}
+				return res.redirect("/products?cat="+req.session.category+"&product="+req.session.product);
+			});
 
-			else{
-
-				client.query("UPDATE category SET pnum = pnum + 1 WHERE name = '"+category+"'");
+			query.on("end", function(){
 
 				done();
 
 				req.session.err = "Product inserted successfully";
 
 				res.redirect("/products?cat="+req.session.category+"&product="+req.session.product);
-			}
+			})
 		});
-	});	
+	});
 }
 
 exports.update = function(req, res){

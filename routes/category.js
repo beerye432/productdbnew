@@ -26,11 +26,27 @@ exports.add = function(req, res){
 	var description = req.body.description;
 
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
-		client.query("INSERT INTO category VALUES ('"+name+"','"+description+"', 0);");
-		done();
 
-		if(err) req.session.err = "Failure to insert new product";
-		else res.redirect("categories");
+
+		var query = client.query("INSERT INTO category VALUES ('"+name+"','"+description+"', 0);");
+
+		query.on("error", function(error){
+
+			done();
+
+			req.session.err = "Failure to insert new category";
+
+			res.redirect("categories");
+		});
+
+		query.on("end", function(){
+
+			done();
+
+			req.session.err = "Category added successfully";
+
+			res.redirect("categories");
+		});
 	});
 }
 
@@ -48,6 +64,7 @@ exports.update = function(req, res){
 
 		query.on('error', function(error){
 			done();
+
 			req.session.err = "Failure to update category";
 
 			res.redirect("categories");
@@ -55,6 +72,9 @@ exports.update = function(req, res){
 
 		query.on('end', function(){
 			done();
+
+			req.session.err = "Category updated successfully";
+
 			res.redirect("categories");
 		});
 	});

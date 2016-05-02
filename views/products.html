@@ -26,17 +26,17 @@
 		<h1> Add a new product: </h1>
 		<form action = "/addproduct" id = "product" method = "post">
 			<label for = "name">Product Name:</label>
-			<input type = "text" name = "name" placeholder="Product Name" required>
+			<input type = "text" name = "name" placeholder="Product Name">
 			<label for = "sku">SKU:</label>
-			<input type = "text" name = "sku" placeholder="SKU"required >
+			<input type = "text" name = "sku" placeholder="SKU">
 			<label for = "Category">Category:</label>
-			<select name = "category" id = "category" required>
+			<select name = "category" id = "category">
 				{{#each categories}}
 					<option>{{name}}</option>
 				{{/each}}
 			</select>
 			<label for = "Price">Price:</label>
-			<input type = "text" name = "price" placeholder="Price" required>
+			<input type = "text" name = "price" placeholder="Price">
 			<input type = "submit" placeholder="Submit" value = "Submit">
 		</form>
 
@@ -49,9 +49,9 @@
 				<form action = "/updateproduct" id = "productupdate" method = "post">
 
 					<label for = "name"> Name: </label>
-					<input id = "nameinput" type = "text" name = "name" required>
+					<input id = "nameinput" type = "text" name = "name">
 					<label for = "price"> Price: </label>
-					<input id = "priceinput" type = "text" name = "price" required>
+					<input id = "priceinput" type = "text" name = "price">
 					<label for = "sku">SKU: </label>
 					<input id = "sku" type = "text" name = "sku">
 					<select name = "category" id = "category">
@@ -68,10 +68,12 @@
 
 			<div>
 
+				<h1> Search for a specific product: </h1>
+
 				<button onclick = "search('all')"> All Products </button>
 
 				{{#each categories}}
-					<button onclick = "search('{{name}}')">{{name}}</but	on>
+					<button onclick = "search('{{name}}')">{{name}}</button>
 				{{/each}}
 			</div>
 
@@ -87,13 +89,17 @@
 				<button onclick = "reset()">Reset</button>
 			</div>
 
+			<div id = "results">
+
+			</div>
+
 			<div>
 				{{#each products}}
 
 					<div id = "{{name}}">
 						<h1>{{name}}</h1>
+						<h3>SKU: {{sku}}</h3>
 						<h2>${{price}}</h2>
-						<h3>{{sku}}</h3>
 						<a id="myLink" href="#" onclick="update('{{name}}', {{price}}, '{{sku}}', '{{category}}');">Update</a>
 						<a href = "/deleteproduct?name={{name}}">Delete</a>
 						<a href = "/productorder?name={{name}}">Add to Cart</a>
@@ -113,6 +119,14 @@
 
 		$(function() {
 		    var cat = window.location.href.split("?")[1].split("&")[0].split("=")[1];
+
+		    var product = window.location.href.split("?")[1].split("&")[1].split("=")[1];
+
+		    if(product != ''){
+
+		    	$("#results").append("<h3> Showing results for '"+product+"'");
+
+		    }
 
 			$("#cat").val(cat);
 

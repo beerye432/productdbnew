@@ -29,9 +29,9 @@
 			<form action = "/updatecat" id = "categoryupdate" method = "post">
 
 				<label for = "name"> Name: </label>
-				<input id = "nameinput" type = "text" name = "name" required>
+				<input id = "nameinput" type = "text" name = "name">
 				<label for = "desc"> Description: </label>
-				<input id = "descinput" type = "textarea" name = "desc" required>
+				<input id = "descinput" type = "textarea" name = "desc">
 				<input id = "nameO" type = "hidden" name = "nameO">
 				<input type = "submit" value = "Submit">
 
@@ -42,9 +42,9 @@
 		<h1> Add a new category: </h1>
 		<form action = "/addcategory" id = "category" method = "post">
 			<label for = "name">Category Name:</label>
-			<input type = "text" name = "name" placeholder="Category Name" required>
+			<input type = "text" name = "name" placeholder="Category Name">
 			<label for = "Description">Description:</label>
-			<input type = "text" name = "description" placeholder="Description" required>
+			<input type = "text" name = "description" placeholder="Description">
 			<input type = "submit" placeholder="Submit" value = "Submit">
 		</form>
 	</div>
@@ -55,7 +55,7 @@
 		<div class = "categories">
 			<h2 class = "name">{{name}}</h2>
 			<p>{{description}}</p>
-			<p class = "pnum">{{pnum}} items in {{name}}</p>
+			<p class = "pnum">{{pnum}} item(s) in {{name}}</p>
 			<a id="myLink" href="#" onclick="update('{{name}}', '{{description}}');">Update</a>
 		</div>
 		{{/each}}

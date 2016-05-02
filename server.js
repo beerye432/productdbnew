@@ -80,13 +80,16 @@ app.get("/signup", function(req, res){
 
 app.get("/sesserror", function(req, res){
 
-  if(req.session.err == null)
+  var err = req.session.err;
+
+  if(req.session.err == null){
+    req.session.err = "";
     res.json({message: ""});
-  else
-    res.json({message: req.session.err});
-
-  req.session.err = "";
-
+  }
+  else{
+    req.session.err = "";
+    res.json({message: err});
+  }
 });
 
 app.get("/getname", function(req, res){
