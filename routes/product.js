@@ -14,6 +14,8 @@ exports.view = function(req, res){
 
 	req.session.product = search;
 
+	req.session.err = "";
+
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
 		var query = client.query("SELECT * FROM category;");

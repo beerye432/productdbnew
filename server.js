@@ -84,10 +84,9 @@ app.get("/sesserror", function(req, res){
 
   if(req.session.err == null)
     res.json({message: ""});
-  else
+  else{
     res.json({message: req.session.err});
-
-  req.session.err = "";
+  }
 
 });
 
