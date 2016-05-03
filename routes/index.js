@@ -17,6 +17,8 @@ exports.validate = function(req, res){
 	var age = req.body.age;
 	var state = req.body.state;
 
+	console.log( name + " " + role + " " + age + " " + state);
+
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
 		var query = client.query("INSERT INTO users VALUES ('"+name+"','"+role+"',"+age+",'"+state+"');");
