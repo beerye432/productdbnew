@@ -5,6 +5,10 @@
  	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
  	<style>
 
+ 		#category{
+ 			width: 100%;
+ 		}
+
  		td{
 
  			width: 40px;
@@ -38,7 +42,7 @@
 			<label for = "sku">SKU:</label>
 			<input type = "text" name = "sku" placeholder="SKU">
 			<label for = "Category">Category:</label>
-			<select name = "category" id = "category">
+			<select name = "category" id = "category2">
 				{{#each categories}}
 					<option>{{name}}</option>
 				{{/each}}
