@@ -332,7 +332,7 @@ exports.delete = function(req, res){
 
 		query.on('error', function(error){
 			done();
-			return res.render("failure", {message: 'Error deleting product!'});
+			return res.render("failure", {message: error});
 		});
 
 		query.on('end', function(results){
@@ -342,7 +342,7 @@ exports.delete = function(req, res){
 
 			query.on('error', function(error){
 				done();
-				return res.render("failure", {message: 'Error deleting product!'});
+				return res.render("failure", {message: error});
 			});
 
 			query.on('end', function(results){
