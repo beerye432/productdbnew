@@ -16,7 +16,7 @@
 
 		{{#each current}}
 		<h1> {{name}} </h1>
-		<p> {{price}} </p>
+		<p> ${{price}} </p>
 		<form action = "/addtocart" id = "product" method = "post">
 			<label for = "quantity">Quantity to Add to Cart: </label>
 			<input type = "number" name = "quantity">
@@ -31,13 +31,26 @@
 
 	<div id = "cart">
 
-	<h1> Your Cart: </h1>
+		<h1> Your Cart: </h1>
 
-		{{#each cart}}
-			<h1> {{pname}} </h1>
-			<p> ${{price}} </p>
-			<p> Quantity: {{quantity}}</p>
-		{{/each}}
+		<table>
+
+			<tr>
+				<th>Product Name</th>
+				<th>Price</th>
+				<th>Quantity</th>
+			</tr>
+
+			<tr>
+
+			{{#each cart}}
+				<td> {{pname}} </td>
+				<td> ${{price}} </td>
+				<td> {{quantity}}</td>
+			{{/each}}
+
+			</tr>
+		</table>
 
 	</div>
 
