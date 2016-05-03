@@ -94,18 +94,37 @@
 			</div>
 
 			<div>
-				{{#each products}}
+				<table>
 
-					<div id = "{{name}}">
-						<h1>{{name}}</h1>
-						<h3>SKU: {{sku}}</h3>
-						<h2>${{price}}</h2>
-						<a id="myLink" href="#" onclick="update('{{name}}', {{price}}, '{{sku}}', '{{category}}');">Update</a>
-						<a href = "/deleteproduct?name={{name}}">Delete</a>
-						<a href = "/productorder?name={{name}}">Add to Cart</a>
-					</div>
+					<tr>
+						<th>SKU</th>
+						<th>Product Name</th>
+						<th>Price</th>
+						<th>Category</th>
+					</tr>
+					{{#each products}}
 
-				{{/each}}
+						<tr>
+							<td>{{sku}}</td>
+							<td>{{name}}</td>
+							<td>${{price}]</td>
+							<td>{{category}}</td>
+							<td><a>Update</a></td>
+							<td><a>Delete</a></td>
+
+						</tr>
+
+						<!-- <div id = "{{name}}">
+							<h1>{{name}}</h1>
+							<h3>SKU: {{sku}}</h3>
+							<h2>${{price}}</h2>
+							<a id="myLink" href="#" onclick="update('{{name}}', {{price}}, '{{sku}}', '{{category}}');">Update</a>
+							<a href = "/deleteproduct?name={{name}}">Delete</a>
+							<a href = "/productorder?name={{name}}">Add to Cart</a>
+						</div> -->
+
+					{{/each}}
+				</table>
 			</div>
 
 		</div>
