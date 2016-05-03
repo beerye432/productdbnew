@@ -109,8 +109,9 @@
 							<td>{{name}}</td>
 							<td>${{price}}</td>
 							<td>{{category}}</td>
-							<td><a>Update</a></td>
-							<td><a>Delete</a></td>
+							<td><a id="myLink" href="#" onclick="update('{{name}}', {{price}}, '{{sku}}', '{{category}}');">Update</a></td>
+							<td><a href = "/deleteproduct?name={{name}}">Delete</a></td>
+							<td><a href = "/productorder?name={{name}}">Add to Cart</a></td>
 
 						</tr>
 
