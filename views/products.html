@@ -143,13 +143,11 @@ Strat
 								<td><input id = "nameinput" type = "text" name = "name" value = "{{name}}"></td>
 								<td><input id = "priceinput" type = "text" name = "price" value = "{{price}}"></td>
 								<td><select name = "category" id = "category">
-								<select name = "category" id = "category">
 									{{#each categories}}
 										<option>{{name}}</option>
 									{{/each}}
-								</select>
 								</select></td>
-								<input type = "hidden" id = "nameO" name = "name0" value = "{{name}}">
+								<td><input type = "hidden" id = "nameO" name = "name0" value = "{{name}}"></td>
 								<td><input type = "submit" value = "Update">
 								<!-- <td><a id="myLink" href="#" onclick="update('{{name}}', {{price}}, '{{sku}}', '{{category}}');">Update</a></td> -->
 								<td><a href = "/deleteproduct?name={{name}}">Delete</a></td>
