@@ -252,6 +252,11 @@ exports.add = function(req, res){
 	var category = req.body.category;
 	var price = parseFloat(req.body.price);
 
+	if(name == "" || sku = "" || category == "" || price === undefined || price === null){
+		req.session.err = "Failure to insert new product";
+		return res.redirect("/products?cat="+req.session.category+"&product="+req.session.product);
+	}
+
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
 		var query = client.query("INSERT INTO product VALUES ('"+name+"','"+sku+"','"+category+"',"+price+");");
@@ -332,7 +337,8 @@ exports.delete = function(req, res){
 
 		query.on('error', function(error){
 			done();
-			return res.render("failure", {message: error});
+			req.session.err = "Failure removing product";
+			return res.redirect("/products?cat="+req.session.category+"&product="+req.session.product);
 		});
 
 		query.on('end', function(results){
@@ -342,7 +348,8 @@ exports.delete = function(req, res){
 
 			query.on('error', function(error){
 				done();
-				return res.render("failure", {message: error});
+				req.session.err = "Failure removing product";
+				return res.redirect("/products?cat="+req.session.category+"&product="+req.session.product);
 			});
 
 			query.on('end', function(results){
@@ -352,12 +359,14 @@ exports.delete = function(req, res){
 
 				query.on('error', function(error){
 					done();
-					res.render("failure", {message: error});
+					req.session.err = "Failure removing product";
+					return res.redirect("/products?cat="+req.session.category+"&product="+req.session.product);
 				});
 
 				query.on('end', function(){
 
 					done();
+					req.session.err = "Product removed successfully";
 					res.redirect("/products?cat="+req.session.category+"&product="+req.session.product);
 				});
 			});
