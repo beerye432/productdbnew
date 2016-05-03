@@ -69,10 +69,6 @@ function restrict(req, res, next){
   }
 }
 
-app.use(function(req, res, next) {
-  res.status(404).render('/login');
-});
-
 // Routes
 app.get("/", auth2, router.index.view); 
 
@@ -174,6 +170,10 @@ app.post("/checkout", router.product.checkout);
 app.post("/search", router.product.search);
 
 app.post("/searchcustomer", router.product.searchcustomer);
+
+app.use(function(req, res, next) {
+  res.status(404).render('login');
+});
 
 // Start Server
 http.createServer(app).listen(app.get("port"), function() {
