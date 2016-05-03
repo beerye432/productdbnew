@@ -25,6 +25,11 @@ exports.add = function(req, res){
 	var name = req.body.name;
 	var description = req.body.description;
 
+	if(name == "" || description == ""){
+		req.session.err = "Failure to insert new category";
+		return res.redirect("categories");
+	}
+
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
 
@@ -111,14 +116,18 @@ exports.delete = function(req, res){
 
 				req.session.err = "Can't delete a category with products still inside";
 
-				res.render("categories");
+				res.redirect("categories");
 			}
 			else{
 				query = client.query("DELETE FROM category WHERE name='"+name+"';");
 
 				query.on('error', function(error){
+
 					done();
-					return res.render("failure", {message: "Can't delete a category with products still inside"});
+
+					req.session.err = "Error deleting category";
+
+					res.redirect("categories");
 				});
 
 				query.on('end', function(){
@@ -127,7 +136,7 @@ exports.delete = function(req, res){
 
 					req.session.err = "Category delete successfully";
 
-					res.render("categories");
+					res.redirect("categories");
 				});
 			}
 		});

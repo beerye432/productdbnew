@@ -17,7 +17,9 @@ exports.validate = function(req, res){
 	var age = req.body.age;
 	var state = req.body.state;
 
-	console.log( name + " " + role + " " + age + " " + state);
+	if(name = "" || role = "" || state = ""){
+		return res.render("failure", {message: "Your signup failed"});
+	}
 
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
