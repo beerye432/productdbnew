@@ -123,30 +123,21 @@ Strat
 
 						<tr>
 							<form action = "updateproduct" id = "productupdate" method = "post">
-								<td><input id = "sku" type = "text" name = "sku" value = "{{products.sku}}"></td>
-								<td><input id = "nameinput" type = "text" name = "name" value = "{{products.name}}"></td>
-								<td><input id = "priceinput" type = "text" name = "price" value = "{{products.price}}"></td>
+								<td><input id = "sku" type = "text" name = "sku" value = "{{sku}}"></td>
+								<td><input id = "nameinput" type = "text" name = "name" value = "{{name}}"></td>
+								<td><input id = "priceinput" type = "text" name = "price" value = "{{price}}"></td>
 								<td><select name = "category" id = "category">
 									{{#each categories}}
-										<option>{{categories.name}}</option>
+										<option>{{name}}</option>
 									{{/each}}
 								</select></td>
-								<td><input type = "hidden" id = "nameO" name = "name0" value = "{{products.name}}"></td>
-								<td><input type = "submit" value = "Update">
+								<td><input type = "hidden" id = "nameO" name = "name0" value = "{{name}}"></td>
+								<td><input type = "submit" value = "Update"></td>
 								<!-- <td><a id="myLink" href="#" onclick="update('{{name}}', {{price}}, '{{sku}}', '{{category}}');">Update</a></td> -->
-								<td><a href = "/deleteproduct?name={{products.name}}">Delete</a></td>
-								<td><a href = "/productorder?name={{products.name}}">Add to Cart</a></td>
+								<td><a href = "/deleteproduct?name={{name}}">Delete</a></td>
+								<td><a href = "/productorder?name={{name}}">Add to Cart</a></td>
 							</form>
 						</tr>
-
-						<!-- <div id = "{{name}}">
-							<h1>{{name}}</h1>
-							<h3>SKU: {{sku}}</h3>
-							<h2>${{price}}</h2>
-							<a id="myLink" href="#" onclick="update('{{name}}', {{price}}, '{{sku}}', '{{category}}');">Update</a>
-							<a href = "/deleteproduct?name={{name}}">Delete</a>
-							<a href = "/productorder?name={{name}}">Add to Cart</a>
-						</div> -->
 
 					{{/each}}
 				</table>
