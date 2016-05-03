@@ -69,6 +69,10 @@ function restrict(req, res, next){
   }
 }
 
+app.use(function(req, res, next) {
+  res.status(404).render('/login');
+});
+
 // Routes
 app.get("/", auth2, router.index.view); 
 
