@@ -252,7 +252,7 @@ exports.add = function(req, res){
 	var category = req.body.category;
 	var price = parseFloat(req.body.price);
 
-	if(name == "" || sku = "" || category == "" || price === undefined || price === null){
+	if(name == "" || sku == "" || category == "" || price === undefined || price === null){
 		req.session.err = "Failure to insert new product";
 		return res.redirect("/products?cat="+req.session.category+"&product="+req.session.product);
 	}
