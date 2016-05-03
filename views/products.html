@@ -118,39 +118,24 @@ Strat
 						<th>Price</th>
 						<th>Category</th>
 					</tr>
+
 					{{#each products}}
-
-					<!-- <form action = "/updateproduct" id = "productupdate" method = "post">
-
-					<label for = "name"> Name: </label>
-					<input id = "nameinput" type = "text" name = "name">
-					<label for = "price"> Price: </label>
-					<input id = "priceinput" type = "text" name = "price">
-					<label for = "sku">SKU: </label>
-					<input id = "sku" type = "text" name = "sku">
-					<select name = "category" id = "category">
-						{{#each categories}}
-							<option value = "{{name}}" class = "catselect">{{name}}</option>
-						{{/each}}
-					</select>
-					<input id = "nameO" type = "hidden" name = "nameO">
-					<input type = "submit" value = "Submit">
- -->
 
 						<tr>
 							<form action = "updateproduct" id = "productupdate" method = "post">
-								<td><input id = "sku" type = "text" name = "sku" value = "{{sku}}"></td>
-								<td><input id = "nameinput" type = "text" name = "name" value = "{{name}}"></td>
-								<td><input id = "priceinput" type = "text" name = "price" value = "{{price}}"></td>
+								<td><input id = "sku" type = "text" name = "sku" value = "{{products.sku}}"></td>
+								<td><input id = "nameinput" type = "text" name = "name" value = "{{products.name}}"></td>
+								<td><input id = "priceinput" type = "text" name = "price" value = "{{products.price}}"></td>
 								<td><select name = "category" id = "category">
-										<option>{{name}}</option>
-										<option>Yes</option>
+									{{#each categories}}
+										<option>{{categories.name}}</option>
+									{{/each}}
 								</select></td>
-								<td><input type = "hidden" id = "nameO" name = "name0" value = "{{name}}"></td>
+								<td><input type = "hidden" id = "nameO" name = "name0" value = "{{products.name}}"></td>
 								<td><input type = "submit" value = "Update">
 								<!-- <td><a id="myLink" href="#" onclick="update('{{name}}', {{price}}, '{{sku}}', '{{category}}');">Update</a></td> -->
-								<td><a href = "/deleteproduct?name={{name}}">Delete</a></td>
-								<td><a href = "/productorder?name={{name}}">Add to Cart</a></td>
+								<td><a href = "/deleteproduct?name={{products.name}}">Delete</a></td>
+								<td><a href = "/productorder?name={{products.name}}">Add to Cart</a></td>
 							</form>
 						</tr>
 
