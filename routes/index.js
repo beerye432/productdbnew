@@ -17,14 +17,23 @@ exports.validate = function(req, res){
 	var age = req.body.age;
 	var state = req.body.state;
 
-	//console.log("INSERT INTO users VALUES ('"+name+"','"+role+"',"+age+",'"+state+"');");
-
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
-		client.query("INSERT INTO users VALUES ('"+name+"','"+role+"',"+age+",'"+state+"');");
-		done();
 
-		if(err) res.render('failure', err);
-		else res.redirect('/');
+		var query = client.query("INSERT INTO users VALUES ('"+name+"','"+role+"',"+age+",'"+state+"');");
+
+		query.on('error', function(error){
+
+			done();
+
+			res.render("failure", {message: "Your signup failed"});
+		});
+
+		query.on('end', function(){
+
+			done();
+
+			res.render("failure", {message: "You have successfully signed up"});
+		});
 	})
 }
 

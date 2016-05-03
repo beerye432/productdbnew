@@ -95,15 +95,23 @@ exports.delete = function(req, res){
 		});
 
 		query.on('error', function(error){
+
 			done();
-			return res.render("failure", {message: error});
+
+			req.session.err = "Failure deleting category";
+
+			return res.render("categories");
 		});
 
 		query.on('end', function(){
 
 			if(products.length > 0){
+
 				done();
-				res.render("failure", {message: "You can't delete a category with products still inside"});
+
+				req.session.err = "Can't delete a category with products still inside";
+
+				res.render("categories");
 			}
 			else{
 				query = client.query("DELETE FROM category WHERE name='"+name+"';");
@@ -114,8 +122,12 @@ exports.delete = function(req, res){
 				});
 
 				query.on('end', function(){
+
 					done();
-					res.redirect("categories")
+
+					req.session.err = "Category delete successfully";
+
+					res.render("categories");
 				});
 			}
 		});
