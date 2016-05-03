@@ -3,18 +3,6 @@
 <head>
 	<title>Product Page</title>
  	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
- 	<style>
-
- 		#category{
- 			width: 100%;
- 		}
-
- 		td{
-
- 			width: 70px;
- 		}
-
- 	</style>
 </head>
 <body>
 
@@ -42,7 +30,7 @@
 			<label for = "sku">SKU:</label>
 			<input type = "text" name = "sku" placeholder="SKU">
 			<label for = "Category">Category:</label>
-			<select name = "category" id = "category2">
+			<select name = "category" id = "category">
 				{{#each categories}}
 					<option>{{name}}</option>
 				{{/each}}
@@ -54,13 +42,9 @@
 
 		<div>
 
-			<!-- <div id="updateform" style="display:none" title="">
+			<div id="updateform" style="display:none" title="">
 				
-				<h2> Update Product: </h2>	￼
-Strat
-￼
-499.99
-
+				<h2> Update Product: </h2>
 
 				<form action = "/updateproduct" id = "productupdate" method = "post">
 
@@ -81,7 +65,7 @@ Strat
 				</form>
 
 			</div>
- -->
+
 			<div>
 
 				<h1> Search for a specific product: </h1>
@@ -99,7 +83,7 @@ Strat
 					<label for = "search">Looking for a specific product?</label>
 					<input type = "text" name = "search">
 					<input id = "cat" type = "hidden" name = "category">
-				    <input type="submit" value="Search">
+				    <input type="submit" value="Statistics">
 				</form>
 
 				<button onclick = "reset()">Reset</button>
@@ -110,37 +94,18 @@ Strat
 			</div>
 
 			<div>
-				<table>
+				{{#each products}}
 
-					<tr>
-						<th>SKU</th>
-						<th>Product Name</th>
-						<th>Price</th>
-						<th>Category</th>
-					</tr>
+					<div id = "{{name}}">
+						<h1>{{name}}</h1>
+						<h3>SKU: {{sku}}</h3>
+						<h2>${{price}}</h2>
+						<a id="myLink" href="#" onclick="update('{{name}}', {{price}}, '{{sku}}', '{{category}}');">Update</a>
+						<a href = "/deleteproduct?name={{name}}">Delete</a>
+						<a href = "/productorder?name={{name}}">Add to Cart</a>
+					</div>
 
-					{{#each products}}
-
-						<tr>
-							<form action = "updateproduct" id = "productupdate" method = "post">
-								<td><input id = "sku" type = "text" name = "sku" value = "{{sku}}"></td>
-								<td><input id = "nameinput" type = "text" name = "name" value = "{{name}}"></td>
-								<td><input id = "priceinput" type = "text" name = "price" value = "{{price}}"></td>
-								<td><select name = "category" id = "category" style = "width: 100px">
-									{{#each categories}}
-										<option>Nice</option>
-									{{/each}}
-								</select></td>
-								<td><input type = "hidden" id = "nameO" name = "name0" value = "{{name}}"></td>
-								<td><input type = "submit" value = "Update"></td>
-								<!-- <td><a id="myLink" href="#" onclick="update('{{name}}', {{price}}, '{{sku}}', '{{category}}');">Update</a></td> -->
-								<td><a href = "/deleteproduct?name={{name}}">Delete</a></td>
-								<td><a href = "/productorder?name={{name}}">Add to Cart</a></td>
-							</form>
-						</tr>
-
-					{{/each}}
-				</table>
+				{{/each}}
 			</div>
 
 		</div>
