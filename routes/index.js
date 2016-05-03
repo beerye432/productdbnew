@@ -17,7 +17,7 @@ exports.validate = function(req, res){
 	var age = req.body.age;
 	var state = req.body.state;
 
-	if(name = "" || role = "" || state = ""){
+	if(name == "" || role == "" || state == ""){
 		return res.render("failure", {message: "Your signup failed"});
 	}
 
