@@ -13,19 +13,9 @@
 
 		</div>
 
-		<div id = "categories">
-
-			<h1> Choose a category </h1>
-
-			<button onclick = "search('all')"> All Products </button>
-
-			{{#each categories}}
-				<button onclick = "search('{{name}}')">{{name}}</but	on>
-			{{/each}}
-
-		</div>
-
 		<div>
+			<h1> Search for a Specific Product:</h1>
+
 			<form action="searchcustomer" method="post">
 				<label for = "search">Looking for a specific product?</label>
 				<input type = "text" name = "search">
@@ -33,15 +23,23 @@
 			    <input type="submit" value="Search">
 			</form>
 
-			<button onclick = "reset()">Reset</button>
+			<button onclick = "reset()">Reset Search</button>
+
+			<div id = "results">
+
+			</div>
 
 		</div>
 
-		<div id = "results">
+		<div id = "categories">
+			<button onclick = "search('all')"> All Products </button>
+			{{#each categories}}
+				<button onclick = "search('{{name}}')">{{name}}</but	on>
+			{{/each}}
 
 		</div>
 
-		<div>
+		<div id = "productswrap">
 
 			<table id = "products">
 
