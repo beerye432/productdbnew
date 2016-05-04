@@ -1,6 +1,6 @@
 
 #products{
-  width: 80%;
+  width: 800px;
 }
 
 th{
@@ -18,6 +18,10 @@ td{
 
 #categories{
   display: inline-block;
+}
+
+#categories button{
+  margin-bottom: 5px;
 }
 
 #productswrap{
