@@ -4,6 +4,7 @@
 }
 
 th{
+  width: 140px;
   font-size: 30px;
 }
 
@@ -51,6 +52,6 @@ td{
   margin-bottom: 10px;
 }
 
-#message{
+#message {
   font-color: red;
 }
