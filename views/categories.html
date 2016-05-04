@@ -52,7 +52,7 @@
 
 	<div>
 
-		<h1> Your Cart: </h1>
+		<h1> Current Categories: </h1>
 
 		<table id = "products">
 
@@ -67,7 +67,7 @@
 				<td class = "name">{{name}}</td>
 				<td> {{description}} </td>
 				<td class = "pnum"> {{pnum}} items</td>
-				<td><a id="myLink" href="#" onclick="update('{{name}}', '{{description}}');">Update</a></td>
+				<td class = "update"><a id="myLink" href="#" onclick="update('{{name}}', '{{description}}');">Update</a></td>
 			</tr>
 			{{/each}}
 		</table>
@@ -89,7 +89,7 @@
 		    	console.log($(this).find(".pnum").text().split(" "));
 
 		    	if(parseInt($(this).find(".pnum").text().split(" ")[1]) == 0){
-		    		$(this).append("<td><a href = '/deletecat?name="+name+"'> Delete </a><td>");
+		    		$(this).append("<td class = 'update'><a href = '/deletecat?name="+name+"'> Delete </a><td>");
 		    	}
 		    	
 		    });
