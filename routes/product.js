@@ -228,7 +228,7 @@ exports.addtocart = function(req, res){
 
 				query.on('end', function(){
 					done();
-					res.redirect("/products?cat=&product=");
+					res.redirect("/browseproducts?cat=&product=");
 				});
 			}
 			//adding additional quantity onto existing cart item
@@ -242,7 +242,7 @@ exports.addtocart = function(req, res){
 
 				query.on('end', function(){
 					done();
-					res.redirect("/products?cat=&product=");
+					res.redirect("/browseproducts?cat=&product=");
 				});
 			}
 		});
