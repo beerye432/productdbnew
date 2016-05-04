@@ -2,6 +2,7 @@
 <html>
 <head>
 	<title>Product Page</title>
+	<link rel = "stylesheet" type = "text/css" href = "/stylesheets/bootstrap.css">
  	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 </head>
 <body>
@@ -68,18 +69,8 @@
 			</div>
 
 			<div>
+				<h1> Search for a Specific Product:</h1>
 
-				<h1> Search for a specific product: </h1>
-
-				<button onclick = "search('all')"> All Products </button>
-
-				{{#each categories}}
-					<button onclick = "search('{{name}}')">{{name}}</button>
-				{{/each}}
-			</div>
-
-
-			<div>
 				<form action="search" method="post">
 					<label for = "search">Looking for a specific product?</label>
 					<input type = "text" name = "search">
@@ -88,13 +79,21 @@
 				</form>
 
 				<button onclick = "reset()">Reset</button>
+
+				<div id = "results">
+
+				</div>
+
 			</div>
 
-			<div id = "results">
-
+			<div id = "categories">
+				<button onclick = "search('all')"> All Products </button>
+				{{#each categories}}
+					<button onclick = "search('{{name}}')">{{name}}</button>
+				{{/each}}
 			</div>
 
-			<div>
+			<div id = "productswrap">
 
 				<table id = "products">
 

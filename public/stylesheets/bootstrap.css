@@ -3,10 +3,23 @@
   width: 80%;
 }
 
+th{
+  font-size: 30px;
+}
+
 tr{
-  width: 100px;
+  width: 125px;
 }
 
 td{
   font-size: 20px;
+  text-align: center;
+}
+
+#categories{
+  display: inline-block;
+}
+
+#productswrap{
+  display: inline-block;
 }
