@@ -76,11 +76,25 @@ exports.update = function(req, res){
 		});
 
 		query.on('end', function(){
-			done();
 
-			req.session.err = "Category updated successfully";
+			query = client.query("UPDATE product SET category = '"+name+"' WHERE category = '"+nameO+"';");
 
-			res.redirect("categories");
+			query.on('error', function(error){
+				done();
+
+				req.session.err = "Failure to update category";
+
+				res.redirect("categories");
+			});
+
+			query.on('end', function(){
+
+				done();
+
+				req.session.err = "Category updated successfully";
+
+				res.redirect("categories");
+			});
 		});
 	});
 }
