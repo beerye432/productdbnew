@@ -75,10 +75,10 @@
 					<label for = "search">Looking for a specific product?</label>
 					<input type = "text" name = "search">
 					<input id = "cat" type = "hidden" name = "category">
-				    <input type="submit" value="Statistics">
+				    <input type="submit" value="Search">
 				</form>
 
-				<button onclick = "reset()">Reset</button>
+				<button onclick = "reset()">Reset Search</button>
 
 				<div id = "results">
 
@@ -87,9 +87,9 @@
 			</div>
 
 			<div id = "categories">
-				<button onclick = "search('all')"> All Products </button>
+				<button onclick = "search('all')"> All Products </button><br>
 				{{#each categories}}
-					<button onclick = "search('{{name}}')">{{name}}</button>
+					<button onclick = "search('{{name}}')">{{name}}</button><br>
 				{{/each}}
 			</div>
 
