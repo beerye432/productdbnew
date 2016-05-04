@@ -17,6 +17,7 @@ td{
 }
 
 #categories{
+  margin-top: 20px;
   display: inline-block;
 }
 
@@ -25,7 +26,7 @@ td{
   margin-top: 5px;
   width: 97px;
   text-align: center;
-  font-size: 20px;
+  font-size: 15px;
 }
 
 #productswrap{
@@ -36,4 +37,20 @@ td{
   font-size: 25px;
   margin-left: 5px;
   margin-right: 5px;
+}
+
+#name{
+  margin-bottom: 10px;
+}
+
+#name a{
+  font-size: 25px;
+}
+
+#name h1{
+  margin-bottom: 10px;
+}
+
+#message h2{
+  font-color: red;
 }
