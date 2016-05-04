@@ -197,6 +197,10 @@ exports.addtocart = function(req, res){
 	var sku = req.body.sku;
 	var price = parseFloat(req.body.price);
 
+	if(quantity === null || quantity === undefined || quantity == ''){
+		return res.render("/");
+	}
+
 	var cart = [];
 
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
