@@ -18,7 +18,7 @@ td{
 }
 
 #categories{
-  margin-top: 20px;
+  margin-top: 10px;
   display: inline-block;
 }
 
@@ -60,3 +60,8 @@ td{
   margin-bottom: 5px;
   margin-top: 5px;
 }
+
+label{
+  font-size: 18px;
+}
+
