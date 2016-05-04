@@ -14,7 +14,7 @@
 
 	<div id = "links">
 
-		<a href = "/browseproducts?cat=&product=">Browse Products</a>
+		<a href = "/browseproducts?cat=&product=">Browse Products</a><br>
 
 	</div>
 
@@ -37,8 +37,8 @@
 
 		if(response.role == "owner"){
 
-			$('#links').prepend("<a href = '/products?cat=&product='>Products</a>");
-			$('#links').prepend("<a href = '/categories'>Categories</a>");
+			$('#links').prepend("<a href = '/products?cat=&product='>Products</a><br>");
+			$('#links').prepend("<a href = '/categories'>Categories</a><br>");
 		}
 	});
 
