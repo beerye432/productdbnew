@@ -71,15 +71,6 @@
 			{{/each}}
 		</table>
 
-		{{#each categories}}
-		<div class = "categories">
-			<h2 class = "name">{{name}}</h2>
-			<p>{{description}}</p>
-			<p class = "pnum">{{pnum}} item(s) in {{name}}</p>
-			<a id="myLink" href="#" onclick="update('{{name}}', '{{description}}');">Update</a>
-		</div>
-		{{/each}}
-
 	</div>
 
 	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
@@ -92,13 +83,11 @@
 		    
 		    $("#products tr").each(function(i, num){
 
-		    	console.log($(this));
-
 		    	var name = $(this).find(".name").text();
 
 		    	console.log(name);
 
-		    	console.log($(this).find(".pnum").text());
+		    	console.log($(this).find(".pnum").text().split(" ")[0]);
 
 		    	if($(this).find(".pnum").text().split(" ")[0] == 0){
 		    		$(this).append("<td><a href = '/deletecat?name="+name+"'> Delete </a><td>");
