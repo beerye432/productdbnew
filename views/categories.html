@@ -85,9 +85,9 @@
 
 		    	var name = $(this).find(".name").text();
 
-		    	console.log($(this).find(".pnum").text());
+		    	console.log($(this).find(".pnum").text().split(" "));
 
-		    	if($(this).find(".pnum").text().split(" ")[0] == 0){
+		    	if(parseInt($(this).find(".pnum").text().split(" ")[0]) == 0){
 		    		$(this).append("<td><a href = '/deletecat?name="+name+"'> Delete </a><td>");
 		    	}
 		    	
