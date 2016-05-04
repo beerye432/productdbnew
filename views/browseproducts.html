@@ -23,7 +23,7 @@
 			    <input type="submit" value="Search">
 			</form>
 
-			<button onclick = "reset()">Reset Search</button>
+			<button style = "display: inline-block" onclick = "reset()">Reset Search</button>
 
 			<div id = "results">
 
@@ -32,9 +32,9 @@
 		</div>
 
 		<div id = "categories">
-			<button onclick = "search('all')"> All Products </button>
+			<button onclick = "search('all')"> All Products </button><br>
 			{{#each categories}}
-				<button onclick = "search('{{name}}')">{{name}}</but	on>
+				<button onclick = "search('{{name}}')">{{name}}</buton><br>
 			{{/each}}
 
 		</div>
