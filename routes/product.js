@@ -29,7 +29,7 @@ exports.view = function(req, res){
 
 		query.on('end', function(){
 
-			query = client.query("SELECT products.name as pname, products.sku, products.price, categories.name FROM products, categories WHERE products.category_id = categories.id AND products.name LIKE '%"+search+"%' AND categories.name LIKE '%"+category+"%';");
+			query = client.query("SELECT products.name as name, products.sku as sku, products.price as price, categories.name as category FROM products, categories WHERE products.category_id = categories.id AND products.name LIKE '%"+search+"%' AND categories.name LIKE '%"+category+"%';");
 
 			query.on('row', function(row){
 				products.push(row);
