@@ -32,9 +32,11 @@
 			<input type = "text" name = "sku" placeholder="SKU">
 			<label for = "category">Category:</label>
 			<select name = "category" id = "category">
+
 				{{#each categories}}
 					<option>{{name}}</option>
 				{{/each}}
+
 			</select>
 			<label for = "Price">Price:</label>
 			<input type = "text" name = "price" placeholder="Price">
@@ -57,9 +59,11 @@
 					<input id = "sku" type = "text" name = "sku"><br>
 					<label for = "category">Category: </label>
 					<select name = "category" id = "category">
+
 						{{#each categories}}
 							<option value = "{{name}}" class = "catselect">{{name}}</option>
 						{{/each}}
+
 					</select><br>
 					<input id = "nameO" type = "hidden" name = "nameO">
 					<input type = "submit" value = "Submit">
@@ -104,7 +108,6 @@
 					</tr>
 
 					{{#each products}}
-
 						<tr>
 							<td>{{sku}}</td>
 							<td>{{name}}</td>

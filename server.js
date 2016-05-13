@@ -93,6 +93,7 @@ app.get("/sesserror", function(req, res){
 });
 
 app.get("/getname", function(req, res){
+  console.log(process.env.DATABASE_URL);
   res.json({name: req.session.user});
 });
 
