@@ -33,7 +33,7 @@ exports.add = function(req, res){
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
 
-		var query = client.query("INSERT INTO category VALUES ('"+name+"','"+description+"', 0);");
+		var query = client.query("INSERT INTO category VALUES ('"+name+"','"+description+"');");
 
 		query.on("error", function(error){
 
@@ -77,24 +77,9 @@ exports.update = function(req, res){
 
 		query.on('end', function(){
 
-			query = client.query("UPDATE product SET category = '"+name+"' WHERE category = '"+nameO+"';");
+			done();
 
-			query.on('error', function(error){
-				done();
-
-				req.session.err = "Failure to update category";
-
-				res.redirect("categories");
-			});
-
-			query.on('end', function(){
-
-				done();
-
-				req.session.err = "Category updated successfully";
-
-				res.redirect("categories");
-			});
+			res.redirect("categories");
 		});
 	});
 }
@@ -107,7 +92,7 @@ exports.delete = function(req, res){
 
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
-		var query = client.query("SELECT * FROM product WHERE name = '"+name+"';");
+		var query = client.query("SELECT * FROM product WHERE category = '"+name+"';");
 
 		query.on('row', function(row){
 			products.push(row);
