@@ -25,7 +25,7 @@ exports.validate = function(req, res){
 
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
-		var query = client.query("INSERT INTO users VALUES ('"+name+"','"+role+"',"+age+",'"+state+"');");
+		var query = client.query("INSERT INTO users VALUES (DEFAULT, '"+name+"','"+role+"',"+age+",'"+state+"');");
 
 		query.on('error', function(error){
 
