@@ -14,7 +14,8 @@ var app = express();
 var router = {
     index: require("./routes/index"),
     category: require("./routes/category"),
-    product: require("./routes/product")
+    product: require("./routes/product"),
+    sales: require("./routes/sales")
 };
 
 var parser = {
@@ -120,6 +121,8 @@ app.get("/deleteproduct", auth, restrict, router.product.delete);
 app.get("/browsecategory", auth, router.product.browsecategory);
 
 app.get("/browseproducts", auth, router.product.browse);
+
+app.get("/sales", auth, restruct, router.sales.view);
 
 app.post("/validatelogin", function(req, res){
 
