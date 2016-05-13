@@ -16,7 +16,7 @@ exports.view = function(req, res){
 
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
-		var query = client.query("SELECT * FROM category;");
+		var query = client.query("SELECT * FROM categories;");
 
 		query.on('row', function(row){
 			categories.push(row);
@@ -64,7 +64,7 @@ exports.browse = function(req, res){
 
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
-		var query = client.query("SELECT * FROM category;");
+		var query = client.query("SELECT * FROM categories;");
 
 		query.on('row', function(row){
 			categories.push(row);
@@ -263,7 +263,7 @@ exports.add = function(req, res){
 
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
-		var query = client.query("INSERT INTO product VALUES ('"+name+"','"+sku+"','"+category+"',"+price+");");
+		var query = client.query("INSERT INTO products VALUES (DEFAULT,'"+name+"','"+sku+"','"+category+"',"+price+");");
 
 		query.on("error", function(error){
 
@@ -276,25 +276,9 @@ exports.add = function(req, res){
 
 		query.on("end", function(){
 
-			query = client.query("UPDATE category SET pnum = pnum + 1 WHERE name = '"+category+"'");
+			done();
 
-			query.on("error", function(error){
-
-				done();
-
-				req.session.err = "Failure to insert new product";
-
-				return res.redirect("/products?cat="+req.session.category+"&product="+req.session.product);
-			});
-
-			query.on("end", function(){
-
-				done();
-
-				req.session.err = "Product inserted successfully";
-
-				res.redirect("/products?cat="+req.session.category+"&product="+req.session.product);
-			})
+			res.redirect("/products?cat="+req.session.category+"&product="+req.session.product);
 		});
 	});
 }
