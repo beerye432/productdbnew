@@ -14,8 +14,10 @@ exports.validate = function(req, res){
 
 	var name = req.body.name;
 	var role = req.body.role;
-	var age = req.body.age;
+	var age = parseInt(req.body.age);
 	var state = req.body.state;
+
+	console.log(name + " " + role + " " + age + " " + state);
 
 	if(name == "" || role == "" || state == ""){
 		return res.render("failure", {message: "Your signup failed"});
