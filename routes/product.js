@@ -29,7 +29,7 @@ exports.view = function(req, res){
 
 		query.on('end', function(){
 
-			query = client.query("SELECT products.name, products.sku, products.price, categories.name FROM product, categories WHERE products.category_id = categories.id AND products.name LIKE '%"+search+"%' AND categories.name LIKE '%"+category+"%';");
+			query = client.query("SELECT products.name, products.sku, products.price, categories.name FROM products, categories WHERE products.category_id = categories.id AND products.name LIKE '%"+search+"%' AND categories.name LIKE '%"+category+"%';");
 
 			query.on('row', function(row){
 				products.push(row);
@@ -77,7 +77,7 @@ exports.browse = function(req, res){
 
 		query.on('end', function(){
 
-			query = client.query("SELECT products.name, products.sku, products.price, categories.name FROM product, categories WHERE products.category_id = categories.id AND products.name LIKE '%"+search+"%' AND categories.name LIKE '%"+category+"%';");
+			query = client.query("SELECT products.name, products.sku, products.price, categories.name FROM products, categories WHERE products.category_id = categories.id AND products.name LIKE '%"+search+"%' AND categories.name LIKE '%"+category+"%';");
 
 			query.on('row', function(row){
 				products.push(row);
@@ -125,7 +125,7 @@ exports.viewcart = function(req, res){
 
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
-		var query = client.query("SELECT * FROM product WHERE name = '"+name+"'");
+		var query = client.query("SELECT * FROM products WHERE name = '"+name+"'");
 
 		query.on('row', function(row){
 			currentProduct.push(row);
@@ -372,7 +372,7 @@ exports.browsecategory = function(req, res){
 
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
-		var query = client.query("SELECT * FROM category");
+		var query = client.query("SELECT * FROM categories");
 
 		query.on('row', function(row){
 			category.push(row);
@@ -385,7 +385,7 @@ exports.browsecategory = function(req, res){
 
 		query.on('end', function(){
 
-			query = client.query("SELECT * FROM product WHERE category='"+name+"';");
+			query = client.query("SELECT * FROM products WHERE category='"+name+"';");
 
 			query.on('row', function(row){
 				products.push(row);
