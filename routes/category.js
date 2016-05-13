@@ -7,7 +7,7 @@ exports.view = function(req, res){
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
 
-		var query = client.query("SELECT * FROM category;");
+		var query = client.query("SELECT * FROM categories;");
 
 		query.on('row', function(row){
 			categories.push(row);
@@ -33,7 +33,7 @@ exports.add = function(req, res){
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
 
-		var query = client.query("INSERT INTO category VALUES ('"+name+"','"+description+"');");
+		var query = client.query("INSERT INTO categories VALUES ('"+name+"','"+description+"');");
 
 		query.on("error", function(error){
 
@@ -65,7 +65,7 @@ exports.update = function(req, res){
 
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
-		var query = client.query("UPDATE category SET name = '"+name+"', description = '"+description+"' WHERE name = '"+nameO+"';");
+		var query = client.query("UPDATE categories SET name = '"+name+"', description = '"+description+"' WHERE name = '"+nameO+"';");
 
 		query.on('error', function(error){
 			done();
@@ -92,7 +92,7 @@ exports.delete = function(req, res){
 
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
-		var query = client.query("SELECT * FROM product WHERE category = '"+name+"';");
+		var query = client.query("SELECT * FROM products WHERE category = '"+name+"';");
 
 		query.on('row', function(row){
 			products.push(row);
