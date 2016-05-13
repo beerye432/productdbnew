@@ -31,7 +31,7 @@ exports.validate = function(req, res){
 
 			done();
 
-			res.render("failure", {message: "Your signup failed"});
+			res.render("failure", {message: error});
 		});
 
 		query.on('end', function(){
