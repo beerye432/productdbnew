@@ -36,7 +36,7 @@
 	$.get("/getuser", function(response){
 
 		if(response.role == "o"){
-			$('#links').prepend("<a href = '/sales'>Sales Analytics</a><br>");
+			$('#links').prepend("<a href = '/sales'>Sales Analytics	</a><br>");
 			$('#links').prepend("<a href = '/products?cat=&product='>Products</a><br>");
 			$('#links').prepend("<a href = '/categories'>Categories</a><br>");
 		}

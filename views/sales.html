@@ -29,6 +29,7 @@
 				</select>
 				<label for = "sales"> Category Options:</label>
 				<select name = "sales">
+					<option value = "all">All Categories</option>
 					{{#each categories}}
 						<option>{{name}}</option>
 					{{/each}}
@@ -43,11 +44,19 @@
 
 			<table>
 
+				<tr> 
+					<th>User</th>
+				</tr>
+
+				{{#each rows}}
+					<tr>
+						<td>{{name}}</td>
+					</tr>
+				{{/each}}
+
 			</table>
 
 		</div>
-
-		
 
 		<script src="//code.jquery.com/jquery-1.10.2.js"></script>
 		<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
@@ -55,8 +64,6 @@
 		<script>
 
 		$(function() {
-
-			$("#cat").val(cat);
 
 			$.get("/getname", function(response){
 				$("#name").append("<h1>"+response.name+"</h1>");

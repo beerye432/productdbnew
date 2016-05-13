@@ -148,6 +148,7 @@ app.post("/validatelogin", function(req, res){
             req.session.role = results.rows[0].role;
             req.session.category = "";
             req.session.product = "";
+            req.session.row = 0;
 
             res.redirect("/");
           }); 
