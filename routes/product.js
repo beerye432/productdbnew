@@ -77,7 +77,7 @@ exports.browse = function(req, res){
 
 		query.on('end', function(){
 
-			query = client.query("SELECT * FROM product WHERE name LIKE '%"+search+"%' AND category LIKE '%"+category+"%';");
+			query = client.query("SELECT products.name, products.sku, products.price, categories.name FROM product, categories WHERE products.category_id = categories.id AND products.name LIKE '%"+search+"%' AND categories.name LIKE '%"+category+"%';");
 
 			query.on('row', function(row){
 				products.push(row);

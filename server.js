@@ -61,7 +61,7 @@ function auth2(req, res, next){
 }
 
 function restrict(req, res, next){
-  if(req.session.role == "owner"){
+  if(req.session.role == "o"){
     next();
   }
   else{
