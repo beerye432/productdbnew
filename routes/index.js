@@ -2,6 +2,9 @@ var pg = require("pg");
 
 exports.view = function(req, res) {
 
+	req.session.col = 0;
+	req.session.row = 0;
+
 	res.render("index");
 }
 

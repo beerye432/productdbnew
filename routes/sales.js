@@ -76,3 +76,13 @@ exports.view = function(req, res){
 		});
 	});
 } 
+
+exports.getsales = function(req, res){
+	return res.redirect("sales");
+}
+
+//this function handles getting the next 20 rows
+exports.getmore = function(req, res){
+
+	console.log(req.body);
+}

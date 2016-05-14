@@ -177,6 +177,10 @@ app.post("/search", router.product.search);
 
 app.post("/searchcustomer", router.product.searchcustomer);
 
+app.post("/getsales", router.sales.getsales);
+
+app.post("/getmore", router.sales.getmore);
+
 app.use(function(req, res, next) {
   res.status(404).render('login');
 });
