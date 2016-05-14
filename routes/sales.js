@@ -84,9 +84,9 @@ exports.getsales = function(req, res){
 //this function handles getting more rows and columns
 exports.getmore = function(req, res){
 
-	if(req.body.col){
+	if(req.body.col)
 		req.session.col += 10;
-	else if(req.body.row){
+	else if(req.body.row)
 		req.session.row += 20;
 	else
 		console.log('nothing');
