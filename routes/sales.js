@@ -62,6 +62,8 @@ exports.view = function(req, res){
 						i++;
 
 						console.log("success");
+
+						callback(null);
 					});
 				}, function done() {
 
