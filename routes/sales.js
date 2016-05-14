@@ -84,5 +84,13 @@ exports.getsales = function(req, res){
 //this function handles getting the next 20 rows
 exports.getmore = function(req, res){
 
-	console.log(req.body);
+	if(req.body.col){
+		console.log('col');
+	}
+	else if(req.body.row){
+		console.log('row');
+	}
+	else{
+		console.log('nope');
+	}
 }
