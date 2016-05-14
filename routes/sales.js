@@ -81,16 +81,15 @@ exports.getsales = function(req, res){
 	return res.redirect("sales");
 }
 
-//this function handles getting the next 20 rows
+//this function handles getting more rows and columns
 exports.getmore = function(req, res){
 
 	if(req.body.col){
-		console.log('col');
-	}
+		req.session.col += 10;
 	else if(req.body.row){
-		console.log('row');
-	}
-	else{
-		console.log('nope');
-	}
+		req.session.row += 20;
+	else
+		console.log('nothing');
+
+	return res.redirect("/sales");
 }
