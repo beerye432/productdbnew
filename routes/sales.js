@@ -50,7 +50,7 @@ exports.view = function(req, res){
 						purchases.push(row);
 					});
 
-					query.on('error', function(error){
+					query.on('error', function(err){
 						done();
 						return res.render("failure", {message: err});
 					});
