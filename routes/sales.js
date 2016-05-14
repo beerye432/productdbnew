@@ -63,9 +63,10 @@ exports.view = function(req, res){
 
 						console.log("success");
 
-						callback(null);
+						callback();
+
 					});
-				}, function done() {
+				}, function(err){
 
 					done();
 					return res.render("sales", {categories: categories, rows: rows});
