@@ -40,7 +40,7 @@ exports.view = function(req, res){
 
 				var i = 0;
 
-				async.eachSeries(row, function(user, callback) {
+				async.eachSeries(rows, function(user, callback) {
 
 					purchases = [];
 				   
