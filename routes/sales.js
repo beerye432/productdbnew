@@ -124,7 +124,7 @@ exports.view2 = function(req, res){
 		query.on("end", function(){
 
 			//get appropriate 10 products, ordered by name
-			query = client.query("SELECT * FROM products ORDER BY product_name OFFSET "+req.session.col+"ROWS FETCH NEXT 10 ROWS ONLY;");
+			query = client.query("SELECT * FROM products ORDER BY name OFFSET "+req.session.col+"ROWS FETCH NEXT 10 ROWS ONLY;");
 
 			query.on("row", function(row){
 				products.push(row);
