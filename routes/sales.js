@@ -170,6 +170,7 @@ exports.view2 = function(req, res){
 
 							query.on("error", function(err){
 								done();
+								callback1();
 								return res.render("failure", {message: err});
 							});
 
