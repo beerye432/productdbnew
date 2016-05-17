@@ -177,6 +177,8 @@ exports.view2 = function(req, res){
 
 							users[i].purchases = purchases;
 
+							console.log(users[i].purchases);
+
 							i++;
 
 							callback();
@@ -185,8 +187,6 @@ exports.view2 = function(req, res){
 					}, function(err){
 
 						done();
-
-						console.log(users);
 
 						return res.render("sales", {categories: categories, products: products, users: users});
 
