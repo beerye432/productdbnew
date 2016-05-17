@@ -3,15 +3,28 @@ var async = require("async");
 
 exports.view = function(req, res){
 
+	var row_type = req.body.rows;
+
+	var query;
+
 	var categories = [];
 
 	var rows = [];
 
 	var purchases = [];
 
+	var stateList = ["AK","AL","AR","AZ","CA","CO","CT","DC","DE","FL","GA","GU","HI","IA","ID", "IL","IN","KS","KY","LA","MA","MD","ME","MH","MI","MN","MO","MS","MT","NC","ND","NE","NH","NJ","NM","NV","NY", "OH","OK","OR","PA","PR","PW","RI","SC","SD","TN","TX","UT","VA","VI","VT","WA","WI","WV","WY"];
+
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
-		var query = client.query("SELECT * FROM categories;");
+		//states
+		if(rows == "s"){
+
+			
+		}
+		
+		//Customers
+		query = client.query("SELECT * FROM categories;");
 
 		query.on('row', function(row){
 			categories.push(row);
@@ -24,7 +37,6 @@ exports.view = function(req, res){
 
 		query.on('end', function(){
 			
-
 			query = client.query("SELECT * FROM users ORDER BY name OFFSET "+req.session.row+"ROWS FETCH NEXT 20 ROWS ONLY;");
 
 			query.on('row', function(row){
@@ -44,7 +56,7 @@ exports.view = function(req, res){
 
 					purchases = [];
 				   
-					query = client.query("SELECT * FROM orders WHERE user_id='"+user.id+"' ORDER BY product_id OFFSET "+req.session.col+"ROWS FETCH NEXT 10 ROWS ONLY;");
+					query = client.query("SELECT * FROM orders, products WHERE user_id='"+user.id+"' AND  ORDER BY product_id OFFSET "+req.session.col+"ROWS FETCH NEXT 10 ROWS ONLY;");
 
 					query.on('row', function(row){
 						purchases.push(row);
@@ -75,7 +87,116 @@ exports.view = function(req, res){
 			});
 		});
 	});
+
+
 } 
+
+exports.view2 = function(req, res){
+
+	var query;
+
+	var categories = [];
+
+	var rows = [];
+
+	var purchases = [];
+
+	var products = [];
+
+	var users = [];
+
+	var i = 0;
+
+	pg.connect(process.env.DATABASE_URL, function(err, client, done){
+		
+		//Customers
+		query = client.query("SELECT * FROM categories;");
+
+		query.on('row', function(row){
+			categories.push(row);
+		});
+
+		query.on("error", function(err){
+			done();
+			return res.render("failure", {message: err});
+		});
+
+		query.on("end", function(){
+
+			//get appropriate 10 products, ordered by name
+			query = client.query("SELECT * FROM products ORDER BY product_name OFFSET "+req.session.col+"ROWS FETCH NEXT 10 ROWS ONLY;");
+
+			query.on("row", function(row){
+				products.push(row);
+			});
+
+			query.on("error", function(err){
+				done();
+				return res.render("failure", {message: err});
+			});
+
+			query.on("end", function(err){
+
+				//get appropriate 20 users, ordered by name
+				query = client.query("SELECT * FROM users ORDER BY name OFFSET "+req.session.row+"ROWS FETCH NEXT 20 ROWS ONLY;");
+
+				query.on("row", function(row){
+					users.push(row);
+				});
+
+				query.on("error", function(err){
+					done();
+					return res.render("failure", {message: err});
+				});
+
+				query.on("end", function(){
+
+					i = 0; 
+
+					async.each(users, function(user, callback1){
+
+						async.each(products, function(product, callback2){
+
+							query = client.query("SELECT orders.user_id as user, products.id as product,"
+										 		+"SUM(CASE WHEN products.id = orders.product_id THEN orders.price ELSE 0) AS total"
+										 		+"FROM orders, products"
+										 		+"WHERE orders.user_id = '"+user.id+"' AND products.id = '"+product.id+"'"
+										 		+"GROUP BY products.id, orders.user_id"
+										 		+"ORDER BY products.id ASC");
+
+							query.on("row", function(row){
+								purchases.push(row);
+							});
+
+							query.on("error", function(err){
+								done();
+								return res.render("failure", {message: err});
+							});
+
+							query.on("end", function(){
+								callback2();
+							});
+
+						}, function(err){
+
+							users[i].purchases = purchases;
+
+							i++;
+
+							callback1();
+						});
+					}, function(err){
+
+						done();
+						return res.render("sales", {categories: categories, products: products, users: users});
+
+					});
+				});
+			});
+		});
+	});
+} 
+
 
 exports.getsales = function(req, res){
 	return res.redirect("sales");
