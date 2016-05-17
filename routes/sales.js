@@ -138,7 +138,7 @@ exports.view2 = function(req, res){
 			query.on("end", function(err){
 
 				//get appropriate 20 users, ordered by name
-				query = client.query("SELECT * FROM users ORDER BY name OFFSET "+req.session.row+"ROWS FETCH NEXT 20 ROWS ONLY;");
+				query = client.query("SELECT * FROM users WHERE id IN (SELECT user_id FROM orders) ORDER BY name OFFSET "+req.session.row+"ROWS FETCH NEXT 20 ROWS ONLY;");
 
 				query.on("row", function(row){
 					users.push(row);
