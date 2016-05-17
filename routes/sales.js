@@ -301,7 +301,13 @@ exports.view2 = function(req, res){
 
 
 exports.getsales = function(req, res){
-	return res.redirect("sales");
+	
+	if(req.body.rows == "s"){
+		viewStates();
+	}
+	else{
+		view2();
+	}
 }
 
 //this function handles getting more rows and columns

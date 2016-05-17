@@ -177,11 +177,7 @@ app.post("/search", router.product.search);
 
 app.post("/searchcustomer", router.product.searchcustomer);
 
-app.post("/getsales", function(res, req, next){
-
-  if(req.body.rows == "c") router.sales.view2;
-  else router.sales.viewStates;
-});
+app.post("/getsales", router.sales.getsales);
 
 app.post("/getmore", router.sales.getmore);
 
