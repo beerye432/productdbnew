@@ -78,19 +78,23 @@
 
 		<script>
 
-		$(function() {
+		<!--
 
-			$.get("/getname", function(response){
-				$("#name").append("<h1>"+response.name+"</h1>");
-				$("#name").append("<a href = '/buycart'>Buy Cart</a>");
+		// $(function() {
 
-				if(response.role == "o"){
-					$('#links').append("<p>Owner Pages:</p>");
-					$('#links').prepend("<a href = '/products?cat=&product='>Products</a>");
-					$('#links').prepend("<a href = '/categories'>Categories</a>");
-				}
-			});
-		});
+		// 	$.get("/getname", function(response){
+		// 		$("#name").append("<h1>"+response.name+"</h1>");
+		// 		$("#name").append("<a href = '/buycart'>Buy Cart</a>");
+
+		// 		if(response.role == "o"){
+		// 			$('#links').append("<p>Owner Pages:</p>");
+		// 			$('#links').prepend("<a href = '/products?cat=&product='>Products</a>");
+		// 			$('#links').prepend("<a href = '/categories'>Categories</a>");
+		// 		}
+		// 	});
+		// });
+
+		-->
 
 		</script>
 
