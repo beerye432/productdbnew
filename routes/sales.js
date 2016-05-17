@@ -143,15 +143,9 @@ exports.viewStates = function(req, res){
 
 			query.on("end", function(err){
 
-				i = 0; 
-
-				if(req.session.row > 29){
-					bounds = 30;
-				}
-				else{
-					bounds = req.session.row;
-				}
-				async.each(states.slice(bounds, bounds+20), function(state, callback){
+				i = 0;
+				
+				async.each(states.slice(req.session.row, req.session.row+20), function(state, callback){
 
 					query = client.query("SELECT '"+state+"' as state, products.id as product," 
 										+" SUM(CASE WHEN products.id = orders.product_id THEN orders.price ELSE 0 END) as total"
