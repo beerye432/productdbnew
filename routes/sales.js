@@ -111,7 +111,7 @@ exports.viewStates = function(req, res){
 
 	var state_in;
 
-	var users = [];
+	var users = [];	
 
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
@@ -146,7 +146,7 @@ exports.viewStates = function(req, res){
 				i = 0; 
 
 				if(req.session.row > 29){
-					var bounds = 30;
+					bounds = 30;
 				}
 				else{
 					bounds = req.session.row;
@@ -156,7 +156,7 @@ exports.viewStates = function(req, res){
 					query = client.query("SELECT '"+state+"' as state, products.id as product," 
 										+" SUM(CASE WHEN products.id = orders.product_id THEN orders.price ELSE 0 END) as total"
 										+" FROM orders, products, users "
-										+" WHERE users.state = '"+state+"' AND users.id = orders.user_id AND products.id IN (SELECT products.id from products ORDER BY name OFFSET 0 ROWS fetch next 10 rows only)"
+										+" WHERE users.state = '"+state+"' AND users.id = orders.user_id AND products.id IN (SELECT products.id from products ORDER BY name OFFSET "+req.session.col+" ROWS fetch next 10 rows only)"
 										+" GROUP BY products.id order by products.name ASC;");
 
 					query.on("row", function(row){
