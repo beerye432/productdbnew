@@ -111,6 +111,8 @@ exports.viewStates = function(req, res){
 
 	var state_in;
 
+	var users = [];
+
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
 		//categories
