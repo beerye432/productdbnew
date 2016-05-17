@@ -162,7 +162,7 @@ exports.view2 = function(req, res){
 										 		+"FROM orders, products"
 										 		+"WHERE orders.user_id = '"+user.id+"' AND products.id = '"+product.id+"'"
 										 		+"GROUP BY products.id, orders.user_id"
-										 		+"ORDER BY products.id ASC");
+										 		+"ORDER BY products.id ASC;");
 
 							query.on("row", function(row){
 								purchases.push(row);
