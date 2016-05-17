@@ -185,7 +185,9 @@ exports.view2 = function(req, res){
 					}, function(err){
 
 						done();
-						
+
+						console.log(users);
+
 						return res.render("sales", {categories: categories, products: products, users: users});
 
 					});
