@@ -155,8 +155,6 @@ exports.view2 = function(req, res){
 
 					async.each(users, function(user, callback){
 
-						purchases = [];
-
 						query = client.query("SELECT orders.user_id as user, products.id as product,"
 									 		+"SUM(CASE WHEN products.id = orders.product_id THEN orders.price ELSE 0 END) AS total"
 									 		+" FROM orders, products"
@@ -175,11 +173,13 @@ exports.view2 = function(req, res){
 
 						query.on("end", function(){
 
-							user.purchases = purchases;
+							users[i].purchases = purchases;
 
-							//console.log(i + " " + users[i].purchases);
+							console.log(i + " " + users[i].purchases);
 
 							i++;
+
+							purchases = [];
 
 							callback();
 						});
