@@ -177,7 +177,7 @@ exports.view2 = function(req, res){
 
 							user.purchases = purchases;
 
-							console.log(i + " " + users[i].purchases);
+							//console.log(i + " " + users[i].purchases);
 
 							i++;
 
