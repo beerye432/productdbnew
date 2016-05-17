@@ -170,11 +170,12 @@ exports.view2 = function(req, res){
 
 							query.on("error", function(err){
 								done();
+								callback2();
 								return res.render("failure", {message: err});
 							});
 
 							query.on("end", function(){
-								
+								callback2();
 							});
 
 						}, function(err){
@@ -183,14 +184,11 @@ exports.view2 = function(req, res){
 
 							i++;
 
-							callback2();
-
 						});
 					}, function(err){
 
-						callback1();
-						
 						done();
+						callback1();
 						return res.render("sales", {categories: categories, products: products, users: users});
 
 					});
