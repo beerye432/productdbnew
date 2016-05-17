@@ -56,7 +56,7 @@
 					<th>User</th>
 
 					{{#each products}}
-						<th>{{name}}</th>
+						<th>{{id}}</th>
 					{{/each}}
 				</tr>
 
@@ -64,7 +64,7 @@
 					<tr>
 						<td>{{name}}</td>
 						{{#each this.purchases}}
-							<td>{{this.price}}</td>
+							<td>{{this.total}}</td>
 						{{/each}}
 					</tr>
 				{{/each}}
