@@ -177,7 +177,11 @@ app.post("/search", router.product.search);
 
 app.post("/searchcustomer", router.product.searchcustomer);
 
-app.post("/getsales", router.sales.getsales);
+app.post("/getsales", function(){
+
+  if(req.body.rows == "c") router.sales.view2;
+  else router.sales.viewStates;
+});
 
 app.post("/getmore", router.sales.getmore);
 
