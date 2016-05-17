@@ -1,9 +1,97 @@
 var pg = require("pg");
 var async = require("async");
 
-exports.view = function(req, res){
+// exports.view = function(req, res){
 
-	var row_type = req.body.rows;
+// 	var row_type = req.body.rows;
+
+// 	var query;
+
+// 	var categories = [];
+
+// 	var rows = [];
+
+// 	var purchases = [];
+
+// 	var stateList = ["AK","AL","AR","AZ","CA","CO","CT","DC","DE","FL","GA","GU","HI","IA","ID", "IL","IN","KS","KY","LA","MA","MD","ME","MH","MI","MN","MO","MS","MT","NC","ND","NE","NH","NJ","NM","NV","NY", "OH","OK","OR","PA","PR","PW","RI","SC","SD","TN","TX","UT","VA","VI","VT","WA","WI","WV","WY"];
+
+// 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
+
+// 		//states
+// 		if(rows == "s"){
+
+			
+// 		}
+		
+// 		//Customers
+// 		query = client.query("SELECT * FROM categories;");
+
+// 		query.on('row', function(row){
+// 			categories.push(row);
+// 		});
+
+// 		query.on("error", function(err){
+// 			done();
+// 			return res.render("failure", {message: err});
+// 		});
+
+// 		query.on('end', function(){
+			
+// 			query = client.query("SELECT * FROM users ORDER BY name OFFSET "+req.session.row+"ROWS FETCH NEXT 20 ROWS ONLY;");
+
+// 			query.on('row', function(row){
+// 				rows.push(row);
+// 			});
+
+// 			query.on('error', function(err){
+// 				done();
+// 				return res.render("failure", {message: err});
+// 			});
+
+// 			query.on('end', function(){
+
+// 				var i = 0;
+
+// 				async.eachSeries(rows, function(user, callback) {
+
+// 					purchases = [];
+				   
+// 					query = client.query("SELECT * FROM orders, products WHERE user_id='"+user.id+"' AND  ORDER BY product_id OFFSET "+req.session.col+"ROWS FETCH NEXT 10 ROWS ONLY;");
+
+// 					query.on('row', function(row){
+// 						purchases.push(row);
+// 					});
+
+// 					query.on('error', function(err){
+// 						done();
+// 						return res.render("failure", {message: err});
+// 					});
+
+// 					query.on('end', function(){
+
+// 						rows[i].purchases = purchases;
+
+// 						i++;
+
+// 						console.log("success");
+
+// 						callback();
+
+// 					});
+// 				}, function(err){
+
+// 					done();
+// 					return res.render("sales", {categories: categories, rows: rows});
+
+// 				});
+// 			});
+// 		});
+// 	});
+
+
+// } 
+
+exports.viewStates = function(req, res){
 
 	var query;
 
@@ -13,17 +101,17 @@ exports.view = function(req, res){
 
 	var purchases = [];
 
-	var stateList = ["AK","AL","AR","AZ","CA","CO","CT","DC","DE","FL","GA","GU","HI","IA","ID", "IL","IN","KS","KY","LA","MA","MD","ME","MH","MI","MN","MO","MS","MT","NC","ND","NE","NH","NJ","NM","NV","NY", "OH","OK","OR","PA","PR","PW","RI","SC","SD","TN","TX","UT","VA","VI","VT","WA","WI","WV","WY"];
+	var states = ["AK","AL","AR","AZ","CA","CO","CT","DC","DE","FL","GA","GU","HI","IA","ID", "IL","IN","KS","KY","LA","MA","MD","ME","MH","MI","MN","MO","MS","MT","NC","ND","NE","NH","NJ","NM","NV","NY", "OH","OK","OR","PA","PR","PW","RI","SC","SD","TN","TX","UT","VA","VI","VT","WA","WI","WV","WY"];
+
+	var states_json = [];
+
+	var bounds = 0;
+
+	var state_in;
 
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
-		//states
-		if(rows == "s"){
-
-			
-		}
-		
-		//Customers
+		//categories
 		query = client.query("SELECT * FROM categories;");
 
 		query.on('row', function(row){
@@ -35,61 +123,77 @@ exports.view = function(req, res){
 			return res.render("failure", {message: err});
 		});
 
-		query.on('end', function(){
-			
-			query = client.query("SELECT * FROM users ORDER BY name OFFSET "+req.session.row+"ROWS FETCH NEXT 20 ROWS ONLY;");
+		query.on("end", function(){
 
-			query.on('row', function(row){
-				rows.push(row);
+			//get appropriate 10 products, ordered by name
+			query = client.query("SELECT * FROM products ORDER BY name OFFSET "+req.session.col+"ROWS FETCH NEXT 10 ROWS ONLY;");
+
+			query.on("row", function(row){
+				products.push(row);
 			});
 
-			query.on('error', function(err){
+			query.on("error", function(err){
 				done();
 				return res.render("failure", {message: err});
 			});
 
-			query.on('end', function(){
+			query.on("end", function(err){
 
-				var i = 0;
+				i = 0; 
 
-				async.eachSeries(rows, function(user, callback) {
+				if(req.session.row > 29){
+					var bounds = 30;
+				}
+				else{
+					bounds = req.session.row;
+				}
+				async.each(states.slice(bounds, bounds+20), function(state, callback){
 
-					purchases = [];
-				   
-					query = client.query("SELECT * FROM orders, products WHERE user_id='"+user.id+"' AND  ORDER BY product_id OFFSET "+req.session.col+"ROWS FETCH NEXT 10 ROWS ONLY;");
+					query = client.query("SELECT '"+state+"' as state, products.id as product," 
+										+" SUM(CASE WHEN products.id = orders.product_id THEN orders.price ELSE 0 END) as total"
+										+" FROM orders, products, users "
+										+" WHERE users.state = '"+state+"' AND users.id = orders.user_id AND products.id IN (SELECT products.id from products ORDER BY name OFFSET 0 ROWS fetch next 10 rows only)"
+										+" GROUP BY products.id order by products.name ASC;");
 
-					query.on('row', function(row){
+					query.on("row", function(row){
 						purchases.push(row);
 					});
 
-					query.on('error', function(err){
+					query.on("error", function(err){
 						done();
 						return res.render("failure", {message: err});
 					});
 
-					query.on('end', function(){
+					query.on("end", function(){
 
-						rows[i].purchases = purchases;
+						state_in =  {"name": state, "purchases": purchases};
+
+						users[i] = state_in;
+
+						console.log(i + " " + users[i].purchases);
 
 						i++;
 
-						console.log("success");
+						purchases = [];
+
+						state_in = {};
 
 						callback();
-
 					});
+
 				}, function(err){
 
 					done();
-					return res.render("sales", {categories: categories, rows: rows});
+
+					return res.render("sales", {categories: categories, products: products, users: users});
 
 				});
+
 			});
+
 		});
 	});
-
-
-} 
+}
 
 exports.view2 = function(req, res){
 
@@ -109,7 +213,7 @@ exports.view2 = function(req, res){
 
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 		
-		//Customers
+		//categories
 		query = client.query("SELECT * FROM categories;");
 
 		query.on('row', function(row){
@@ -138,7 +242,7 @@ exports.view2 = function(req, res){
 			query.on("end", function(err){
 
 				//get appropriate 20 users, ordered by name
-				query = client.query("SELECT * FROM users WHERE id IN (SELECT user_id FROM orders) ORDER BY name OFFSET "+req.session.row+"ROWS FETCH NEXT 20 ROWS ONLY;");
+				query = client.query("SELECT * FROM users ORDER BY name OFFSET "+req.session.row+"ROWS FETCH NEXT 20 ROWS ONLY;");
 
 				query.on("row", function(row){
 					users.push(row);

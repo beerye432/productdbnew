@@ -122,7 +122,7 @@ app.get("/browsecategory", auth, router.product.browsecategory);
 
 app.get("/browseproducts", auth, router.product.browse);
 
-app.get("/sales", auth, restrict, router.sales.view2);
+app.get("/sales", auth, restrict, router.sales.viewStates);
 
 app.post("/validatelogin", function(req, res){
 
