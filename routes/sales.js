@@ -175,7 +175,7 @@ exports.view2 = function(req, res){
 
 						query.on("end", function(){
 
-							users[i].purchases = purchases;
+							user.purchases = purchases;
 
 							console.log(i + " " + users[i].purchases);
 
