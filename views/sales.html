@@ -15,7 +15,7 @@
 
 		<div id = "options">
 
-			<form id = "optionsform" action = "/getsales" method = "post">
+			<form id = "optionsform" action = "/sales" method = "get">
 
 				<label for = "rows"> Row Options:</label>
 				<select name = "rows">
@@ -23,13 +23,13 @@
 					<option value = "s">States</option>
 				</select>
 				<label for = "orders"> Order Options:</label>
-				<select namee = "orders">
+				<select name = "orders">
 					<option value = "a" selected="selected">Alphabetic</option>
 					<option value = "t"> Top-K </option>
 				</select>
 				<label for = "sales"> Category Options:</label>
 				<select name = "sales">
-					<option value = "all">All Categories</option>
+					<option value = "">All Categories</option>
 					{{#each categories}}
 						<option>{{name}}</option>
 					{{/each}}

@@ -122,9 +122,7 @@ app.get("/browsecategory", auth, router.product.browsecategory);
 
 app.get("/browseproducts", auth, router.product.browse);
 
-app.get("/sales", auth, restrict, router.sales.viewStates);
-
-app.get("/doit", router.sales.doStuff);
+app.get("/sales", auth, restrict, router.sales.getSales);
 
 app.post("/validatelogin", function(req, res){
 
@@ -152,6 +150,9 @@ app.post("/validatelogin", function(req, res){
             req.session.product = "";
             req.session.row = 0;
             req.session.col = 0;
+            req.session.rowType = "c";
+            req.session.sortingType = "a";
+            req.session.categoryFilter = "";
 
             res.redirect("/");
           }); 
@@ -178,8 +179,6 @@ app.post("/checkout", router.product.checkout);
 app.post("/search", router.product.search);
 
 app.post("/searchcustomer", router.product.searchcustomer);
-
-app.post("/getsales", router.sales.getsales);
 
 app.post("/getmore", router.sales.getmore);
 

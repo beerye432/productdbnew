@@ -1,7 +1,46 @@
 var pg = require("pg");
 var async = require("async");
 
-exports.viewStates = function(req, res){
+//main routing function, determines view
+exports.getSales = function(req, res){
+	
+	var rows = req.query.rows; //customer or states
+	var sorting = req.query.orders; //alpha or top-k
+	var category = req.query.sales; //category filers
+
+	req.session.rowType = rows;
+	req.session.sortingType = sorting;
+	req.session.categoryFilter = category;
+
+	if(rows == "s"){
+		viewStates(req, res);
+	}
+	else{
+		viewCustomers(req, res);
+	}
+}
+
+//this function handles getting more rows and columns
+exports.getmore = function(req, res){
+
+	if(req.body.col){
+		req.session.col += 10;
+	}
+	else if(req.body.row){
+		req.session.row += 20;
+	}
+	else if(req.body.reset){
+		req.session.row = 0;
+		req.session.col = 0;
+	}
+	else{
+		console.log('nothing');
+	}
+
+	return res.redirect("/sales?rows="+req.session.rowType+"&orders="+req.session.sortingType+"&category="+req.session.categoryFilter);
+}
+
+function viewStates(req, res){
 
 	var query;
 
@@ -103,7 +142,7 @@ exports.viewStates = function(req, res){
 	});
 }
 
-exports.view2 = function(req, res){
+function viewCustomers(req, res){
 
 	var query;
 
@@ -207,44 +246,4 @@ exports.view2 = function(req, res){
 			});
 		});
 	});
-}
-
-exports.doStuff = function(req, res){
-
-	myRender(req, res);
-
-	return 0;
-}
-
-function myRender(req, res){
-
-	console.log("we made it fam");
-
-	return res.render("failure", {message: "we did it"});
-}
-
-
-exports.getsales = function(req, res){
-	
-	return res.redirect("/sales");
-}
-
-//this function handles getting more rows and columns
-exports.getmore = function(req, res){
-
-	if(req.body.col){
-		req.session.col += 10;
-	}
-	else if(req.body.row){
-		req.session.row += 20;
-	}
-	else if(req.body.reset){
-		req.session.row = 0;
-		req.session.col = 0;
-	}
-	else{
-		console.log('nothing');
-	}
-
-	return res.redirect("/sales");
 }
