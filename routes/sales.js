@@ -1,96 +1,6 @@
 var pg = require("pg");
 var async = require("async");
 
-// exports.view = function(req, res){
-
-// 	var row_type = req.body.rows;
-
-// 	var query;
-
-// 	var categories = [];
-
-// 	var rows = [];
-
-// 	var purchases = [];
-
-// 	var stateList = ["AK","AL","AR","AZ","CA","CO","CT","DC","DE","FL","GA","GU","HI","IA","ID", "IL","IN","KS","KY","LA","MA","MD","ME","MH","MI","MN","MO","MS","MT","NC","ND","NE","NH","NJ","NM","NV","NY", "OH","OK","OR","PA","PR","PW","RI","SC","SD","TN","TX","UT","VA","VI","VT","WA","WI","WV","WY"];
-
-// 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
-
-// 		//states
-// 		if(rows == "s"){
-
-			
-// 		}
-		
-// 		//Customers
-// 		query = client.query("SELECT * FROM categories;");
-
-// 		query.on('row', function(row){
-// 			categories.push(row);
-// 		});
-
-// 		query.on("error", function(err){
-// 			done();
-// 			return res.render("failure", {message: err});
-// 		});
-
-// 		query.on('end', function(){
-			
-// 			query = client.query("SELECT * FROM users ORDER BY name OFFSET "+req.session.row+"ROWS FETCH NEXT 20 ROWS ONLY;");
-
-// 			query.on('row', function(row){
-// 				rows.push(row);
-// 			});
-
-// 			query.on('error', function(err){
-// 				done();
-// 				return res.render("failure", {message: err});
-// 			});
-
-// 			query.on('end', function(){
-
-// 				var i = 0;
-
-// 				async.eachSeries(rows, function(user, callback) {
-
-// 					purchases = [];
-				   
-// 					query = client.query("SELECT * FROM orders, products WHERE user_id='"+user.id+"' AND  ORDER BY product_id OFFSET "+req.session.col+"ROWS FETCH NEXT 10 ROWS ONLY;");
-
-// 					query.on('row', function(row){
-// 						purchases.push(row);
-// 					});
-
-// 					query.on('error', function(err){
-// 						done();
-// 						return res.render("failure", {message: err});
-// 					});
-
-// 					query.on('end', function(){
-
-// 						rows[i].purchases = purchases;
-
-// 						i++;
-
-// 						console.log("success");
-
-// 						callback();
-
-// 					});
-// 				}, function(err){
-
-// 					done();
-// 					return res.render("sales", {categories: categories, rows: rows});
-
-// 				});
-// 			});
-// 		});
-// 	});
-
-
-// } 
-
 exports.viewStates = function(req, res){
 
 	var query;
@@ -297,7 +207,21 @@ exports.view2 = function(req, res){
 			});
 		});
 	});
-} 
+}
+
+exports.doStuff = function(req, res){
+
+	myRender(req, res);
+
+	return 0;
+}
+
+function myRender(req, res){
+
+	console.log("we made it fam");
+
+	return res.render("failure", {message: "we did it"});
+}
 
 
 exports.getsales = function(req, res){
