@@ -37,7 +37,7 @@ exports.getmore = function(req, res){
 		console.log('nothing');
 	}
 
-	return res.redirect("/sales?rows="+req.session.rowType+"&orders="+req.session.sortingType+"&category="+req.session.categoryFilter);
+	return res.redirect("/sales?rows="+req.session.rowType+"&orders="+req.session.sortingType+"&sales="+req.session.categoryFilter);
 }
 
 function viewStates(req, res){
@@ -112,6 +112,11 @@ function viewStates(req, res){
 					});
 
 					query.on("end", function(){
+
+						if(purchases.length == 0){
+
+							purchases = [{"total": 0},{"total": 0},{"total": 0},{"total": 0},{"total": 0},{"total": 0},{"total": 0},{"total": 0},{"total": 0},{"total": 0},];
+						}
 
 						state_in =  {"name": state, "purchases": purchases};
 
