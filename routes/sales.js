@@ -361,7 +361,7 @@ function viewCustomersTopK(req, res){
 									 		+" AND categories.name LIKE '%"+req.session.categoryFilter+"%' GROUP BY products.id"
 									 		+" ORDER BY SUM(orders.price) DESC OFFSET "+req.session.col+" ROWS FETCH NEXT "+products.length+" ROWS ONLY)"
 									 		+" GROUP BY products.id, orders.user_id"
-									 		+" ORDER BY total DESC;");
+									 		+" ORDER BY total ASC;");
 
 						query.on("row", function(row){
 							purchases.push(row);
