@@ -99,7 +99,7 @@ function viewStates(req, res){
 					query = client.query("SELECT '"+state+"' as state, products.id as product," 
 										+" SUM(CASE WHEN products.id = orders.product_id THEN orders.price ELSE 0 END) as total"
 										+" FROM orders, products, users "
-										+" WHERE users.state = '"+state+"' AND users.id = orders.user_id AND products.id IN (SELECT products.id FROM products, categories WHERE categories.id = products.category_id AND categories.name LIKE '%"+req.session.categoryFilter+"%' ORDER BY name OFFSET "+req.session.col+" ROWS FETCH NEXT "+products.length+" ROWS ONLY)"
+										+" WHERE users.state = '"+state+"' AND users.id = orders.user_id AND products.id IN (SELECT products.id FROM products, categories WHERE categories.id = products.category_id AND categories.name LIKE '%"+req.session.categoryFilter+"%' ORDER BY products.name OFFSET "+req.session.col+" ROWS FETCH NEXT "+products.length+" ROWS ONLY)"
 										+" GROUP BY products.id order by products.name ASC;");
 
 					query.on("row", function(row){
@@ -115,7 +115,7 @@ function viewStates(req, res){
 
 						if(purchases.length == 0){
 
-							purchases = [{"total": 0},{"total": 0},{"total": 0},{"total": 0},{"total": 0},{"total": 0},{"total": 0},{"total": 0},{"total": 0},{"total": 0},];
+							purchases = Array(products.length).fill({"total": 0});
 						}
 
 						state_in =  {"name": state, "purchases": purchases};
@@ -229,7 +229,7 @@ function viewCustomers(req, res){
 
 							if(purchases.length == 0){
 
-								//purchases = Array(products.length).fill({"total": 0});
+								purchases = Array(products.length).fill({"total": 0});
 							}
 
 							users[i].purchases = purchases;
