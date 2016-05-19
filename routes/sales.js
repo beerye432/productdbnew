@@ -122,8 +122,6 @@ function viewStates(req, res){
 
 						users[i] = state_in;
 
-						console.log(i + " " + users[i].purchases);
-
 						i++;
 
 						purchases = [];
@@ -211,8 +209,6 @@ function viewCustomers(req, res){
 
 					async.each(users, function(user, callback){
 
-						console.log(products);
-
 						query = client.query("SELECT orders.user_id as user, products.id as product,"
 									 		+"SUM(CASE WHEN products.id = orders.product_id THEN orders.price ELSE 0 END) AS total"
 									 		+" FROM orders, products"
@@ -233,7 +229,7 @@ function viewCustomers(req, res){
 
 							if(purchases.length == 0){
 
-								purchases = Array(products.length).fill({"total": 0});
+								//purchases = Array(products.length).fill({"total": 0});
 							}
 
 							users[i].purchases = purchases;
