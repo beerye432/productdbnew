@@ -322,14 +322,14 @@ function viewCustomersTopK(req, res){
 			query.on("end", function(err){
 
 				//get users and their totals
-				query = client.query("SELECT users.id, SUM(orders.price) as total FROM users, orders"+
+				query = client.query("SELECT users.id, users.name as name, SUM(orders.price) as total FROM users, orders"+
 									" WHERE orders.user_id = users.id"+
-									" GROUP BY users.id"+
+									" GROUP BY users.id, users.name"+
 									" UNION ALL"+
-									" SELECT u.id, 0 AS total"+
+									" SELECT u.id as id, u.name as name, 0 AS total"+
 									" FROM users u, orders o"+
 									" WHERE NOT EXISTS (SELECT * FROM orders, users WHERE u.id = orders.user_id)"+
-									" GROUP BY u.id"+
+									" GROUP BY u.id, u.name"+
 									" ORDER BY total DESC"+
 									" OFFSET "+req.session.row+" ROWS"+
 									" FETCH NEXT 20 ROWS ONLY;");
