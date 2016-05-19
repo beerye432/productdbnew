@@ -377,7 +377,7 @@ function viewCustomersTopK(req, res){
 
 							if(purchases.length == 0){
 
-								purchases = Array(products.length).fill({"total": 0});
+								//purchases = Array(products.length).fill({"total": 0});
 							}
 
 							users[i].purchases = purchases;
