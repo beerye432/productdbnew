@@ -295,7 +295,7 @@ function viewCustomersTopK(req, res){
 
 		query.on("end", function(){
 
-			query = client.query("SELECT products.name, SUM(orders.price) AS total"+
+			query = client.query("SELECT products.name as name, SUM(orders.price) AS total"+
 								" FROM products, orders, categories"+
 								" WHERE orders.product_id = products.id AND categories.id = products.category_id"+
 								" AND categories.name LIKE '%"+req.session.categoryFilter+"%'"+
