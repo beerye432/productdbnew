@@ -322,7 +322,7 @@ function viewCustomersTopK(req, res){
 			query.on("end", function(err){
 
 				//get users and their totals
-				query = client.query("SELECT users.id, users.name as name, SUM(orders.price) as total FROM users, orders"+
+				query = client.query("SELECT users.id as id, users.name as name, SUM(orders.price) as total FROM users, orders"+
 									" WHERE orders.user_id = users.id"+
 									" GROUP BY users.id, users.name"+
 									" UNION ALL"+
