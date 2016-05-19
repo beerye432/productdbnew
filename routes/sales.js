@@ -26,6 +26,8 @@ exports.getSales = function(req, res){
 	else{
 		viewStates(req, res);
 	}
+
+	return 0;
 }
 
 //this function handles getting more rows and columns
@@ -377,7 +379,7 @@ function viewCustomersTopK(req, res){
 
 							if(purchases.length == 0){
 
-								//purchases = Array(products.length).fill({"total": 0});
+								purchases = Array(products.length).fill({"total": 0});
 							}
 
 							users[i].purchases = purchases;
