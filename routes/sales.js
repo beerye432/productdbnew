@@ -99,7 +99,7 @@ function viewStates(req, res){
 					query = client.query("SELECT '"+state+"' as state, products.id as product," 
 										+" SUM(CASE WHEN products.id = orders.product_id THEN orders.price ELSE 0 END) as total"
 										+" FROM orders, products, users "
-										+" WHERE users.state = '"+state+"' AND users.id = orders.user_id AND products.id IN (SELECT products.id from products ORDER BY name OFFSET "+req.session.col+" ROWS fetch next 10 rows only)"
+										+" WHERE users.state = '"+state+"' AND users.id = orders.user_id AND products.id IN (SELECT products.id FROM products, categories WHERE categories.id = products.category_id AND categories.name LIKE '%"+req.session.categoryFilter+"%' ORDER BY name OFFSET "+req.session.col+" ROWS FETCH NEXT "+products.length+" ROWS ONLY)"
 										+" GROUP BY products.id order by products.name ASC;");
 
 					query.on("row", function(row){
@@ -216,7 +216,7 @@ function viewCustomers(req, res){
 						query = client.query("SELECT orders.user_id as user, products.id as product,"
 									 		+"SUM(CASE WHEN products.id = orders.product_id THEN orders.price ELSE 0 END) AS total"
 									 		+" FROM orders, products"
-									 		+" WHERE orders.user_id = "+user.id+" AND products.id IN (SELECT products.id FROM products ORDER BY name OFFSET "+req.session.col+" ROWS FETCH NEXT "+products.length+" ROWS ONLY)"
+									 		+" WHERE orders.user_id = "+user.id+" AND products.id IN (SELECT products.id FROM products, categories WHERE categories.id = products.category_id AND categories.name LIKE '%"+req.session.categoryFilter+"%' ORDER BY name OFFSET "+req.session.col+" ROWS FETCH NEXT "+products.length+" ROWS ONLY)"
 									 		+" GROUP BY products.id, orders.user_id"
 									 		+" ORDER BY products.name ASC;");
 
@@ -237,8 +237,6 @@ function viewCustomers(req, res){
 							}
 
 							users[i].purchases = purchases;
-
-							console.log(i + " " + users[i].purchases);
 
 							i++;
 
