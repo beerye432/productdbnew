@@ -306,11 +306,11 @@ function viewCustomersTopK(req, res){
 								" SELECT p.name, 0 AS total"+
 								" FROM products p, categories c"+ 
 								" WHERE NOT EXISTS(SELECT * FROM orders, products WHERE p.id = orders.product_id)"+
-								" AND c.id = p.category_id AND c.name LIKE '%"+req.session.categoryFilter+"%')"+
+								" AND c.id = p.category_id AND c.name LIKE '%"+req.session.categoryFilter+"%'"+
 								" GROUP BY p.name"+
 								" ORDER BY total DESC"+
 								" OFFSET "+req.session.col+" ROWS"+
-								" FETCH NEXT 10 ROWS ONLY");
+								" FETCH NEXT 10 ROWS ONLY;");
 
 
 			query.on("row", function(row){
@@ -325,7 +325,7 @@ function viewCustomersTopK(req, res){
 			query.on("end", function(err){
 
 				//get users and their totals
-				query = client.query("SELECT users.name, sum(orders.price) as total from users, orders"+
+				query = client.query("SELECT users.name, SUM(orders.price) as total from users, orders"+
 									" WHERE orders.user_id = users.id"+
 									" GROUP BY users.name"+
 									" UNION ALL"+
@@ -359,7 +359,7 @@ function viewCustomersTopK(req, res){
 									 		+" AND products.id IN"
 									 		+" (SELECT products.id, FROM products, orders"
 									 		+" WHERE orders.product_id = products.id AND categories.id = products.category_id"
-									 		+" AND categories.name LIKE '%"+req.session.categoryFilter+"%'GROUP BY products.id"
+									 		+" AND categories.name LIKE '%"+req.session.categoryFilter+"%' GROUP BY products.id"
 									 		+" ORDER BY SUM(orders.price) DESC OFFSET "+req.session.col+" ROWS FETCH NEXT "+products.length+" ROWS ONLY)"
 									 		+" GROUP BY products.id, orders.user_id"
 									 		+" ORDER BY total DESC;");
