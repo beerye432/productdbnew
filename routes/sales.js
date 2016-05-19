@@ -319,13 +319,13 @@ function viewCustomersTopK(req, res){
 
 			query.on("error", function(err){
 				done();
-				return res.render("failure", {message: err});
+				return res.render("failure", {message: err+" 322"});
 			});
 
 			query.on("end", function(err){
 
 				//get users and their totals
-				query = client.query("SELECT users.name, SUM(orders.price) as total from users, orders"+
+				query = client.query("SELECT users.name, SUM(orders.price) as total FROM users, orders"+
 									" WHERE orders.user_id = users.id"+
 									" GROUP BY users.name"+
 									" UNION ALL"+
@@ -343,7 +343,7 @@ function viewCustomersTopK(req, res){
 
 				query.on("error", function(err){
 					done();
-					return res.render("failure", {message: err});
+					return res.render("failure", {message: err+" 346"});
 				});
 
 				query.on("end", function(){
@@ -370,7 +370,7 @@ function viewCustomersTopK(req, res){
 
 						query.on("error", function(err){
 							done();
-							return res.render("failure", {message: err});
+							return res.render("failure", {message: err+" 373"});
 						});
 
 						query.on("end", function(){
