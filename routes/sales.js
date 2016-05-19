@@ -214,7 +214,7 @@ function viewCustomers(req, res){
 						query = client.query("SELECT orders.user_id as user, products.id as product,"
 									 		+"SUM(CASE WHEN products.id = orders.product_id THEN orders.price ELSE 0 END) AS total"
 									 		+" FROM orders, products"
-									 		+" WHERE orders.user_id = "+user.id+" AND products.id IN (SELECT products.id FROM products ORDER BY name OFFSET "+req.session.col+" ROWS FETCH NEXT 10 ROWS ONLY)"
+									 		+" WHERE orders.user_id = "+user.id+" AND products.id IN (SELECT products.id FROM products ORDER BY name OFFSET "+req.session.col+" ROWS FETCH NEXT "+products.length+" ROWS ONLY)"
 									 		+" GROUP BY products.id, orders.user_id"
 									 		+" ORDER BY products.name ASC;");
 
