@@ -14,7 +14,7 @@ exports.getSales = function(req, res){
 
 	if(rows == "c"){
 		if(sorting == "a"){
-			viewCustomersC(req, res);
+			viewCustomers(req, res);
 		}
 		else if(sorting == "t"){
 			viewCustomersTopK(req, res);
