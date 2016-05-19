@@ -180,7 +180,7 @@ function viewCustomers(req, res){
 		query.on("end", function(){
 
 			//get appropriate 10 products, ordered by name
-			query = client.query("SELECT products.id as id, products.name as name FROM products, categories WHERE categories.id = products.category_id AND categories.name LIKE '%"+req.session.categoryFilter+"%' ORDER BY name OFFSET "+req.session.col+"ROWS FETCH NEXT 10 ROWS ONLY;");
+			query = client.query("SELECT products.id as id, products.name as name FROM products, categories WHERE categories.id = products.category_id AND categories.name LIKE '%"+req.session.categoryFilter+"%' ORDER BY products.name OFFSET "+req.session.col+"ROWS FETCH NEXT 10 ROWS ONLY;");
 
 			query.on("row", function(row){
 				products.push(row);
@@ -210,6 +210,8 @@ function viewCustomers(req, res){
 					i = 0; 
 
 					async.each(users, function(user, callback){
+
+						console.log(products);
 
 						query = client.query("SELECT orders.user_id as user, products.id as product,"
 									 		+"SUM(CASE WHEN products.id = orders.product_id THEN orders.price ELSE 0 END) AS total"
