@@ -345,6 +345,8 @@ function viewCustomersTopK(req, res){
 
 				query.on("end", function(){
 
+					console.log(products);
+
 					i = 0; 
 
 					async.each(users, function(user, callback){
