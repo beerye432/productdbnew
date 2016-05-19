@@ -79,7 +79,7 @@ function viewStates(req, res){
 		query.on("end", function(){
 
 			//get appropriate 10 products, ordered by name
-			query = client.query("SELECT * FROM products ORDER BY name OFFSET "+req.session.col+"ROWS FETCH NEXT 10 ROWS ONLY;");
+			query = client.query("SELECT products.id as id, products.name as name FROM products, categories WHERE categories.id = products.category_id AND categories.name LIKE '%"+req.session.categoryFilter+"%' ORDER BY name OFFSET "+req.session.col+"ROWS FETCH NEXT 10 ROWS ONLY;");
 
 			query.on("row", function(row){
 				products.push(row);
@@ -180,7 +180,7 @@ function viewCustomers(req, res){
 		query.on("end", function(){
 
 			//get appropriate 10 products, ordered by name
-			query = client.query("SELECT * FROM products ORDER BY name OFFSET "+req.session.col+"ROWS FETCH NEXT 10 ROWS ONLY;");
+			query = client.query("SELECT products.id as id, products.name as name FROM products, categories WHERE categories.id = products.category_id AND categories.name LIKE '%"+req.session.categoryFilter+"%' ORDER BY name OFFSET "+req.session.col+"ROWS FETCH NEXT 10 ROWS ONLY;");
 
 			query.on("row", function(row){
 				products.push(row);
@@ -228,6 +228,11 @@ function viewCustomers(req, res){
 						});
 
 						query.on("end", function(){
+
+							if(purchases.length == 0){
+
+								purchases = [{"total": 0},{"total": 0},{"total": 0},{"total": 0},{"total": 0},{"total": 0},{"total": 0},{"total": 0},{"total": 0},{"total": 0},];
+							}
 
 							users[i].purchases = purchases;
 
