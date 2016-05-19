@@ -357,7 +357,7 @@ function viewCustomersTopK(req, res){
 									 		+" FROM orders, products"
 									 		+" WHERE orders.user_id = "+user.id
 									 		+" AND products.id IN"
-									 		+" (SELECT products.id, FROM products, orders"
+									 		+" (SELECT products.id FROM products, orders"
 									 		+" WHERE orders.product_id = products.id AND categories.id = products.category_id"
 									 		+" AND categories.name LIKE '%"+req.session.categoryFilter+"%' GROUP BY products.id"
 									 		+" ORDER BY SUM(orders.price) DESC OFFSET "+req.session.col+" ROWS FETCH NEXT "+products.length+" ROWS ONLY)"
