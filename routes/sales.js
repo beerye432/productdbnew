@@ -295,20 +295,14 @@ function viewCustomersTopK(req, res){
 
 		query.on("end", function(){
 
-			query = client.query("SELECT products.name as name, SUM(orders.price) AS total"+
-								" FROM products, orders, categories"+
-								" WHERE orders.product_id = products.id AND categories.id = products.category_id"+
-								" AND categories.name LIKE '%"+req.session.categoryFilter+"%'"+
-								" GROUP BY products.name"+
-								" UNION ALL"+
-								" SELECT p.name, 0 AS total"+
-								" FROM products p, categories c"+ 
-								" WHERE NOT EXISTS(SELECT * FROM orders, products WHERE p.id = orders.product_id)"+
-								" AND c.id = p.category_id AND c.name LIKE '%"+req.session.categoryFilter+"%'"+
-								" GROUP BY p.name"+
-								" ORDER BY total DESC"+
+			//get top 10 products and their totals
+			query = client.query("SELECT products.id, products.name, CASE WHEN products.id = orders.product_id THEN SUM(orders.price) ELSE 0 END AS total"+ 
+								" FROM products LEFT OUTER JOIN orders ON products.id = orders.product_id"+
+								" GROUP BY products.id, products.name, orders.product_id"+ 
+								" ORDER by total DESC"+
 								" OFFSET "+req.session.col+" ROWS"+
 								" FETCH NEXT 10 ROWS ONLY;");
+
 
 			query.on("row", function(row){
 				products.push(row);
@@ -322,14 +316,9 @@ function viewCustomersTopK(req, res){
 			query.on("end", function(err){
 
 				//get users and their totals
-				query = client.query("SELECT users.id as id, users.name as name, SUM(orders.price) as total FROM users, orders"+
-									" WHERE orders.user_id = users.id"+
-									" GROUP BY users.id, users.name"+
-									" UNION ALL"+
-									" SELECT u.id as id, u.name as name, 0 AS total"+
-									" FROM users u, orders o"+
-									" WHERE NOT EXISTS (SELECT * FROM orders, users WHERE u.id = orders.user_id)"+
-									" GROUP BY u.id, u.name"+
+				query = client.query("SELECT users.id, users.name, CASE WHEN users.id = orders.user_id THEN SUM(price) ELSE 0 END AS total"+
+									" FROM users LEFT OUTER JOIN orders ON users.id = orders.user_id"+
+									" GROUP BY users.id, users.name, orders.user_id"+
 									" ORDER BY total DESC"+
 									" OFFSET "+req.session.row+" ROWS"+
 									" FETCH NEXT 20 ROWS ONLY;");
@@ -352,14 +341,14 @@ function viewCustomersTopK(req, res){
 					async.each(users, function(user, callback){
 
 						query = client.query("SELECT orders.user_id as user, products.id as product,"
-									 		+"SUM(CASE WHEN products.id = orders.product_id THEN orders.price ELSE 0 END) AS total"
+									 		+" SUM(CASE WHEN products.id = orders.product_id THEN orders.price ELSE 0 END) AS total"
 									 		+" FROM orders, products"
 									 		+" WHERE orders.user_id = "+user.id
 									 		+" AND products.id IN"
-									 		+" (SELECT products.id FROM products, orders, categories"
-									 		+" WHERE orders.product_id = products.id AND categories.id = products.category_id"
-									 		+" AND categories.name LIKE '%"+req.session.categoryFilter+"%' GROUP BY products.id"
-									 		+" ORDER BY SUM(orders.price) DESC OFFSET "+req.session.col+" ROWS FETCH NEXT "+products.length+" ROWS ONLY)"
+									 		+" (SELECT products.id" 
+ 											+" FROM products LEFT OUTER JOIN orders ON products.id = orders.product_id"
+ 											+" GROUP BY products.id"		
+ 											+" ORDER BY CASE WHEN SUM(orders.price) IS NULL THEN 0 ELSE SUM(orders.price) END DESC;)"
 									 		+" GROUP BY products.id, orders.user_id"
 									 		+" ORDER BY total DESC;");
 
@@ -369,17 +358,17 @@ function viewCustomersTopK(req, res){
 
 						query.on("error", function(err){
 							done();
-							return res.render("failure", {message: err});
+							return res.render("failure", {message: err+ " 361"});
 						});
 
 						query.on("end", function(){
 
 							console.log(purchases);
 
-							if(purchases.length == 0){
+							// if(purchases.length == 0){
 
-								purchases = Array(products.length).fill({"total": 0});
-							}
+							// 	purchases = Array(products.length).fill({"total": 0});
+							// }
 
 							users[i].purchases = purchases;
 
