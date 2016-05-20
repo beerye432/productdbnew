@@ -370,7 +370,6 @@ function viewCustomersTopK(req, res){
  											+" OFFSET "+req.session.col+" ROWS"
  											+" FETCH NEXT 10 ROWS ONLY)"
 									 		+" GROUP BY products.id, orders.user_id, orders.product_id, orders.price"
-									 		+" ORDER BY total DESC"
 									 		+" FETCH NEXT "+ products.length+" ROWS ONLY");
 
 						query.on("row", function(row){
@@ -400,7 +399,7 @@ function viewCustomersTopK(req, res){
 							i++;
 
 							new_purchase = [];
-							
+
 							purchases = [];
 
 							callback();
