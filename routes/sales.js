@@ -320,24 +320,24 @@ function viewCustomersTopK(req, res){
 
 				//get users and their totals
 
-				query = client.query("select users.id as id, users.name as name, CASE WHEN orders.product_id IN"+
-				" (select products.id from products left outer join orders on products.id = orders.product_id, categories"+
-					" where categories.id = products.category_id AND categories.name LIKE '%"+req.session.categoryFilter+"%'"+
-					" GROUP BY products.id, orders.product_id order by CASE WHEN SUM(orders.price) is NULL then 0 ELSE sum(orders.price) end)"+
-				" THEN sum(orders.price) else 0 end as total"+
-				" FROM users LEFT OUTER JOIN orders ON users.id = orders.user_id"+
-				" GROUP BY users.id, users.name, orders.product_id"+
-				" ORDER by total desc"+
-				" offset "+req.session.row+" ROWS"+
-				" FETCH NEXT 20 ROWS ONLY;");
+				// query = client.query("select users.id as id, users.name as name, CASE WHEN orders.product_id IN"+
+				// " (select products.id from products left outer join orders on products.id = orders.product_id, categories"+
+				// 	" where categories.id = products.category_id AND categories.name LIKE '%"+req.session.categoryFilter+"%'"+
+				// 	" GROUP BY products.id, orders.product_id order by CASE WHEN SUM(orders.price) is NULL then 0 ELSE sum(orders.price) end)"+
+				// " THEN sum(orders.price) else 0 end as total"+
+				// " FROM users LEFT OUTER JOIN orders ON users.id = orders.user_id"+
+				// " GROUP BY users.id, users.name, orders.product_id"+
+				// " ORDER by total desc"+
+				// " offset "+req.session.row+" ROWS"+
+				// " FETCH NEXT 20 ROWS ONLY;");
 
-				// query = client.query("SELECT users.id as id, users.name as name, CASE WHEN users.id = orders.user_id THEN SUM(orders.price) ELSE 0 END AS total"+
-				// 					" FROM users LEFT OUTER JOIN orders ON users.id = orders.user_id, categories, products"+
-				// 					" WHERE products.id = orders.product_id AND products.category_id = categories.id AND categories.name LIKE '%"+req.session.categoryFilter+"%'"+
-				// 					" GROUP BY users.id, users.name, orders.user_id"+
-				// 					" ORDER BY total DESC"+
-				// 					" OFFSET "+req.session.row+" ROWS"+
-				// 					" FETCH NEXT 20 ROWS ONLY;");
+				query = client.query("SELECT users.id as id, users.name as name, CASE WHEN users.id = orders.user_id THEN SUM(orders.price) ELSE 0 END AS total"+
+									" FROM users LEFT OUTER JOIN orders ON users.id = orders.user_id, categories, products"+
+									" WHERE products.id = orders.product_id AND products.category_id = categories.id AND categories.name LIKE '%"+req.session.categoryFilter+"%'"+
+									" GROUP BY users.id, users.name, orders.user_id"+
+									" ORDER BY total DESC"+
+									" OFFSET "+req.session.row+" ROWS"+
+									" FETCH NEXT 20 ROWS ONLY;");
 
 				query.on("row", function(row){
 					users.push(row);
