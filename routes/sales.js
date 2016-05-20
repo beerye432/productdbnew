@@ -359,11 +359,11 @@ function viewCustomersTopK(req, res){
 
 					async.each(users, function(user, callback){
 
-						async.each(products, function(product, callback1){
+						if(products.length == 0){
+							callback();
+						}
 
-							if(products.length == 0){
-								callback();
-							}
+						async.each(products, function(product, callback1){
 
 							// query = client.query("SELECT orders.user_id as user, products.id as product,"
 							// 		 		+" CASE WHEN products.id = orders.product_id THEN orders.price ELSE 0 END AS total"
