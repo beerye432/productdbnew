@@ -372,7 +372,7 @@ function viewCustomersTopK(req, res){
 									 		+" FETCH NEXT "+ products.length+" ROWS ONLY");
 
 						query.on("row", function(row){
-							purchases.push(row);
+							purchases.push(row); 
 						});
 
 						query.on("error", function(err){
