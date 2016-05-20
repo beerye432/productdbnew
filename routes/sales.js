@@ -177,6 +177,8 @@ function viewCustomers(req, res){
 
 	var users = [];
 
+	var display = [];
+
 	var i = 0;
 
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
@@ -287,6 +289,8 @@ function viewCustomersTopK(req, res){
 	var products = [];
 
 	var users = [];
+
+	var display = [];
 
 	var i = 0;
 
