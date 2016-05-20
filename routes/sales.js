@@ -391,6 +391,8 @@ function viewCustomersTopK(req, res){
 								purchases = Array(products.length).fill({"total": 0});
 							}
 
+							console.log(purchases);
+
 							users[i].purchases = purchases;
 
 							i++;
