@@ -350,7 +350,7 @@ function viewCustomersTopK(req, res){
 									 		+" (SELECT products.id" 
  											+" FROM products LEFT OUTER JOIN orders ON products.id = orders.product_id"
  											+" GROUP BY products.id"		
- 											+" ORDER BY CASE WHEN SUM(orders.price) IS NULL THEN 0 ELSE SUM(orders.price) END DESC;)"
+ 											+" ORDER BY CASE WHEN SUM(orders.price) IS NULL THEN 0 ELSE SUM(orders.price) END DESC)"
 									 		+" GROUP BY products.id, orders.user_id"
 									 		+" ORDER BY total DESC;");
 
