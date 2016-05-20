@@ -296,7 +296,7 @@ function viewCustomersTopK(req, res){
 		query.on("end", function(){
 
 			//get top 10 products and their totals
-			query = client.query("SELECT products.id, products.name, CASE WHEN products.id = orders.product_id THEN SUM(orders.price) ELSE 0 END AS total"+ 
+			query = client.query("SELECT products.id as id, products.name as name, CASE WHEN products.id = orders.product_id THEN SUM(orders.price) ELSE 0 END AS total"+ 
 								" FROM products LEFT OUTER JOIN orders ON products.id = orders.product_id"+
 								" GROUP BY products.id, products.name, orders.product_id"+ 
 								" ORDER by total DESC"+
@@ -315,8 +315,10 @@ function viewCustomersTopK(req, res){
 
 			query.on("end", function(err){
 
+				console.log("products: "+ products);
+
 				//get users and their totals
-				query = client.query("SELECT users.id, users.name, CASE WHEN users.id = orders.user_id THEN SUM(price) ELSE 0 END AS total"+
+				query = client.query("SELECT users.id as id, users.name as name, CASE WHEN users.id = orders.user_id THEN SUM(price) ELSE 0 END AS total"+
 									" FROM users LEFT OUTER JOIN orders ON users.id = orders.user_id"+
 									" GROUP BY users.id, users.name, orders.user_id"+
 									" ORDER BY total DESC"+
@@ -334,7 +336,7 @@ function viewCustomersTopK(req, res){
 
 				query.on("end", function(){
 
-					console.log(users);
+					console.log("users: " + users);
 
 					i = 0; 
 
