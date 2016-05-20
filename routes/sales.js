@@ -365,12 +365,10 @@ function viewCustomersTopK(req, res){
 
 						query.on("end", function(){
 
-							console.log(purchases);
+							if(purchases.length == 0){
 
-							// if(purchases.length == 0){
-
-							// 	purchases = Array(products.length).fill({"total": 0});
-							// }
+								purchases = Array(products.length).fill({"total": 0});
+							}
 
 							users[i].purchases = purchases;
 
