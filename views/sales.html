@@ -82,7 +82,17 @@
 
 		<script>
 
-		 console.log(JSON.stringify(rowNum));
+
+		$.get("/getNums", function(response){
+
+			console.log(response);
+
+			if(response.row > 0 || response.col > 0){
+
+				$("#optionsform").css("display", "none");
+			}
+
+		});
 
 		<!--
 
