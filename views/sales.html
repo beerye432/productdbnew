@@ -50,6 +50,15 @@
 				</form>
 				{{/if}}
 			{{/if}}
+
+			{{#unless users}}
+				{{#unless products}}
+					<form id = "more" action = "/getmore" method = "post">
+						<button type="submit" name="reset" value="reset">Reset Table</button>
+					</form>
+				{{/unless}}
+			{{/unless}}
+			
 		</div>
 
 		<div id = "salestable">
@@ -94,7 +103,7 @@
 				}
 
 			});
-		}
+		});
 
 		<!--
 
