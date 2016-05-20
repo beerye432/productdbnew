@@ -336,9 +336,9 @@ function viewCustomersTopK(req, res){
 									" WHERE products.id = orders.product_id AND products.category_id = categories.id AND categories.name LIKE '%"+req.session.categoryFilter+"%'"+
 									" GROUP BY users.id, users.name, orders.user_id"+
 									" UNION "+
-									" SELECT u.id as id, u.name as name, 0 as total"+
-									" FROM users u "+
-									" WHERE NOT EXISTS(SELECT orders.id from orders, products, categories where orders.user_id = u.id AND orders.product_id = products.id AND categories.id = products.category_id AND categories.name LIKE '%"+req.session.categoryFilter+"%')"+
+									" SELECT users.id as id, users.name as name, 0 as total"+
+									" FROM users "+
+									" WHERE NOT EXISTS(SELECT orders.id from orders, products, categories where orders.user_id = users.id AND orders.product_id = products.id AND categories.id = products.category_id AND categories.name LIKE '%"+req.session.categoryFilter+"%')"+
 									" GROUP BY users.id, users.name"+
 									" ORDER BY total DESC"+
 									" OFFSET "+req.session.row+" ROWS"+
