@@ -297,7 +297,8 @@ function viewCustomersTopK(req, res){
 
 			//get top 10 products and their totals
 			query = client.query("SELECT products.id as id, products.name as name, CASE WHEN products.id = orders.product_id THEN SUM(orders.price) ELSE 0 END AS total"+ 
-								" FROM products LEFT OUTER JOIN orders ON products.id = orders.product_id"+
+								" FROM products LEFT OUTER JOIN orders ON products.id = orders.product_id, categories"+
+								" WHERE categories.id = products.category_id AND categories.name LIKE '%"+req.session.categoryFilter+"%'"+
 								" GROUP BY products.id, products.name, orders.product_id"+ 
 								" ORDER by total DESC"+
 								" OFFSET "+req.session.col+" ROWS"+
@@ -319,7 +320,8 @@ function viewCustomersTopK(req, res){
 
 				//get users and their totals
 				query = client.query("SELECT users.id as id, users.name as name, CASE WHEN users.id = orders.user_id THEN SUM(price) ELSE 0 END AS total"+
-									" FROM users LEFT OUTER JOIN orders ON users.id = orders.user_id"+
+									" FROM users LEFT OUTER JOIN orders ON users.id = orders.user_id, categories, products"+
+									" WHERE products.id = orders.product_id AND products.category_id = categories.id AND categories.name LIKE '%"+req.sesison.categoryFilter+"%'"+
 									" GROUP BY users.id, users.name, orders.user_id"+
 									" ORDER BY total DESC"+
 									" OFFSET "+req.session.row+" ROWS"+
@@ -348,11 +350,13 @@ function viewCustomersTopK(req, res){
 									 		+" WHERE orders.user_id = "+user.id
 									 		+" AND products.id IN"
 									 		+" (SELECT products.id" 
- 											+" FROM products LEFT OUTER JOIN orders ON products.id = orders.product_id"
+ 											+" FROM products LEFT OUTER JOIN orders ON products.id = orders.product_id, categories"
+ 											+" WHERE categories.id = products.category_id AND categories.name LIKE '%"+req.session.categoryFilter+"%'"
  											+" GROUP BY products.id"		
  											+" ORDER BY CASE WHEN SUM(orders.price) IS NULL THEN 0 ELSE SUM(orders.price) END DESC)"
 									 		+" GROUP BY products.id, orders.user_id"
-									 		+" ORDER BY total DESC;");
+									 		+" ORDER BY total DESC"
+									 		+" FETCH NEXT "+ products.length+" ROWS ONLY");
 
 						query.on("row", function(row){
 							purchases.push(row);
