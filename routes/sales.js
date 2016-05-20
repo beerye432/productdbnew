@@ -279,6 +279,8 @@ function viewCustomersTopK(req, res){
 
 	var i = 0;
 
+	console.log(req.session.col);
+
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 		
 		//categories
@@ -315,8 +317,6 @@ function viewCustomersTopK(req, res){
 			});
 
 			query.on("end", function(err){
-
-				console.log("products: " + products);
 
 				//get users and their totals
 
@@ -418,6 +418,8 @@ function viewCustomersTopK(req, res){
 						});
 
 					}, function(err){ //done with all users
+
+						done();
 
 						return res.render("sales", {categories: categories, products: products, users: users});
 					});
