@@ -384,17 +384,23 @@ function viewCustomersTopK(req, res){
 
 						query.on("end", function(){
 
-							if(purchases.length == 0){
+							if(purchases.length < products.length){
 
-								purchases = Array(products.length).fill({"total": 0});
+								var new_purchase = purchases.concat(Array(products.length-purchases.length).fill({"total": 0}));
+
+								users[i].purchases = new_purchase;
+
+								new_purchase = [];
 							}
+							else{
 
-							console.log(purchases);
-
-							users[i].purchases = purchases;
+								users[i].purchases = purchases;
+							}
 
 							i++;
 
+							new_purchase = [];
+							
 							purchases = [];
 
 							callback();
