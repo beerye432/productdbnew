@@ -15,29 +15,32 @@
 
 		<div id = "options">
 
-			<form id = "optionsform" action = "/sales" method = "get">
 
-				<label for = "rows"> Row Options:</label>
-				<select name = "rows">
-					<option value = "c" selected = "selected">Customers</option>
-					<option value = "s">States</option>
-				</select>
-				<label for = "orders"> Order Options:</label>
-				<select name = "orders">
-					<option value = "a" selected="selected">Alphabetic</option>
-					<option value = "t"> Top-K </option>
-				</select>
-				<label for = "sales"> Category Options:</label>
-				<select name = "sales">
-					<option value = "">All Categories</option>
-					{{#each categories}}
-						<option>{{name}}</option>
-					{{/each}}
-				</select>
+			{{#if display}}
+				<form id = "optionsform" action = "/sales" method = "get">
 
-				<input type = "submit" value = "Run Query">
+					<label for = "rows"> Row Options:</label>
+					<select name = "rows">
+						<option value = "c" selected = "selected">Customers</option>
+						<option value = "s">States</option>
+					</select>
+					<label for = "orders"> Order Options:</label>
+					<select name = "orders">
+						<option value = "a" selected="selected">Alphabetic</option>
+						<option value = "t"> Top-K </option>
+					</select>
+					<label for = "sales"> Category Options:</label>
+					<select name = "sales">
+						<option value = "">All Categories</option>
+						{{#each categories}}
+							<option>{{name}}</option>
+						{{/each}}
+					</select>
 
-			</form>
+					<input type = "submit" value = "Run Query">
+
+				</form>
+			{{/if}}
 
 			{{#if users}}
 				{{#if products}}
@@ -52,13 +55,17 @@
 			{{/if}}
 
 			{{#unless users}}
-				{{#unless products}}
-					<form id = "more" action = "/getmore" method = "post">
-						<button type="submit" name="reset" value="reset">Reset Table</button>
-					</form>
-				{{/unless}}
+				<form id = "more" action = "/getmore" method = "post">
+					<button type="submit" name="reset" value="reset">Reset Table</button>
+				</form>
 			{{/unless}}
-			
+
+			{{#unless products}}
+				<form id = "more" action = "/getmore" method = "post">
+					<button type="submit" name="reset" value="reset">Reset Table</button>
+				</form>
+			{{/unless}}
+
 		</div>
 
 		<div id = "salestable">
@@ -88,42 +95,6 @@
 
 		<script src="//code.jquery.com/jquery-1.10.2.js"></script>
 		<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-
-		<script>
-
-		$(function() {
-
-			$.get("/getNums", function(response){
-
-				console.log(response);
-
-				if(response.row > 0 || response.col > 0){
-
-					$("#optionsform").css("display", "none");
-				}
-
-			});
-		});
-
-		<!--
-
-		// $(function() {
-
-		// 	$.get("/getname", function(response){
-		// 		$("#name").append("<h1>"+response.name+"</h1>");
-		// 		$("#name").append("<a href = '/buycart'>Buy Cart</a>");
-
-		// 		if(response.role == "o"){
-		// 			$('#links').append("<p>Owner Pages:</p>");
-		// 			$('#links').prepend("<a href = '/products?cat=&product='>Products</a>");
-		// 			$('#links').prepend("<a href = '/categories'>Categories</a>");
-		// 		}
-		// 	});
-		// });
-
-		-->
-
-		</script>
 
 	</body>
 </html>

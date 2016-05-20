@@ -72,6 +72,8 @@ function viewStates(req, res){
 
 	var users = [];	
 
+	var display = [];
+
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
 		//categories
@@ -145,7 +147,13 @@ function viewStates(req, res){
 
 					done();
 
-					return res.render("sales", {categories: categories, products: products, users: users});
+					display = [];
+
+					if(req.session.row == 0 && req.session.col == 0){
+						display.push(1);
+					}
+
+					return res.render("sales", {categories: categories, products: products, users: users, display: display});
 
 				});
 
@@ -255,8 +263,11 @@ function viewCustomers(req, res){
 
 						done();
 
-						return res.render("sales", {categories: categories, products: products, users: users});
+						if(req.session.row == 0 && req.session.col == 0){
+							display.push(1);
+						}
 
+						return res.render("sales", {categories: categories, products: products, users: users, display: display});
 					});
 				});
 			});
@@ -417,7 +428,11 @@ function viewCustomersTopK(req, res){
 
 						done();
 
-						return res.render("sales", {categories: categories, products: products, users: users});
+						if(req.session.row == 0 && req.session.col == 0){
+							display.push(1);
+						}
+
+						return res.render("sales", {categories: categories, products: products, users: users, display: display});
 					});
 				});
 			});
