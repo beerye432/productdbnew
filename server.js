@@ -98,7 +98,7 @@ app.get("/getname", function(req, res){
   res.json({name: req.session.user});
 });
 
-app.get("/getNums", function(res, res){
+app.get("/getNums", function(req, res){
   res.json({row: req.session.row, col: req.session.col});
 });
 
