@@ -338,7 +338,7 @@ function viewCustomersTopK(req, res){
 									" SELECT users.id as id, users.name as name, 0 as total"+
 									" FROM users u "+
 									" WHERE NOT EXISTS(SELECT orders.id from orders, products, categories where orders.user_id = u.id AND orders.product_id = products.id AND categories.id = products.category_id AND categories.name LIKE '%"+req.session.categoryFilter+"%')"+
-									" GROUP BY users.id, users.name, orders.user_id"+
+									" GROUP BY id, name, orders.user_id"+
 									" ORDER BY total DESC"+
 									" OFFSET "+req.session.row+" ROWS"+
 									" FETCH NEXT 20 ROWS ONLY;");
@@ -349,7 +349,7 @@ function viewCustomersTopK(req, res){
 
 				query.on("error", function(err){
 					done();
-					return res.render("failure", {message: err});
+					return res.render("failure", {message: err + " 352"});
 				});
 
 				query.on("end", function(){
