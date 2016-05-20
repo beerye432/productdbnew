@@ -100,7 +100,7 @@ app.get("/getname", function(req, res){
 
 app.get("/getNums", function(res, res){
   res.json({row: req.session.row, col: req.session.col});
-})
+});
 
 app.get("/getuser", function(req, res){
   res.json({role: req.session.role});

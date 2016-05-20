@@ -39,8 +39,8 @@
 
 			</form>
 
-			{{#unless users}}
-				{{#unless products}}
+			{{#if users}}
+				{{#if products}}
 				<form id = "more" action = "/getmore" method = "post">
 
 					<button type="submit" name="row" value="row">Get next 20 Rows</button>
@@ -48,8 +48,8 @@
 					<button type="submit" name="reset" value="reset">Reset Table</button>
 
 				</form>
-				{{/unless}}
-			{{/unless}}
+				{{/if}}
+			{{/if}}
 		</div>
 
 		<div id = "salestable">
@@ -82,17 +82,19 @@
 
 		<script>
 
+		$(function() {
 
-		$.get("/getNums", function(response){
+			$.get("/getNums", function(response){
 
-			console.log(response);
+				console.log(response);
 
-			if(response.row > 0 || response.col > 0){
+				if(response.row > 0 || response.col > 0){
 
-				$("#optionsform").css("display", "none");
-			}
+					$("#optionsform").css("display", "none");
+				}
 
-		});
+			});
+		}
 
 		<!--
 
