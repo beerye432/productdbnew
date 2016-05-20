@@ -334,6 +334,10 @@ function viewCustomersTopK(req, res){
 				query = client.query("SELECT users.id as id, users.name as name, CASE WHEN users.id = orders.user_id THEN SUM(orders.price) ELSE 0 END AS total"+
 									" FROM users LEFT OUTER JOIN orders ON users.id = orders.user_id, categories, products"+
 									" WHERE products.id = orders.product_id AND products.category_id = categories.id AND categories.name LIKE '%"+req.session.categoryFilter+"%'"+
+									" UNION "+
+									" SELECT users.id as id, users.name as name, 0 as total"+
+									" FROM users u "+
+									" WHERE NOT EXISTS(SELECT orders.id from orders, products, categories where orders.user_id = u.id AND orders.product_id = products.id AND categories.id = products.category_id AND categories.name LIKE '%"+req.session.categoryFilter+"%')"+
 									" GROUP BY users.id, users.name, orders.user_id"+
 									" ORDER BY total DESC"+
 									" OFFSET "+req.session.row+" ROWS"+
