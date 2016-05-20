@@ -145,7 +145,7 @@ function viewStates(req, res){
 
 					done();
 
-					return res.render("sales", {categories: categories, products: products, users: users});
+					return res.render("sales", {categories: categories, products: products, users: users, rowNum: req.session.row, colNum: req.session.col});
 
 				});
 
@@ -255,7 +255,7 @@ function viewCustomers(req, res){
 
 						done();
 
-						return res.render("sales", {categories: categories, products: products, users: users});
+						return res.render("sales", {categories: categories, products: products, users: users, rowNum: req.session.row, colNum: req.session.col});
 
 					});
 				});
@@ -417,7 +417,7 @@ function viewCustomersTopK(req, res){
 
 						done();
 
-						return res.render("sales", {categories: categories, products: products, users: users});
+						return res.render("sales", {categories: categories, products: products, users: users, rowNum: req.session.row, colNum: req.session.col});
 					});
 				});
 			});
