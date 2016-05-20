@@ -361,10 +361,6 @@ function viewCustomersTopK(req, res){
 
 					async.each(users, function(user, callback){
 
-						if(products.length == 0){
-							callback();
-						}
-
 						async.each(products, function(product, callback1){
 
 							// query = client.query("SELECT orders.user_id as user, products.id as product,"
