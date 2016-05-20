@@ -367,7 +367,7 @@ function viewCustomersTopK(req, res){
  											+" WHERE categories.id = products.category_id AND categories.name LIKE '%"+req.session.categoryFilter+"%'"
  											+" GROUP BY products.id"		
  											+" ORDER BY CASE WHEN SUM(orders.price) IS NULL THEN 0 ELSE SUM(orders.price) END DESC)"
-									 		+" GROUP BY products.id, orders.user_id, orders.product_id"
+									 		+" GROUP BY products.id, orders.user_id, orders.product_id, orders.price"
 									 		+" ORDER BY total DESC"
 									 		+" FETCH NEXT "+ products.length+" ROWS ONLY");
 
