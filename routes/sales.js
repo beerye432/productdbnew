@@ -357,60 +357,61 @@ function viewCustomersTopK(req, res){
 
 					async.each(users, function(user, callback){
 
-						query = client.query("SELECT orders.user_id as user, products.id as product,"
-									 		+" CASE WHEN products.id = orders.product_id THEN orders.price ELSE 0 END AS total"
-									 		+" FROM orders left outer join products on products.id = orders.product_id"
-									 		+" WHERE orders.user_id = "+user.id
-									 		+" AND products.id IN"
-									 		+" (SELECT products.id" 
- 											+" FROM products LEFT OUTER JOIN orders ON products.id = orders.product_id, categories"
- 											+" WHERE categories.id = products.category_id AND categories.name LIKE '%"+req.session.categoryFilter+"%'"
- 											+" GROUP BY products.id"		
- 											+" ORDER BY CASE WHEN SUM(orders.price) IS NULL THEN 0 ELSE SUM(orders.price) END DESC"
- 											+" OFFSET "+req.session.col+" ROWS"
- 											+" FETCH NEXT 10 ROWS ONLY)"
-									 		+" GROUP BY products.id, orders.user_id, orders.product_id, orders.price"
-									 		+" FETCH NEXT "+ products.length+" ROWS ONLY");
+						async.each(products, function(product, callback1){
 
-						query.on("row", function(row){
-							purchases.push(row); 
-						});
+							// query = client.query("SELECT orders.user_id as user, products.id as product,"
+							// 		 		+" CASE WHEN products.id = orders.product_id THEN orders.price ELSE 0 END AS total"
+							// 		 		+" FROM orders left outer join products on products.id = orders.product_id"
+							// 		 		+" WHERE orders.user_id = "+user.id
+							// 		 		+" AND products.id IN"
+							// 		 		+" (SELECT products.id" 
+ 						// 					+" FROM products LEFT OUTER JOIN orders ON products.id = orders.product_id, categories"
+ 						// 					+" WHERE categories.id = products.category_id AND categories.name LIKE '%"+req.session.categoryFilter+"%'"
+ 						// 					+" GROUP BY products.id"		
+ 						// 					+" ORDER BY CASE WHEN SUM(orders.price) IS NULL THEN 0 ELSE SUM(orders.price) END DESC"
+ 						// 					+" OFFSET "+req.session.col+" ROWS"
+ 						// 					+" FETCH NEXT 10 ROWS ONLY)"
+							// 		 		+" GROUP BY products.id, orders.user_id, orders.product_id, orders.price"
+							// 		 		+" FETCH NEXT "+ products.length+" ROWS ONLY");
 
-						query.on("error", function(err){
-							done();
-							return res.render("failure", {message: err+ " 361"});
-						});
+							query = client.query("SELECT orders.user_id, SUM(orders.price) AS total"+
+												" FROM orders"+
+												" WHERE orders.user_id = "+user.id+" orders.product_id = "+product.id+
+												" GROUP BY orders.user_id"+
+												" UNION "+
+												" SELECT orders.user_id, 0 AS total"+
+												" FROM orders"+
+												" WHERE NOT EXISTS(SELECT * FROM orders WHERE orders.user_id = "+user.id+" orders.product_id = "+product.id+")"+
+												" AND orders.user_id = "+user.id+
+												" GROUP BY orders.user_id;");
 
-						query.on("end", function(){
+							query.on("row", function(row){
+								purchases.push(row); 
+							});
 
-							if(purchases.length < products.length){
+							query.on("error", function(err){
+								done();
+								return res.render("failure", {message: err+ " 361"});
+							});
 
-								var new_purchase = purchases.concat(Array(products.length-purchases.length).fill({"total": 0}));
+							query.on("end", function(){ //done with product
+								callback1();
+							});
 
-								users[i].purchases = new_purchase;
+						}, function(err){ //done with user, associate purchases
 
-								new_purchase = [];
-							}
-							else{
-
-								users[i].purchases = purchases;
-							}
+							users[i].purchases = purchases;
 
 							i++;
-
-							new_purchase = [];
 
 							purchases = [];
 
 							callback();
 						});
 
-					}, function(err){
-
-						done();
+					}, function(err){ //done with all users
 
 						return res.render("sales", {categories: categories, products: products, users: users});
-
 					});
 				});
 			});
