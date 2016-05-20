@@ -359,7 +359,7 @@ function viewCustomersTopK(req, res){
 
 						query = client.query("SELECT orders.user_id as user, products.id as product,"
 									 		+" SUM(CASE WHEN products.id = orders.product_id THEN orders.price ELSE 0 END) AS total"
-									 		+" FROM orders, products"
+									 		+" FROM orders left outer join products on products.id = orders.product_id"
 									 		+" WHERE orders.user_id = "+user.id
 									 		+" AND products.id IN"
 									 		+" (SELECT products.id" 
