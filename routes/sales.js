@@ -381,7 +381,7 @@ function viewCustomersTopK(req, res){
 												" UNION "+
 												" SELECT orders.user_id, 0 AS total"+
 												" FROM orders"+
-												" WHERE NOT EXISTS(SELECT * FROM orders WHERE orders.user_id = "+user.id+" orders.product_id = "+product.id+")"+
+												" WHERE NOT EXISTS(SELECT * FROM orders WHERE orders.user_id = "+user.id+" AND orders.product_id = "+product.id+")"+
 												" AND orders.user_id = "+user.id+
 												" GROUP BY orders.user_id;");
 
