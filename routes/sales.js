@@ -316,8 +316,6 @@ function viewCustomersTopK(req, res){
 
 			query.on("end", function(err){
 
-				console.log("products: "+ products);
-
 				//get users and their totals
 
 				// query = client.query("select users.id as id, users.name as name, CASE WHEN orders.product_id IN"+
@@ -354,8 +352,6 @@ function viewCustomersTopK(req, res){
 				});
 
 				query.on("end", function(){
-
-					console.log("users: " + users);
 
 					i = 0; 
 
