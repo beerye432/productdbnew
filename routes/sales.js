@@ -626,3 +626,39 @@ function viewStatesTopK(req, res){
 		});
 	});
 }
+
+exports.viewSim = function(req, res){
+
+	var results = [];
+
+	pg.connect(process.env.DATABASE_URL, function(err, client, done){
+
+		var query = client.query(" select p1.name as p1, p2.name as p2, (sum((o1.price)*(o2.price)))/(sum(o4.price)*sum(o3.price)) as diff"+//for each set of two products, calculate difference
+								" from orders o1, orders o2, orders o3, orders o4, products p1, products p2, users u1, users u2"+
+								" where o1.user_id = u1.id"+ //o1 and o2 are orders that belong to the two users, and the two products in question, help numerator
+								" AND o2.user_id = u2.id"+
+								" AND o1.product_id = p1.id"+
+								" AND o2.product_id = p2.id"+
+								" AND u1.id = u2.id"+
+								" AND o3.product_id = p1.id"+ //o3 and o4 are orders that belong to two products in question, but no users in particular, help denominator
+								" AND o4.product_id = p2.id"+ 
+								" group by p1.name, p2.name"+ 
+								" order by diff DESC"+ 
+								" OFFSET 0 ROWS"+ 
+								" FETCH NEXT 100 ROWS ONLY;");
+
+		query.on("row", function(row){
+			results.push(row);
+		});
+
+		query.on("error", function(err){
+			done();
+			return res.render("failure", {message: err + " 656"});
+		});
+
+		query.on("end", function(){
+			done();
+			return res.render("similar", {results: results});
+		});
+	});
+}

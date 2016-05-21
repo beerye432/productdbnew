@@ -1,0 +1,33 @@
+<html>
+<head>
+ <link rel = "stylesheet" type = "text/css" href = "/stylesheets/bootstrap.css">
+	<title>Similar Items Page</title>
+</head>
+<body>
+
+		<div id = "salestable">
+
+			<table border = "1">
+
+				<tr> 
+					<th>Product 1</th>
+
+					<th> Product 2</th>
+				</tr>
+
+				{{#each results}}
+					<tr>
+						<td>{{p1}}</td>
+						<td>{{p2}}</td>
+					</tr>
+				{{/each}}
+
+			</table>
+
+		</div>
+
+		<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+		<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+	</body>
+</html>

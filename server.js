@@ -128,6 +128,8 @@ app.get("/browseproducts", auth, router.product.browse);
 
 app.get("/sales", auth, restrict, router.sales.getSales);
 
+app.get("/similar", router.sales.viewSim);
+
 app.post("/validatelogin", function(req, res){
 
   var name = req.body.name;
