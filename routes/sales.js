@@ -517,9 +517,9 @@ function viewStatesTopK(req, res){
 
 						async.each(products, function(product, callback1){
 
-							query = client.query("SELECT state, SUM(orders.price) AS total"+
+							query = client.query("SELECT state as name, SUM(orders.price) AS total"+
 												" FROM orders LEFT OUTER JOIN users ON orders.user_id = users.id"+
-												" WHERE orders.product_id = "+product.id+" AND users.state = "+users.state+
+												" WHERE orders.product_id = "+product.id+" AND users.state = "+users.name+
 												" GROUP BY state;");
 												// " UNION "+
 												// " SELECT state, 0 AS total"+
