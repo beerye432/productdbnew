@@ -76,15 +76,16 @@
 					<th>User</th>
 
 					{{#each products}}
-						<th>{{name}}</th>
+						<th id = "header">{{name}} (${{total}})</th>
 					{{/each}}
 				</tr>
 
 				{{#each users}}
 					<tr>
-						<td>{{name}}</td>
+						<td id = "name">{{name}} (${{total}})</td>
+
 						{{#each this.purchases}}
-							<td>${{this.total}}</td>
+							<td id = "name">${{this.total}}</td>
 						{{/each}}
 					</tr>
 				{{/each}}

@@ -523,12 +523,6 @@ function viewStatesTopK(req, res){
 												" FROM orders LEFT OUTER JOIN users ON orders.user_id = users.id"+
 												" WHERE orders.product_id = "+product.id+" AND users.state = '"+user.name+"'"+
 												" GROUP BY state;");
-												// " UNION "+
-												// " SELECT state, 0 AS total"+
-												// " FROM users"+
-												// " WHERE NOT EXISTS(SELECT * FROM orders WHERE orders.user_id = "+user.id+" AND users.state = "+user.state+")"+
-												// " AND orders.user_id = "+user.id+
-												// " GROUP BY orders.user_id;");
 
 							query.on("row", function(row){
 								r = 1;
@@ -547,7 +541,7 @@ function viewStatesTopK(req, res){
 								}
 
 								r = 0;
-								
+
 								callback1();
 							});
 
