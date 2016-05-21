@@ -10,6 +10,9 @@
 			<table border = "1">
 
 				<tr> 
+
+					<th>#</th>
+
 					<th>Product 1</th>
 
 					<th> Product 2</th>
@@ -17,6 +20,7 @@
 
 				{{#each results}}
 					<tr>
+						{{@index}}
 						<td>{{p1}}</td>
 						<td>{{p2}}</td>
 					</tr>
