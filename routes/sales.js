@@ -62,7 +62,7 @@ function viewStates(req, res){
 
 	var products = [];
 
-	var states = ["AK","AL","AR","AZ","CA","CO","CT","DC","DE","FL","GA","GU","HI","IA","ID", "IL","IN","KS","KY","LA","MA","MD","ME","MH","MI","MN","MO","MS","MT","NC","ND","NE","NH","NJ","NM","NV","NY", "OH","OK","OR","PA","PR","PW","RI","SC","SD","TN","TX","UT","VA","VI","VT","WA","WI","WV","WY"];
+	var states = ["AK","AL","AR","AZ","CA","CO","CT","DC","DE","FL","GA","HI","IA","ID", "IL","IN","KS","KY","LA","MA","MD","ME","MH","MI","MN","MO","MS","MT","NC","ND","NE","NH","NJ","NM","NV","NY", "OH","OK","OR","PA","PR","PW","RI","SC","SD","TN","TX","UT","VA","VI","VT","WA","WI","WV","WY"];
 
 	var states_json = [];
 
@@ -77,7 +77,7 @@ function viewStates(req, res){
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
 		//categories
-		query = client.query("SELECT * FROM categories;");
+		query = client.query("SELECT * FROM categories ORDER BY name;");
 
 		query.on('row', function(row){
 			categories.push(row);
@@ -184,7 +184,7 @@ function viewCustomers(req, res){
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 		
 		//categories
-		query = client.query("SELECT * FROM categories;");
+		query = client.query("SELECT * FROM categories ORDER BY name;");
 
 		query.on('row', function(row){
 			categories.push(row);
@@ -299,7 +299,7 @@ function viewCustomersTopK(req, res){
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 		
 		//categories
-		query = client.query("SELECT * FROM categories;");
+		query = client.query("SELECT * FROM categories ORDER BY name;");
 
 		query.on('row', function(row){
 			categories.push(row);
@@ -333,19 +333,6 @@ function viewCustomersTopK(req, res){
 
 			query.on("end", function(err){
 
-				//get users and their totals
-
-				// query = client.query("select users.id as id, users.name as name, CASE WHEN orders.product_id IN"+
-				// " (select products.id from products left outer join orders on products.id = orders.product_id, categories"+
-				// 	" where categories.id = products.category_id AND categories.name LIKE '%"+req.session.categoryFilter+"%'"+
-				// 	" GROUP BY products.id, orders.product_id order by CASE WHEN SUM(orders.price) is NULL then 0 ELSE sum(orders.price) end)"+
-				// " THEN sum(orders.price) else 0 end as total"+
-				// " FROM users LEFT OUTER JOIN orders ON users.id = orders.user_id"+
-				// " GROUP BY users.id, users.name, orders.product_id"+
-				// " ORDER by total desc"+
-				// " offset "+req.session.row+" ROWS"+
-				// " FETCH NEXT 20 ROWS ONLY;");
-
 				query = client.query("SELECT users.id as id, users.name as name, CASE WHEN users.id = orders.user_id THEN SUM(orders.price) ELSE 0 END AS total"+
 									" FROM users LEFT OUTER JOIN orders ON users.id = orders.user_id, categories, products"+
 									" WHERE products.id = orders.product_id AND products.category_id = categories.id AND categories.name LIKE '%"+req.session.categoryFilter+"%'"+
@@ -378,21 +365,6 @@ function viewCustomersTopK(req, res){
 
 						async.each(products, function(product, callback1){
 
-							// query = client.query("SELECT orders.user_id as user, products.id as product,"
-							// 		 		+" CASE WHEN products.id = orders.product_id THEN orders.price ELSE 0 END AS total"
-							// 		 		+" FROM orders left outer join products on products.id = orders.product_id"
-							// 		 		+" WHERE orders.user_id = "+user.id
-							// 		 		+" AND products.id IN"
-							// 		 		+" (SELECT products.id" 
- 						// 					+" FROM products LEFT OUTER JOIN orders ON products.id = orders.product_id, categories"
- 						// 					+" WHERE categories.id = products.category_id AND categories.name LIKE '%"+req.session.categoryFilter+"%'"
- 						// 					+" GROUP BY products.id"		
- 						// 					+" ORDER BY CASE WHEN SUM(orders.price) IS NULL THEN 0 ELSE SUM(orders.price) END DESC"
- 						// 					+" OFFSET "+req.session.col+" ROWS"
- 						// 					+" FETCH NEXT 10 ROWS ONLY)"
-							// 		 		+" GROUP BY products.id, orders.user_id, orders.product_id, orders.price"
-							// 		 		+" FETCH NEXT "+ products.length+" ROWS ONLY");
-
 							query = client.query("SELECT orders.user_id, SUM(orders.price) AS total"+
 												" FROM orders"+
 												" WHERE orders.user_id = "+user.id+" AND orders.product_id = "+product.id+
@@ -403,6 +375,150 @@ function viewCustomersTopK(req, res){
 												" WHERE NOT EXISTS(SELECT * FROM orders WHERE orders.user_id = "+user.id+" AND orders.product_id = "+product.id+")"+
 												" AND orders.user_id = "+user.id+
 												" GROUP BY orders.user_id;");
+
+							query.on("row", function(row){
+								purchases.push(row); 
+							});
+
+							query.on("error", function(err){
+								done();
+								return res.render("failure", {message: err+ " 361"});
+							});
+
+							query.on("end", function(){ //done with product
+								callback1();
+							});
+
+						}, function(err){ //done with user, associate purchases
+
+							users[i].purchases = purchases;
+
+							i++;
+
+							purchases = [];
+
+							callback();
+						});
+
+					}, function(err){ //done with all users
+
+						done();
+
+						if(req.session.row == 0 && req.session.col == 0){
+							display.push(1);
+						}
+
+						return res.render("sales", {categories: categories, products: products, users: users, display: display});
+					});
+				});
+			});
+		});
+	});
+}
+
+function viewStatesTopK(req, res){
+
+	var query;
+
+	var categories = [];
+
+	var rows = [];
+
+	var purchases = [];
+
+	var products = [];
+
+	var users = [];
+
+	var display = [];
+
+	var states = ["AK","AL","AR","AZ","CA","CO","CT","DC","DE","FL","GA","GU","HI","IA","ID", "IL","IN","KS","KY","LA","MA","MD","ME","MH","MI","MN","MO","MS","MT","NC","ND","NE","NH","NJ","NM","NV","NY", "OH","OK","OR","PA","PR","PW","RI","SC","SD","TN","TX","UT","VA","VI","VT","WA","WI","WV","WY"];
+
+	var states_json = [];
+
+	var i = 0;
+
+	console.log(req.session.col);
+
+	pg.connect(process.env.DATABASE_URL, function(err, client, done){
+		
+		//categories
+		query = client.query("SELECT * FROM categories ORDER BY name;");
+
+		query.on('row', function(row){
+			categories.push(row);
+		});
+
+		query.on("error", function(err){
+			done();
+			return res.render("failure", {message: err});
+		});
+
+		query.on("end", function(){
+
+			//get top 10 products and their totals
+			query = client.query("SELECT products.id as id, products.name as name, CASE WHEN products.id = orders.product_id THEN SUM(orders.price) ELSE 0 END AS total"+ 
+								" FROM products LEFT OUTER JOIN orders ON products.id = orders.product_id, categories"+
+								" WHERE categories.id = products.category_id AND categories.name LIKE '%"+req.session.categoryFilter+"%'"+
+								" GROUP BY products.id, products.name, orders.product_id"+ 
+								" ORDER by total DESC"+
+								" OFFSET "+req.session.col+" ROWS"+
+								" FETCH NEXT 10 ROWS ONLY;");
+
+
+			query.on("row", function(row){
+				products.push(row);
+			});
+
+			query.on("error", function(err){
+				done();
+				return res.render("failure", {message: err});
+			});
+
+			query.on("end", function(err){
+
+				query = client.query("SELECT state as state, CASE WHEN users.state = state THEN sum(orders.price) ELSE 0 END AS total"+
+									 " FROM users LEFT OUTER JOIN orders ON users.id = orders.user_id, categories, products"+ 
+									 " WHERE orders.product_id = products.id AND categories.id = products.category_id AND categories.name LIKE '%"+req.session.categoryFilter+"%'"+
+									 " GROUP BY state"+
+									 " UNION "+
+									 " SELECT state, 0 AS total"+
+									 " FROM users"+ 
+									 " WHERE NOT EXISTS(SELECT * FROM orders, products, categories WHERE users.id = orders.user_id AND orders.product_id = products.id AND products.category_id = categories.id AND categories.name LIKE '%"+req.session.categoryFilter+"%')"+ 
+									 " GROUP BY state;"+
+									 " ORDER BY total DESC"+
+									 " OFFSET "+req.session.row+" ROWS"+
+									 " FETCH NEXT 20 ROWS ONLY;");
+
+				query.on("row", function(row){
+					users.push(row);
+				});
+
+				query.on("error", function(err){
+					done();
+					return res.render("failure", {message: err + " 352"});
+				});
+
+				query.on("end", function(){
+
+					console.log(products);
+
+					i = 0; 
+
+					async.each(users, function(user, callback){
+
+						async.each(products, function(product, callback1){
+
+							query = client.query("SELECT state, SUM(orders.price) AS total"+
+												" FROM orders LEFT OUTER JOIN users ON orders.user_id = users.id"+
+												" WHERE orders.product_id = "+product.id+" AND users.state = "+users.state+
+												" GROUP BY state;");
+												// " UNION "+
+												// " SELECT state, 0 AS total"+
+												// " FROM users"+
+												// " WHERE NOT EXISTS(SELECT * FROM orders WHERE orders.user_id = "+user.id+" AND users.state = "+user.state+")"+
+												// " AND orders.user_id = "+user.id+
+												// " GROUP BY orders.user_id;");
 
 							query.on("row", function(row){
 								purchases.push(row); 
