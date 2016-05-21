@@ -446,6 +446,8 @@ function viewStatesTopK(req, res){
 
 	var i = 0;
 
+	var r = 0;
+
 	console.log(req.session.col);
 
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
@@ -529,6 +531,7 @@ function viewStatesTopK(req, res){
 												// " GROUP BY orders.user_id;");
 
 							query.on("row", function(row){
+								r = 1;
 								purchases.push(row); 
 							});
 
@@ -538,6 +541,13 @@ function viewStatesTopK(req, res){
 							});
 
 							query.on("end", function(){ //done with product
+
+								if(r == 0){
+									purchases.push({name: user.name, total: 0});
+								}
+
+								r = 0;
+								
 								callback1();
 							});
 
