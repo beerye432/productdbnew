@@ -24,7 +24,15 @@ exports.getSales = function(req, res){
 		}
 	}
 	else{
-		viewStates(req, res);
+		if(sorting == "a"){
+			viewStates(req, res);
+		}
+		else if(sorting == "t"){
+			viewStatesTopK(req, res);
+		}
+		else{
+			viewStates(req, res);
+		}
 	}
 
 	return 0;
