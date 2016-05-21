@@ -124,66 +124,87 @@ function viewStates(req, res){
 
 			query.on("end", function(err){
 
-				i = 0;
+				query = client.query("SELECT state as name, CASE WHEN users.state = state THEN sum(orders.price) ELSE 0 END AS total"+
+									 " FROM users LEFT OUTER JOIN orders ON users.id = orders.user_id, categories, products"+ 
+									 " WHERE orders.product_id = products.id AND categories.id = products.category_id AND categories.name LIKE '%"+req.session.categoryFilter+"%'"+
+									 " GROUP BY state"+
+									 " UNION "+
+									 " SELECT state, 0 AS total"+
+									 " FROM users"+ 
+									 " WHERE NOT EXISTS(SELECT * FROM orders, products, categories WHERE users.id = orders.user_id AND orders.product_id = products.id AND products.category_id = categories.id AND categories.name LIKE '%"+req.session.categoryFilter+"%')"+ 
+									 " GROUP BY state"+
+									 " ORDER BY state"+
+									 " OFFSET "+req.session.row+" ROWS"+
+									 " FETCH NEXT 20 ROWS ONLY;");
 
-				var total = 0;
-				
-				async.each(states.slice(req.session.row, req.session.row+20), function(state, callback){
-
-					query = client.query("SELECT '"+state+"' as state, products.id as product," 
-										+" SUM(CASE WHEN products.id = orders.product_id THEN orders.price ELSE 0 END) as total"
-										+" FROM orders, products, users "
-										+" WHERE users.state = '"+state+"' AND users.id = orders.user_id AND products.id IN (SELECT products.id FROM products, categories WHERE categories.id = products.category_id AND categories.name LIKE '%"+req.session.categoryFilter+"%' ORDER BY products.name OFFSET "+req.session.col+" ROWS FETCH NEXT "+products.length+" ROWS ONLY)"
-										+" GROUP BY products.id order by products.name ASC;");
-
-					query.on("row", function(row){
-						total += row.total;
-						purchases.push(row);
-					});
-
-					query.on("error", function(err){
-						done();
-						return res.render("failure", {message: err});
-					});
-
-					query.on("end", function(){
-
-						if(purchases.length == 0){
-
-							purchases = Array(products.length).fill({"total": 0});
-						}
-
-						state_in =  {"name": state, "total": total, "purchases": purchases};
-
-						users[i] = state_in;
-
-						i++;
-
-						purchases = [];
-
-						state_in = {};
-
-						total = 0;
-
-						callback();
-					});
-
-				}, function(err){
-
-					done();
-
-					display = [];
-
-					if(req.session.row == 0 && req.session.col == 0){
-						display.push(1);
-					}
-
-					return res.render("sales", {categories: categories, products: products, users: users, display: display});
-
+				query.on("row", function(row){
+					users.push(row);
 				});
 
-			});
+				query.on("error", function(err){
+					done();
+					return res.render("failure", {message: err + " 352"});
+				});
 
+				query.on("end", function(){
+
+					console.log(products);
+
+					i = 0; 
+
+					async.each(users, function(user, callback){
+
+						async.each(products, function(product, callback1){
+
+							query = client.query("SELECT state as name, SUM(orders.price) AS total"+
+												" FROM orders LEFT OUTER JOIN users ON orders.user_id = users.id"+
+												" WHERE orders.product_id = "+product.id+" AND users.state = '"+user.name+"'"+
+												" GROUP BY state;");
+
+							query.on("row", function(row){
+								r = 1;
+								purchases.push(row); 
+							});
+
+							query.on("error", function(err){
+								done();
+								return res.render("failure", {message: err+ " 361"});
+							});
+
+							query.on("end", function(){ //done with product
+
+								if(r == 0){
+									purchases.push({name: user.name, total: 0});
+								}
+
+								r = 0;
+
+								callback1();
+							});
+
+						}, function(err){ //done with user, associate purchases
+
+							users[i].purchases = purchases;
+
+							i++;
+
+							purchases = [];
+
+							callback();
+						});
+
+					}, function(err){ //done with all users
+
+						done();
+
+						if(req.session.row == 0 && req.session.col == 0){
+							display.push(1);
+						}
+
+						return res.render("sales", {categories: categories, products: products, users: users, display: display});
+					});
+				});
+			});
 		});
 	});
 }
