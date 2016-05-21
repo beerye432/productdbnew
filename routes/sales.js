@@ -125,6 +125,8 @@ function viewStates(req, res){
 			query.on("end", function(err){
 
 				i = 0;
+
+				var total = 0;
 				
 				async.each(states.slice(req.session.row, req.session.row+20), function(state, callback){
 
@@ -135,6 +137,7 @@ function viewStates(req, res){
 										+" GROUP BY products.id order by products.name ASC;");
 
 					query.on("row", function(row){
+						total += row.total;
 						purchases.push(row);
 					});
 
@@ -150,7 +153,7 @@ function viewStates(req, res){
 							purchases = Array(products.length).fill({"total": 0});
 						}
 
-						state_in =  {"name": state, "purchases": purchases};
+						state_in =  {"name": state, "total": total, "purchases": purchases};
 
 						users[i] = state_in;
 
@@ -159,6 +162,8 @@ function viewStates(req, res){
 						purchases = [];
 
 						state_in = {};
+
+						total = 0;
 
 						callback();
 					});
