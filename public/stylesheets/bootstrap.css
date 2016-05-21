@@ -8,6 +8,10 @@ th{
   font-size: 25px;
 }
 
+#num{
+  width: 20px;
+}
+
 td{
   font-size: 25px;
   text-align: center;
