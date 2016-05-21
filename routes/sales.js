@@ -99,7 +99,19 @@ function viewStates(req, res){
 		query.on("end", function(){
 
 			//get appropriate 10 products, ordered by name
-			query = client.query("SELECT products.id as id, products.name as name FROM products, categories WHERE categories.id = products.category_id AND categories.name LIKE '%"+req.session.categoryFilter+"%' ORDER BY name OFFSET "+req.session.col+"ROWS FETCH NEXT 10 ROWS ONLY;");
+			// query = client.query("SELECT products.id as id, products.name as name, "+
+			// 						" FROM products, categories"+
+			// 						" WHERE categories.id = products.category_id AND categories.name LIKE '%"+req.session.categoryFilter+"%'"+
+			// 						" ORDER BY name OFFSET "+req.session.col+
+			// 						" ROWS FETCH NEXT 10 ROWS ONLY;");
+
+			query = client.query("SELECT products.id as id, products.name as name, CASE WHEN products.id = orders.product_id THEN SUM(orders.price) ELSE 0 END AS total"+ 
+								" FROM products LEFT OUTER JOIN orders ON products.id = orders.product_id, categories"+
+								" WHERE categories.id = products.category_id AND categories.name LIKE '%"+req.session.categoryFilter+"%'"+
+								" GROUP BY products.id, products.name, orders.product_id"+ 
+								" ORDER by name"+
+								" OFFSET "+req.session.col+" ROWS"+
+								" FETCH NEXT 10 ROWS ONLY;");
 
 			query.on("row", function(row){
 				products.push(row);
