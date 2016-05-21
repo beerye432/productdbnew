@@ -493,7 +493,7 @@ function viewStatesTopK(req, res){
 									 " SELECT state, 0 AS total"+
 									 " FROM users"+ 
 									 " WHERE NOT EXISTS(SELECT * FROM orders, products, categories WHERE users.id = orders.user_id AND orders.product_id = products.id AND products.category_id = categories.id AND categories.name LIKE '%"+req.session.categoryFilter+"%')"+ 
-									 " GROUP BY state;"+
+									 " GROUP BY state"+
 									 " ORDER BY total DESC"+
 									 " OFFSET "+req.session.row+" ROWS"+
 									 " FETCH NEXT 20 ROWS ONLY;");
