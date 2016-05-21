@@ -76,6 +76,8 @@ function viewStates(req, res){
 
 	var bounds = 0;
 
+	var r = 0;
+
 	var state_in;
 
 	var users = [];	
