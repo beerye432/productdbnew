@@ -245,8 +245,13 @@ function viewCustomers(req, res){
 
 		query.on("end", function(){
 
-			//get appropriate 10 products, ordered by name
-			query = client.query("SELECT products.id as id, products.name as name FROM products, categories WHERE categories.id = products.category_id AND categories.name LIKE '%"+req.session.categoryFilter+"%' ORDER BY products.name OFFSET "+req.session.col+"ROWS FETCH NEXT 10 ROWS ONLY;");
+			query = client.query("SELECT products.id as id, products.name as name, CASE WHEN products.id = orders.product_id THEN SUM(orders.price) ELSE 0 END AS total"+ 
+								" FROM products LEFT OUTER JOIN orders ON products.id = orders.product_id, categories"+
+								" WHERE categories.id = products.category_id AND categories.name LIKE '%"+req.session.categoryFilter+"%'"+
+								" GROUP BY products.id, products.name, orders.product_id"+ 
+								" ORDER by name"+
+								" OFFSET "+req.session.col+" ROWS"+
+								" FETCH NEXT 10 ROWS ONLY;");
 
 			query.on("row", function(row){
 				products.push(row);
@@ -259,8 +264,18 @@ function viewCustomers(req, res){
 
 			query.on("end", function(err){
 
-				//get appropriate 20 users, ordered by name
-				query = client.query("SELECT * FROM users ORDER BY name OFFSET "+req.session.row+"ROWS FETCH NEXT 20 ROWS ONLY;");
+				query = client.query("SELECT users.id as id, users.name as name, CASE WHEN users.id = orders.user_id THEN SUM(orders.price) ELSE 0 END AS total"+
+									" FROM users LEFT OUTER JOIN orders ON users.id = orders.user_id, categories, products"+
+									" WHERE products.id = orders.product_id AND products.category_id = categories.id AND categories.name LIKE '%"+req.session.categoryFilter+"%'"+
+									" GROUP BY users.id, users.name, orders.user_id"+
+									" UNION "+
+									" SELECT users.id as id, users.name as name, 0 as total"+
+									" FROM users "+
+									" WHERE NOT EXISTS(SELECT orders.id from orders, products, categories where orders.user_id = users.id AND orders.product_id = products.id AND categories.id = products.category_id AND categories.name LIKE '%"+req.session.categoryFilter+"%')"+
+									" GROUP BY users.id, users.name"+
+									" ORDER BY name"+
+									" OFFSET "+req.session.row+" ROWS"+
+									" FETCH NEXT 20 ROWS ONLY;");
 
 				query.on("row", function(row){
 					users.push(row);
