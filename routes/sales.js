@@ -641,7 +641,8 @@ exports.viewSim = function(req, res){
 								" AND o2.product_id = p2.id"+
 								" AND u1.id = u2.id"+
 								" AND o3.product_id = p1.id"+ //o3 and o4 are orders that belong to two products in question, but no users in particular, help denominator
-								" AND o4.product_id = p2.id"+ 
+								" AND o4.product_id = p2.id"+
+								" AND o1.id > o2.id"+
 								" group by p1.name, p2.name"+ 
 								" order by diff DESC"+ 
 								" OFFSET 0 ROWS"+ 
