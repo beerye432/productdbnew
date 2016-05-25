@@ -549,7 +549,7 @@ function viewStatesTopK(req, res){
 									 " UNION "+
 									 " SELECT state, 0 AS total"+
 									 " FROM users"+ 
-									 " WHERE NOT EXISTS(SELECT * FROM orders, products, categories WHERE users.id = orders.user_id AND orders.product_id = products.id AND products.category_id = categories.id AND categories.name LIKE '%"+req.session.categoryFilter+"%')"+ 
+									 " WHERE NOT EXISTS(SELECT * FROM orders, products, categories WHERE users.id = orders.user_id AND orders.product_id = products.id AND products.category_id = categories.id AND categories.name LIKE '%"+req.session.categoryFilter+"%' AND sum(orders.price) = 0)"+ 
 									 " GROUP BY state"+
 									 " ORDER BY total DESC"+
 									 " OFFSET "+req.session.row+" ROWS"+
