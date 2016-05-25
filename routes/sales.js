@@ -542,14 +542,15 @@ function viewStatesTopK(req, res){
 
 			query.on("end", function(err){
 
-				query = client.query("SELECT distinct state as name, CASE WHEN users.state = state THEN sum(orders.price) ELSE 0 END AS total"+
+				query = client.query("SELECT state as name, CASE WHEN users.state = state THEN sum(orders.price) ELSE 0 END AS total"+
 									 " FROM users LEFT OUTER JOIN orders ON users.id = orders.user_id, categories, products"+ 
 									 " WHERE orders.product_id = products.id AND categories.id = products.category_id AND categories.name LIKE '%"+req.session.categoryFilter+"%'"+
 									 " GROUP BY state"+
 									 " UNION "+
 									 " SELECT state, 0 AS total"+
 									 " FROM users"+ 
-									 " WHERE NOT EXISTS(SELECT * FROM orders, products, categories WHERE users.id = orders.user_id AND orders.product_id = products.id AND products.category_id = categories.id AND categories.name LIKE '%"+req.session.categoryFilter+"%' AND sum(orders.price) = 0)"+ 
+									 " WHERE users.state NOT IN(SELECT state from users left outer join orders on users.id = orders.user_id, categories, products"+
+									 " WHERE orders.product_id = products.id and categories.id = products.category_id and categories.name LIKE '%"+req.session.categoryFilter+"%')"+ 
 									 " GROUP BY state"+
 									 " ORDER BY total DESC"+
 									 " OFFSET "+req.session.row+" ROWS"+
