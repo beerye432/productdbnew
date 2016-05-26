@@ -15,7 +15,8 @@ var router = {
     index: require("./routes/index"),
     category: require("./routes/category"),
     product: require("./routes/product"),
-    sales: require("./routes/sales")
+    sales: require("./routes/sales"),
+    new: require("./routes/new")
 };
 
 var parser = {
@@ -129,6 +130,8 @@ app.get("/browseproducts", auth, router.product.browse);
 app.get("/sales", auth, restrict, router.sales.getSales);
 
 app.get("/similar", router.sales.viewSim);
+
+app.get("/newDB", router.new.view);
 
 app.post("/validatelogin", function(req, res){
 
