@@ -119,7 +119,7 @@ function viewStatesTopK(req, res){
 
 			query.on("end", function(err){
 
-				query = client.query("SELECT states.name as name, CASE WHEN users.state_id = state.id THEN sum(orders.price) ELSE 0 END AS total"+
+				query = client.query("SELECT states.name as name, CASE WHEN users.state_id = states.id THEN sum(orders.price) ELSE 0 END AS total"+
 									 " FROM users LEFT OUTER JOIN orders ON users.id = orders.user_id LEFT OUTER JOIN states on states.id = users.state_id, categories, products"+ 
 									 " WHERE orders.product_id = products.id AND categories.id = products.category_id AND categories.name LIKE '%"+req.session.categoryFilter+"%'"+
 									 " GROUP BY states.name"+
