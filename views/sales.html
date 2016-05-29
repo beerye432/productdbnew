@@ -84,7 +84,7 @@
 					<tr>
 						<td id = "name">{{name}} (${{this.total}})</td>
 						{{#each this.purchases}}
-							<td id = '{{this.pname}}+{{this.name}}'>${{this.total}}</td>
+							<td id = '{{name}}{{this.name}}'>${{this.total}}</td>
 						{{/each}}
 					</tr>
 				{{/each}}
