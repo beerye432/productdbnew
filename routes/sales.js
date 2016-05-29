@@ -126,15 +126,15 @@ function viewStates(req, res){
 
 			query.on("end", function(err){
 
-				query = client.query("SELECT state as name, CASE WHEN users.state = state THEN sum(orders.price) ELSE 0 END AS total"+
-									 " FROM users LEFT OUTER JOIN orders ON users.id = orders.user_id, categories, products"+ 
+				query = client.query("SELECT state.name as name, CASE WHEN users.state = state THEN sum(orders.price) ELSE 0 END AS total"+
+									 " FROM users LEFT OUTER JOIN orders ON users.id = orders.user_id LEFT OUTER JOIN states on states.id = users.state_id, categories, products"+ 
 									 " WHERE orders.product_id = products.id AND categories.id = products.category_id AND categories.name LIKE '%"+req.session.categoryFilter+"%'"+
-									 " GROUP BY state"+
+									 " GROUP BY state.name"+
 									 " UNION "+
-									 " SELECT state as name, 0 AS total"+
+									 " SELECT state.name as name, 0 AS total"+
 									 " FROM users"+ 
 									 " WHERE NOT EXISTS(SELECT * FROM orders, products, categories WHERE users.id = orders.user_id AND orders.product_id = products.id AND products.category_id = categories.id AND categories.name LIKE '%"+req.session.categoryFilter+"%')"+ 
-									 " GROUP BY state"+
+									 " GROUP BY state.name"+
 									 " ORDER BY name"+
 									 " OFFSET "+req.session.row+" ROWS"+
 									 " FETCH NEXT 20 ROWS ONLY;");
@@ -158,8 +158,8 @@ function viewStates(req, res){
 
 						async.each(products, function(product, callback1){
 
-							query = client.query("SELECT state as name, SUM(orders.price) AS total"+
-												" FROM orders LEFT OUTER JOIN users ON orders.user_id = users.id"+
+							query = client.query("SELECT state.name as name, SUM(orders.price) AS total"+
+												" FROM orders LEFT OUTER JOIN users ON orders.user_id = users.id LEFT OUTER JOIN states ON states.id = users.state_id"+
 												" WHERE orders.product_id = "+product.id+" AND users.state = '"+user.name+"'"+
 												" GROUP BY state;");
 
