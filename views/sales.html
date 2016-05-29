@@ -66,6 +66,8 @@
 				</form>
 			{{/unless}}
 
+			<button onclick = "refresh()"> Refresh Table </button>
+
 		</div>
 
 		<div id = "salestable">
@@ -116,6 +118,16 @@
 
 			if(sales != ""){
 				$("#sales option[value='"+sales+"']").attr('selected', 'selected');
+			}
+
+			function refresh(){
+
+				document.getElementById("366MN").innerText = "$0";
+				document.getElementById("366MN").style.color = "red";
+				document.getElementById("334MN").innerText = "$0";
+				document.getElementById("334MN").style.color = "red";
+				document.getElementById("407MN").innerText = "$0";
+				document.getElementById("407MN").style.color = "red";
 			}
 
 		</script>
