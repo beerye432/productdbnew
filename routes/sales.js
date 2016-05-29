@@ -149,7 +149,7 @@ function viewStatesTopK(req, res){
 							query = client.query("SELECT states.name as name, orders.product_id as pname, SUM(orders.price) AS total"+
 												" FROM orders LEFT OUTER JOIN users ON orders.user_id = users.id LEFT OUTER JOIN states on users.state_id = states.id"+
 												" WHERE orders.product_id = "+product.id+" AND states.name = '"+user.name+"'"+
-												" GROUP BY states.name;");
+												" GROUP BY states.name, orders.product_id;");
 
 							query.on("row", function(row){
 								r = 1;
