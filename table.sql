@@ -1,14 +1,20 @@
+DROP TABLE IF EXISTS states CASCADE;
 DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS categories CASCADE;
 DROP TABLE IF EXISTS products CASCADE;
 DROP TABLE IF EXISTS orders CASCADE;
+
+CREATE TABLE states (
+    id    SERIAL PRIMARY KEY,
+    name  TEXT NOT NULL UNIQUE
+);
 
 CREATE TABLE users (
     id    SERIAL PRIMARY KEY,
     name  TEXT NOT NULL UNIQUE,
     role  char(1) NOT NULL,
     age   INTEGER NOT NULL,
-    state char(2) NOT NULL
+    state_id INTEGER REFERENCES states (id) NOT NULL
 );
 
 CREATE TABLE categories (
