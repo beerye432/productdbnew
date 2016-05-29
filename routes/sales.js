@@ -164,7 +164,7 @@ function viewStatesTopK(req, res){
 							query.on("end", function(){ //done with product
 
 								if(r == 0){
-									purchases.push({name: user.name, pname: product.name total: 0});
+									purchases.push({name: user.name, pname: product.name, total: 0});
 								}
 
 								r = 0;
