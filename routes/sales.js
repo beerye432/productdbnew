@@ -105,7 +105,7 @@ function viewStatesTopK(req, res){
 								" GROUP BY products.id, products.name, orders.product_id"+ 
 								" ORDER by total DESC"+
 								" OFFSET "+req.session.col+" ROWS"+
-								" FETCH NEXT 10 ROWS ONLY;");
+								" FETCH NEXT 50 ROWS ONLY;");
 
 
 			query.on("row", function(row){
@@ -125,7 +125,7 @@ function viewStatesTopK(req, res){
 									 " GROUP BY states.name, users.state_id, states.id"+
 									 " ORDER BY total DESC"+
 									 " OFFSET "+req.session.row+" ROWS"+
-									 " FETCH NEXT 20 ROWS ONLY;");
+									 " FETCH NEXT 50 ROWS ONLY;");
 
 				query.on("row", function(row){
 					users.push(row);
