@@ -114,7 +114,7 @@ exports.getCells = function(req, res){
 
 		query.on("end", function(){
 			done();
-			return res.json({cells: cells});
+			return res.json(cells);
 		});
 	});
 }
