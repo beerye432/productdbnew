@@ -62,6 +62,11 @@
 					for(var j = 0; j < data.rows.length; j++){
 						$("#salesTBody").append("<tr id = "+data.rows[j].name+"><td id = "+data.rows[j].name+"row>"+data.rows[j].name+"("+data.rows[j].total.toFixed(2)+")</td></tr>");
 					}
+					for(var i = 0; i < data.cols.length; i++){
+						for(var j = 0; j < data.rows.length; j++){
+							$("#"+data.rows[j].name).append("<td id = "+data.cols[i].name+data.rows[j].name+">$0</td>");
+						}
+					}
 				});
 
 				// $.get("/getStateRow", function(data){
