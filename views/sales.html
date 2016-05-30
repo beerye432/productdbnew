@@ -51,6 +51,8 @@
 
 			$(document).ready(function(){
 
+				var dfd = $.Deferred();
+
 				//get product rows
 				$.get("/getHeaders", function(data){
 
@@ -67,17 +69,21 @@
 							$("#"+data.rows[j].name).append("<td id = "+data.cols[i].id+data.rows[j].name+">$0</td>");
 						}
 					}
+
+					$.get("/getCells", function(data){
+
+						console.log(data);
+
+						for(var i = 0; i < data.length; i++){
+							$("#"+data[i].id+data[i].name).text("$"+data[i].total);
+						}
+
+						dfd.resolve();
+
+					});
 				});
 
-				$.get("/getCells", function(data){
-
-					console.log(data);
-
-					for(var i = 0; i < data.length; i++){
-						$("#"+data[i].id+data[i].name).text("$"+data[i].total);
-					}
-
-				});
+				
 
 				// $.get("/getStateRow", function(data){
 
