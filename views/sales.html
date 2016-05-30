@@ -52,14 +52,10 @@
 			$(document).ready(function(){
 
 				//get product rows
-				$.get("/getProductCol", function(data){
+				$.get("/getHeaders", function(data){
 
-					console.log(data.row1);
-
-					console.log(data.row2);
-
-					for(var i = 0; i < data.length; i++){
-						$("#productRow").append("<th id = "+data[i].id+data[i].name+">"+data[i].name+"("+data[i].total.toFixed(2)+")</th>");
+					for(var i = 0; i < data.cols.length; i++){
+						$("#productRow").append("<th id = "+data.cols[i].id+data.cols[i].name+">"+data.cols[i].name+"("+data.cols[i].total.toFixed(2)+")</th>");
 					}
 				});
 

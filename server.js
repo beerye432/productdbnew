@@ -135,9 +135,7 @@ app.get("/similar", router.sales.viewSim);
 
 app.get("/newDB", router.new.view);
 
-app.get("/getProductCol", router.sales.getProductCol);
-
-app.get("/getStateRow", router.sales.getStateRow);
+app.get("/getHeaders", router.sales.getHeaders);
 
 app.post("/validatelogin", function(req, res){
 

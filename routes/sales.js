@@ -58,16 +58,18 @@ exports.getmore = function(req, res){
 	return res.redirect("/sales?rows="+req.session.rowType+"&orders="+req.session.sortingType+"&sales="+req.session.categoryFilter);
 }
 
-exports.getProductCol = function(req, res){
+exports.getHeaders = function(req, res){
 
 	var rows = [];
+
+	var cols = [];
 
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
 		var query = client.query("SELECT * FROM col_pre;");
 
 		query.on("row", function(row){
-			rows.push(row);
+			cols.push(row);
 		});
 
 		query.on("error", function(err){
@@ -75,34 +77,25 @@ exports.getProductCol = function(req, res){
 		});
 
 		query.on("end", function(){
-			done();
-			return res.json({row1: rows, row2: rows});
+			
+			query = client.query("SELECT * FROM row_pre;");
+
+			query.on("row", function(row){
+				rows.push(row);
+			});
+
+			query.on("error", function(err){
+				return res.render("failure", {message: err});
+			});
+
+			query.on("end", function(){
+				done();
+				return res.json({rows: rows, cols: cols});
+			});
 		});
 	});
 }
 
-exports.getStateRow = function(req, res){
-
-	var rows = [];
-
-	pg.connect(process.env.DATABASE_URL, function(err, client, done){
-
-		var query = client.query("SELECT * FROM row_pre;");
-
-		query.on("row", function(row){
-			rows.push(row);
-		});
-
-		query.on("error", function(err){
-			return res.render("failure", {message: err});
-		});
-
-		query.on("end", function(){
-			done();
-			return res.json(rows);
-		});
-	});
-}
 
 function viewStatesTopK(req, res){
 
