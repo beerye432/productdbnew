@@ -54,6 +54,10 @@
 				$.get("/getProductCol", function(data){
 
 					console.log(data);
+
+					for(var i = 0; i < data.length; i++){
+						$("#productRow").append("<td id = "+data[i].id+data[i].name+">"+data[i].name+"("+data[i].total+")</td>");
+					}
 				});
 			});
 
