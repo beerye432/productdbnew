@@ -48,12 +48,12 @@
 
 		<script>
 
-			$(document).ready(function(rows){
+			$(document).ready(function(){
 
 				//get product rows
-				$.get("/getProductCol", function(){
+				$.get("/getProductCol", function(data){
 
-					console.log(rows);
+					console.log(data);
 				});
 			});
 
