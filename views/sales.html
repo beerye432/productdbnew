@@ -28,6 +28,7 @@
 			<table border = "1" id = "salesTBody">
 
 				<tr id = "productRow">
+					<th></th>
 				</tr>
 
 				<!-- {{#each users}}
@@ -60,15 +61,15 @@
 					}
 				});
 
-				$.get("/getStateRow", function(data){
+				// $.get("/getStateRow", function(data){
 
-					//append a row, plus a header
-					for(var i = 0; i < data.length; i++){
+				// 	//append a row, plus a header
+				// 	for(var i = 0; i < data.length; i++){
 
-						$("#salesTBody").append("<tr id = "+data[i].name+"><td id = "+data[i].name+"row>"+data[i].name+"("+data[i].total.toFixed(2)+")</td></tr>");
+				// 		$("#salesTBody").append("<tr id = "+data[i].name+"><td id = "+data[i].name+"row>"+data[i].name+"("+data[i].total.toFixed(2)+")</td></tr>");
 
-					}
-				});
+				// 	}
+				// });
 			});
 
 
