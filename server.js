@@ -127,7 +127,9 @@ app.get("/browsecategory", auth, router.product.browsecategory);
 
 app.get("/browseproducts", auth, router.product.browse);
 
-app.get("/sales", auth, restrict, res.render("sales"));
+app.get("/sales", auth, restrict, function(req, res){
+  res.render("sales");
+});
 
 app.get("/similar", router.sales.viewSim);
 
