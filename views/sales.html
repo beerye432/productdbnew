@@ -54,7 +54,9 @@
 				//get product rows
 				$.get("/getProductCol", function(data){
 
-					console.log(data);
+					console.log(data.row1);
+
+					console.log(data.row2);
 
 					for(var i = 0; i < data.length; i++){
 						$("#productRow").append("<th id = "+data[i].id+data[i].name+">"+data[i].name+"("+data[i].total.toFixed(2)+")</th>");
