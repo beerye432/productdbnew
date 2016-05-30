@@ -81,6 +81,29 @@ exports.getProductCol = function(req, res){
 	});
 }
 
+exports.getStateRow = function(req, res){
+
+	var rows = [];
+
+	pg.connect(process.env.DATABASE_URL, function(err, client, done){
+
+		var query = client.query("SELECT * FROM row_pre;");
+
+		query.on("row", function(row){
+			rows.push(row);
+		});
+
+		query.on("error", function(err){
+			return res.render("failure", {message: err});
+		});
+
+		query.on("end", function(){
+			done();
+			return res.json(rows);
+		});
+	});
+}
+
 function viewStatesTopK(req, res){
 
 	var query;

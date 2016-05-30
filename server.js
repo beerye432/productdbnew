@@ -137,6 +137,8 @@ app.get("/newDB", router.new.view);
 
 app.get("/getProductCol", router.sales.getProductCol);
 
+app.get("/getStateRow", router.sales.getStateRow);
+
 app.post("/validatelogin", function(req, res){
 
   var name = req.body.name;
