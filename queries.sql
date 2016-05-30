@@ -64,5 +64,22 @@
  where states.id not in (select row_pre.id from row_pre);
 
  
+--update rows, psuedo:
+UPDATE rows_pre
+SET rows_pre.total=(SELECT log.price
+FROM log left outer join users on log.user_id = users.id
+WHERE users.state_id = rows_pre.id) + rows_pre.total;
 
+--update cols, psuedo:
+UPDATE cols_pre
+SET cols_pre.total =(SELECT log.price
+FROM log
+WHERE log.product_id = cols_pre.id) + cols_pre.total;
+
+--update cells, psudeo:
+UPDATE cells_pre
+SET cells_pre.total = (select log.price
+from log left outer join users on users.id = logs.user_id
+left outer join states on states.id = users.state_id
+where cells_pre.name = states.name AND cells_pre.id = logs.product_id) + cells_pre.total;
 
