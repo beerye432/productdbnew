@@ -1,0 +1,135 @@
+<html>
+<head>
+ <link rel = "stylesheet" type = "text/css" href = "/stylesheets/bootstrap.css">
+	<title>Sales Analytics</title>
+</head>
+<body>
+
+		<div id = "name">
+
+		</div>
+
+		<div id = "links">
+
+		</div>
+
+		<div id = "options">
+
+
+			{{#if display}}
+				<form id = "optionsform" action = "/sales" method = "get">
+
+					<label for = "rows"> Row Options:</label>
+					<select id = "rows" name = "rows">
+						<option value = "c" selected = "selected">Customers</option>
+						<option value = "s">States</option>
+					</select>
+					<label for = "orders"> Order Options:</label>
+					<select id = "orders" name = "orders">
+						<option value = "a" selected="selected">Alphabetic</option>
+						<option value = "t"> Top-K </option>
+					</select>
+					<label for = "sales"> Category Options:</label>
+					<select id = "sales" name = "sales">
+						<option value = "">All Categories</option>
+						{{#each categories}}
+							<option value = "{{name}}">{{name}}</option>
+						{{/each}}
+					</select>
+
+					<input type = "submit" value = "Run Query">
+
+				</form>
+			{{/if}}
+
+			{{#if users}}
+				{{#if products}}
+				<form id = "more" action = "/getmore" method = "post">
+
+					<button type="submit" name="row" value="row">Get next 20 Rows</button>
+					<button type="submit" name="col" value="col">Get next 10 Cols</button>
+					<button type="submit" name="reset" value="reset">Reset Table</button>
+
+				</form>
+				{{/if}}
+			{{/if}}
+
+			{{#unless users}}
+				<form id = "more" action = "/getmore" method = "post">
+					<button type="submit" name="reset" value="reset">Reset Table</button>
+				</form>
+			{{/unless}}
+
+			{{#unless products}}
+				<form id = "more" action = "/getmore" method = "post">
+					<button type="submit" name="reset" value="reset">Reset Table</button>
+				</form>
+			{{/unless}}
+
+			<button onclick = "refresh()"> Refresh Table </button>
+
+		</div>
+
+		<div id = "salestable">
+
+			<table border = "1">
+
+				<tr> 
+					<th>User</th>
+
+					{{#each products}}
+						<th id = "header">{{name}} (${{this.total}})</th>
+					{{/each}}
+				</tr>
+
+				{{#each users}}
+					<tr>
+						<td id = "name">{{name}} (${{this.total}})</td>
+						{{#each this.purchases}}
+							<td id = '{{this.pname}}{{this.name}}'>${{this.total}}</td>
+						{{/each}}
+					</tr>
+				{{/each}}
+
+			</table>
+
+		</div>
+
+		<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+		<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+		<script>
+
+			var row = window.location.href.split("?")[1].split("&")[0].split("=")[1];
+
+		    var orders = window.location.href.split("?")[1].split("&")[1].split("=")[1];
+
+		    var sales = window.location.href.split("?")[1].split("&")[2].split("=")[1];
+
+		    console.log(row, orders, sales);
+
+		    if(rows != ""){
+				$("#rows option[value='"+row+"']").attr('selected', 'selected');
+			}
+
+			if(orders != ""){
+				$("#orders option[value='"+orders+"']").attr('selected', 'selected');
+			}
+
+			if(sales != ""){
+				$("#sales option[value='"+sales+"']").attr('selected', 'selected');
+			}
+
+			function refresh(){
+
+				document.getElementById("366MN").innerText = "$0";
+				document.getElementById("366MN").style.color = "red";
+				document.getElementById("334MN").innerText = "$0";
+				document.getElementById("334MN").style.color = "red";
+				document.getElementById("407MN").innerText = "$0";
+				document.getElementById("407MN").style.color = "red";
+			}
+
+		</script>
+	</body>
+</html>

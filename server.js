@@ -133,6 +133,8 @@ app.get("/similar", router.sales.viewSim);
 
 app.get("/newDB", router.new.view);
 
+app.get("/getProductCol", router.sales.getProductCol);
+
 app.post("/validatelogin", function(req, res){
 
   var name = req.body.name;
