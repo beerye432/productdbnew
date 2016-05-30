@@ -76,7 +76,7 @@ exports.getProductCol = function(req, res){
 
 		query.on("end", function(){
 			done();
-			return res.json(rows, rows);
+			return res.json({row1: rows, row2: rows});
 		});
 	});
 }
