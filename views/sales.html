@@ -57,16 +57,24 @@
 					console.log(data);
 
 					for(var i = 0; i < data.cols.length; i++){
-						$("#productRow").append("<th id = "+data.cols[i].id+data.cols[i].name+">"+data.cols[i].name+"("+data.cols[i].total.toFixed(2)+")</th>");
+						$("#productRow").append("<th id = "+data.cols[i].id+data.cols[i].name+">"+data.cols[i].name+"($"+data.cols[i].total.toFixed(2)+")</th>");
 					}
 					for(var j = 0; j < data.rows.length; j++){
-						$("#salesTBody").append("<tr id = "+data.rows[j].name+"><td id = "+data.rows[j].name+"row>"+data.rows[j].name+"("+data.rows[j].total.toFixed(2)+")</td></tr>");
+						$("#salesTBody").append("<tr id = "+data.rows[j].name+"><td id = "+data.rows[j].name+"row>"+data.rows[j].name+"($"+data.rows[j].total.toFixed(2)+")</td></tr>");
 					}
 					for(var i = 0; i < data.cols.length; i++){
 						for(var j = 0; j < data.rows.length; j++){
-							$("#"+data.rows[j].name).append("<td id = "+data.cols[i].name+data.rows[j].name+">$0</td>");
+							$("#"+data.rows[j].name).append("<td id = "+data.cols[i].id+data.rows[j].name+">$0</td>");
 						}
 					}
+				});
+
+				$.get("/getCells", function(data){
+
+					for(var i = 0; i < data.length; i++){
+						$("#"+data[i].id+data[i].name).innerText("$"+data[i].total);
+					}
+
 				});
 
 				// $.get("/getStateRow", function(data){

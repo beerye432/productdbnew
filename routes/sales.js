@@ -96,6 +96,29 @@ exports.getHeaders = function(req, res){
 	});
 }
 
+exports.getCells = function(req, res){
+
+	var cells = [];
+
+	pg.connect(process.env.DATABASE_URL, function(err, client, done){
+
+		var query = client.query("SELECT * FROM cell_pre;");
+
+		query.on("row", function(row){
+			cells.push(row);
+		});
+
+		query.on("error", function(err){
+			return res.render("failure", {message: err});
+		});
+
+		query.on("end", function(){
+			done();
+			return res.json({cells: cells});
+		});
+	});
+}
+
 
 function viewStatesTopK(req, res){
 
