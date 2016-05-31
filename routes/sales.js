@@ -58,15 +58,41 @@ exports.getmore = function(req, res){
 	return res.redirect("/sales?rows="+req.session.rowType+"&orders="+req.session.sortingType+"&sales="+req.session.categoryFilter);
 }
 
+exports.getCategories = function(req, res){
+
+	var cats = [];
+
+	pg.connect(process.env.DATABASE_URL, function(err, client, done){
+
+		var query = client.query("SELECT name FROM categories ORDER BY name");
+
+		query.on("row", function(row){
+			cats.push(row);
+		});
+
+		query.on("error", function(err){
+			return res.render("failure", {message: err});
+		});
+
+		query.on("end", function(){
+			done();
+			return res.json(cells);
+		});
+	});
+}
+
 exports.getHeaders = function(req, res){
 
 	var rows = [];
 
 	var cols = [];
 
+	req.session.categoryFilter = req.query.sales;
+
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
-		var query = client.query("SELECT * FROM col_pre FETCH NEXT 50 ROWS ONLY;");
+		//fetch the top 50 products of a certain category (if applicable)
+		var query = client.query("SELECT * FROM col_pre WHERE col_pre.cat_name LIKE '%"+req.session.categoryFilter+"%' ORDER BY total FETCH NEXT 50 ROWS ONLY;");
 
 		query.on("row", function(row){
 			cols.push(row);
@@ -78,7 +104,8 @@ exports.getHeaders = function(req, res){
 
 		query.on("end", function(){
 			
-			query = client.query("SELECT * FROM row_pre;");
+			//fetch the 50 states, and their totals taking into account sales filtering
+			query = client.query("SELECT * FROM row_pre WHERE row_pre.cat_name LIKE '%"+req.session.categoryFilter+"%';");
 
 			query.on("row", function(row){
 				rows.push(row);
@@ -89,6 +116,7 @@ exports.getHeaders = function(req, res){
 			});
 
 			query.on("end", function(){
+				req.session.topFifty = rows; //update the session's top 50, will check later
 				done();
 				return res.json({rows: rows, cols: cols});
 			});

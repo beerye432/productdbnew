@@ -39,7 +39,7 @@
 
  -- Put the top 50 states into temporary table
  insert into row_pre 
- select states.name as name, states.id as id, case when users.state_id = states.id then sum(orders.price) else 0 end as total 
+ select states.name as name, states.id as id, case when users.state_id = states.id then sum(orders.price) else 0 end as total, 'all' as cat_name
  from users left outer join orders ON users.id = orders.user_id LEFT OUTER JOIN states on states.id = users.state_id, categories, products 
  where orders.product_id = products.id and categories.id = products.category_id and categories.name LIKE '%%' 
  group by states.name, users.state_id, states.id 
@@ -58,11 +58,25 @@
 
  --insert empty stats into row_pre
  insert into row_pre 
- select states.name, states.id, 0 as total 
+ select states.name, states.id, 0 as total, 'all' as cat_name
  from states 
  where states.id not in (select row_pre.id from row_pre);
 
- 
+ --insert col/cat pairs into row_pre
+ insert into row_pre
+ select states.name as name, states.id as id, sum(orders.price) as total, categories.name 
+ from categories inner join products on categories.id = products.category_id 
+ inner join orders on orders.product_id = products.id inner join users on users.id = orders.user_id 
+ inner join states on states.id = users.state_id 
+ group by states.name, states.id, categories.name 
+ order by total DESC;
+
+ --insert empty col/cat pairs into row_per
+ insert into row_pre
+ select states.name as name, states.id as id, 0 as total, categories.name 
+ from categories, states 
+ where not exists (select name, cat_name from row_pre where name = states.name and cat_name = categories.name);
+
 --update rows, psuedo:
 UPDATE rows_pre
 SET rows_pre.total=(SELECT log.price

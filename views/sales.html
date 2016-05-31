@@ -19,6 +19,19 @@
 				<button type="submit" name="reset" value="reset">Reset Table</button>
 			</form>
 
+			<form id = "optionsform" action = "/sales" method = "get">
+
+					<select id = "sales" name = "sales">
+						<option value = "">All Categories</option>
+						<!-- {{#each categories}}
+							<option value = "{{name}}">{{name}}</option>
+						{{/each}} -->
+					</select>
+
+					<input type = "submit" value = "Run Query">
+
+				</form>
+
 			<button onclick = "refresh()"> Refresh Table </button>
 
 		</div>
@@ -81,6 +94,13 @@
 						dfd.resolve();
 
 					});
+				});
+
+				$.get("/getCategories", function(data){
+
+					for(var i = 0; i < data.length; i++){
+						$("#sales").append("<option value = "+data[i].name+">"+data[i].name+"</option>");
+					}
 				});
 
 				

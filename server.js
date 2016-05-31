@@ -135,6 +135,8 @@ app.get("/similar", router.sales.viewSim);
 
 app.get("/newDB", router.new.view);
 
+app.get("/getCategories", router.sales.getCategories);
+
 app.get("/getHeaders", router.sales.getHeaders);
 
 app.get("/getCells", router.sales.getCells);
@@ -168,6 +170,7 @@ app.post("/validatelogin", function(req, res){
             req.session.rowType = "c";
             req.session.sortingType = "a";
             req.session.categoryFilter = "";
+            req.session.topFifty = [];
 
             res.redirect("/");
           }); 
