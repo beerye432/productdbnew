@@ -87,10 +87,6 @@ exports.getHeaders = function(req, res){
 
 	var cols = [];
 
-	if(req.session.categoryFilter == ""){
-		req.session.categoryFilter = "all";
-	}
-
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
 		//fetch the top 50 products of a certain category (if applicable)
@@ -105,9 +101,11 @@ exports.getHeaders = function(req, res){
 		});
 
 		query.on("end", function(){
-			
-			req.session.categoryFilter = "";
-			
+
+			if(req.session.categoryFilter == ""){
+				req.session.categoryFilter = "all";
+			}
+
 			//fetch the 50 states, and their totals taking into account sales filtering
 			query = client.query("SELECT * FROM row_pre WHERE row_pre.cat_name LIKE '%"+req.session.categoryFilter+"%';");
 
