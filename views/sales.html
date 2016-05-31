@@ -69,7 +69,7 @@
 				//get product rows
 				$.get("/getHeaders", function(data){
 
-					console.log(data);
+					console.log("getting headers");
 
 					for(var i = 0; i < data.cols.length; i++){
 						$("#productRow").append("<th id = "+data.cols[i].id+data.cols[i].name+">"+data.cols[i].name+"($"+data.cols[i].total.toFixed(2)+")</th>");
@@ -85,20 +85,13 @@
 
 					$.get("/getCells", function(data){
 
-						console.log(data);
-
 						for(var i = 0; i < data.length; i++){
 							$("#"+data[i].id+data[i].name).text("$"+data[i].total);
 						}
+						
+						dfd.resolve();
 
-						$.get("/getCategories", function(data){
-
-							for(var i = 0; i < data.length; i++){
-								$("#sales").append("<option value = "+data[i].name+">"+data[i].name+"</option>");
-							}
-
-							dfd.resolve();
-						});
+						getCategories();
 					});
 				});
 				// $.get("/getStateRow", function(data){
@@ -111,6 +104,16 @@
 				// 	}
 				// });
 			});
+
+			function getCategories(){
+
+				$.get("/getCategories", function(data){
+
+					for(var i = 0; i < data.length; i++){
+						$("#sales").append("<option value = "+data[i].name+">"+data[i].name+"</option>");
+					}
+				});
+			}
 
 
 
