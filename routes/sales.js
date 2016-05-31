@@ -87,7 +87,9 @@ exports.getHeaders = function(req, res){
 
 	var cols = [];
 
-	console.log("filter: " + req.session.categoryFilter);
+	if(req.session.categoryFilter == ""){
+		req.session.categoryFilter = "all";
+	}
 
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
