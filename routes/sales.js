@@ -222,7 +222,7 @@ exports.getUpdates = function(req, res){
 					query.on("end", function(){
 
 						//update cells
-						query = client.query("UPDATE cells_pre"
+						query = client.query("UPDATE cells_pre"+
 											" SET cells_pre.total = (select log.price"+
 											" from log left outer join users on users.id = logs.user_id"+
 											" left outer join states on states.id = users.state_id"+
