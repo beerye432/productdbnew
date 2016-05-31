@@ -76,7 +76,7 @@ exports.getCategories = function(req, res){
 
 		query.on("end", function(){
 			done();
-			return res.json(cells);
+			return res.json(cats);
 		});
 	});
 }
