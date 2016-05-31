@@ -90,7 +90,7 @@ exports.getHeaders = function(req, res){
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
 		//fetch the top 50 products of a certain category (if applicable)
-		var query = client.query("SELECT * FROM col_pre WHERE col_pre.cat_name LIKE '%"+req.session.categoryFilter+"%' ORDER BY total FETCH NEXT 50 ROWS ONLY;");
+		var query = client.query("SELECT * FROM col_pre WHERE col_pre.cat_name LIKE '%"+req.session.categoryFilter+"%' ORDER BY total DESC FETCH NEXT 50 ROWS ONLY;");
 
 		query.on("row", function(row){
 			cols.push(row);
