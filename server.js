@@ -142,6 +142,8 @@ app.get("/getHeaders", router.sales.getHeaders);
 
 app.get("/getCells", router.sales.getCells);
 
+app.get("/updates", router.sales.getUpdates);
+
 app.post("/validatelogin", function(req, res){
 
   var name = req.body.name;

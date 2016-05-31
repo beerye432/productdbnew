@@ -117,16 +117,26 @@
 				});
 			}
 
-
-
 			function refresh(){
 
-				document.getElementById("366MN").innerText = "$0";
-				document.getElementById("366MN").style.color = "red";
-				document.getElementById("334MN").innerText = "$0";
-				document.getElementById("334MN").style.color = "red";
-				document.getElementById("407MN").innerText = "$0";
-				document.getElementById("407MN").style.color = "red";
+				$("#salestable tr").each(function(i, row){
+					console.log(i);
+					console.log(row);
+				});
+
+				// $.get("/updates", function(data){
+
+				// 	for(var i = 0; i < data.length; i++){
+
+				// 	}
+				// })
+
+				// document.getElementById("366MN").innerText = "$0";
+				// document.getElementById("366MN").style.color = "red";
+				// document.getElementById("334MN").innerText = "$0";
+				// document.getElementById("334MN").style.color = "red";
+				// document.getElementById("407MN").innerText = "$0";
+				// document.getElementById("407MN").style.color = "red";
 			}
 
 		</script>
