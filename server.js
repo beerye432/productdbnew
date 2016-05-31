@@ -128,6 +128,7 @@ app.get("/browsecategory", auth, router.product.browsecategory);
 app.get("/browseproducts", auth, router.product.browse);
 
 app.get("/sales", auth, restrict, function(req, res){
+  req.session.categoryFilter = req.query.sales;
   res.render("sales");
 });
 

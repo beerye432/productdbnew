@@ -87,7 +87,7 @@ exports.getHeaders = function(req, res){
 
 	var cols = [];
 
-	req.session.categoryFilter = req.query.sales;
+	//req.session.categoryFilter = req.query.sales;
 
 	console.log(req.session.categoryFilter);
 
