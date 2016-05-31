@@ -89,6 +89,8 @@ exports.getHeaders = function(req, res){
 
 	req.session.categoryFilter = req.query.sales;
 
+	console.log(req.session.categoryFilter);
+
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
 		//fetch the top 50 products of a certain category (if applicable)
