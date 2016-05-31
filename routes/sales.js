@@ -158,6 +158,10 @@ exports.getUpdates = function(req, res){
 
 	var updates = [];
 
+	var changes = [];
+
+	var difference = [];
+
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
 		var query = client.query("SELECT logs.product_id as id, states.name as name, price as total"+
@@ -173,8 +177,6 @@ exports.getUpdates = function(req, res){
 		});
 
 		query.on("end", function(){
-
-			return res.json(updates);
 
 			//update rows for "all" category
 			query = client.query("UPDATE row_pre"+
@@ -233,7 +235,39 @@ exports.getUpdates = function(req, res){
 						});
 
 						query.on("end", function(){
-							done();
+
+							query = client.query("SELECT * FROM col_pre WHERE col_pre.cat_name LIKE '%"+req.session.categoryFilter+"%' ORDER BY total DESC FETCH NEXT 50 ROWS ONLY;");
+
+							query.on("row", function(row){
+								changes.push(row);
+							});
+
+							query.on("error", function(err){
+								return res.render("failure", {message: err});
+							});
+
+							query.on("end", function(){
+
+								var found = false;
+
+								for(var i = 0; i < req.session.topFifty; i++){
+									for(var j = 0; j < changes; j++){
+										if(req.session.topFifty[i].name == changes[j].name){
+											found = true;
+										}
+									}
+
+									if(found == false){
+										difference.push(req.session.topFifty[i]);
+									}
+
+									found = false;
+								}
+
+								done();
+
+								return res.json({changes: difference, updates: updates});
+							});
 						});
 					});
 				});
