@@ -85,13 +85,15 @@
 
 					$.get("/getCells", function(data){
 
+						console.log("getting cells");
+
 						for(var i = 0; i < data.length; i++){
 							$("#"+data[i].id+data[i].name).text("$"+data[i].total);
 						}
 						
 						dfd.resolve();
 
-						getCategories();
+						//getCategories();
 					});
 				});
 				// $.get("/getStateRow", function(data){
