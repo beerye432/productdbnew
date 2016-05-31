@@ -119,17 +119,23 @@
 
 			function refresh(){
 
-				$("#salestable tr").each(function(i, row){
-					console.log(i);
-					console.log(row);
-				});
+				var table = document.getElementById("salesTBody");
 
-				// $.get("/updates", function(data){
+				var rowLength = table.rows.length;
 
-				// 	for(var i = 0; i < data.length; i++){
+				for(var i=0; i<rowLength; i+=1){
 
-				// 	}
-				// })
+					var row = table.rows[i];
+
+					var cellLength = row.cells.length;
+					
+					for(var y=0; y<cellLength; y+=1){
+
+						var cell = row.cells[y];
+
+						console.log(cell);
+					}
+				}
 
 				// document.getElementById("366MN").innerText = "$0";
 				// document.getElementById("366MN").style.color = "red";
