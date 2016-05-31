@@ -66,7 +66,7 @@ exports.getHeaders = function(req, res){
 
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
-		var query = client.query("SELECT * FROM col_pre;");
+		var query = client.query("SELECT * FROM col_pre FETCH NEXT 50 ROWS ONLY;");
 
 		query.on("row", function(row){
 			cols.push(row);
