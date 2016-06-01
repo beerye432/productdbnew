@@ -107,7 +107,7 @@ exports.getHeaders = function(req, res){
 			}
 
 			//fetch the 50 states, and their totals taking into account sales filtering
-			query = client.query("SELECT * FROM row_pre WHERE row_pre.cat_name LIKE '%"+req.session.categoryFilter+"%';");
+			query = client.query("SELECT * FROM row_pre WHERE row_pre.cat_name LIKE '%"+req.session.categoryFilter+"%' ORDER BY total DESC;");
 
 			query.on("row", function(row){
 				rows.push(row);
