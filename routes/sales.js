@@ -261,9 +261,13 @@ exports.getUpdates = function(req, res){
 
 									var found = false;
 
-									for(var i = 0; i < req.session.topFifty; i++){
-										for(var j = 0; j < changes; j++){
+									console.log(req.session.topFifty);
+
+									for(var i = 0; i < req.session.topFifty.length; i++){
+										for(var j = 0; j < changes.length; j++){
+
 											console.log("looking");
+
 											if(req.session.topFifty[i].name == changes[j].name){
 												found = true;
 											}
