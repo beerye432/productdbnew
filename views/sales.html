@@ -144,7 +144,30 @@
 						console.log("state name: " + data[i].name + " pname: " + data[i].pname + " product id: " + data[i].id);
 						console.log("id, name combo: " + data[i].id+data[i].name);
 						console.log("id, pname combo: " + data[i].id+data[i].pname);
-						console.log("name, row combo: " + data[i].id+data[i].name+"row");
+						console.log("name, row combo: " + data[i].name+"row");
+
+						
+
+						if(document.getElementById(data[i].id+data[i].name) && document.getElementById(data[i].id+data[i].name).value){
+
+							var cell = document.getElementById(data[i].id+data[i].name);
+
+							console.log("cell: " + cell.innerText);
+						}
+
+						if(document.getElementById(data[i].id+data[i].pname) && document.getElementById(data[i].id+data[i].pname).value){
+
+							var col = document.getElementById(data[i].id+data[i].pname);
+
+							console.log("col: " + col.innerText);
+						}
+
+						if(document.getElementById(data[i].name+"row") && document.getElementById(data[i].name+"row").value){
+
+							var row = document.getElementById(data[i].name+"row");
+
+							console.log("row: " + row.innerText);
+						}
 
 
 
