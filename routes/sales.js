@@ -154,144 +154,6 @@ exports.getCells = function(req, res){
 	});
 }
 
-exports.getUpdates = function(req, res){
-
-	var updates = [];
-
-	var changes = [];
-
-	var difference = [];
-
-	pg.connect(process.env.DATABASE_URL, function(err, client, done){
-
-		var query = client.query("SELECT logs.product_id as id, states.name as name, price as total"+
-								" FROM orders INNER JOIN users ON orders.user_id = users.id INNER JOIN states ON states.id = users.state_id"+
-								" FETCH NEXT 50 ROWS ONLY;");
-
-		query.on("row", function(row){
-			updates.push(row);
-		});
-
-		query.on("error", function(err){
-			return res.render("failure", {message: err});
-		});
-
-		query.on("end", function(){
-
-			//update rows for "all" category
-			query = client.query("UPDATE row_pre"+
-								" SET row_pre.total = "+
-								" (SELECT log.price "+
-								" FROM log LEFT OUTER JOIN users on log.users_id = users.id"+
-								" LEFT OUTER JOIN states on states.id = users.state_id"+
-								" LEFT OUTER JOIN products on log.product_id = products.id"+
-								" LEFT OUTER JOIN categories ON categories.id = products.category_id"+
-								" WHERE states.name = row_pre.name AND log.product_id = row_pre.id AND category.name = 'all') + row_pre.total;");
-
-			query.on("error", function(err){
-				return res.render("failure", {message: err});
-			});
-
-			query.on("end", function(err){
-
-				//update rows for specific category
-				query = client.query("UPDATE row_pre"+
-								" SET row_pre.total = "+
-								" (SELECT log.price "+
-								" FROM log LEFT OUTER JOIN users on log.users_id = users.id"+
-								" LEFT OUTER JOIN states on states.id = users.state_id"+
-								" LEFT OUTER JOIN products on log.product_id = products.id"+
-								" LEFT OUTER JOIN categories ON categories.id = products.category_id"+
-								" WHERE states.name = row_pre.name AND log.product_id = row_pre.id AND category.name = row_pre.cat_name) + row_pre.total;");
-				
-				query.on("error", function(err){
-					return res.render("failure", {message: err});
-				});
-
-				query.on("end", function(err){
-					
-					//update product columns
-					query = client.query("UPDATE col_pre"+
-										" SET cols_pre.total ="+
-										" (SELECT log.price FROM log"+
-										" WHERE users.log.product_id = cols_pre.id)"+
-										" + cols_pre.total;");
-
-					query.on("error", function(err){
-						return res.render("failure", {message: err});
-					});
-
-					query.on("end", function(){
-
-						//update cells
-						query = client.query("UPDATE cells_pre"+
-											" SET cells_pre.total = (select log.price"+
-											" from log left outer join users on users.id = logs.user_id"+
-											" left outer join states on states.id = users.state_id"+
-											" where cells_pre.name = states.name AND cells_pre.id = logs.product_id) + cells_pre.total;");
-						
-						query.on("error", function(err){
-							return res.render("failure", {message: err});
-						});
-
-						query.on("end", function(){
-
-							query = client.query("SELECT * FROM col_pre WHERE col_pre.cat_name LIKE '%"+req.session.categoryFilter+"%' ORDER BY total DESC FETCH NEXT 50 ROWS ONLY;");
-
-							query.on("row", function(row){
-								changes.push(row);
-							});
-
-							query.on("error", function(err){
-								return res.render("failure", {message: err});
-							});
-
-							query.on("end", function(){
-
-								query = client.query("DELETE FROM log;");
-
-								query.on("error", function(err){
-									done();
-									return res.render("failure", {message: err});
-								});
-
-								query.on("end", function(){
-
-									done();
-
-									var found = false;
-
-									console.log(req.session.topFifty);
-
-									for(var i = 0; i < req.session.topFifty.length; i++){
-										for(var j = 0; j < changes.length; j++){
-
-											console.log("looking");
-
-											if(req.session.topFifty[i].name == changes[j].name){
-												found = true;
-											}
-										}
-
-										if(found == false){
-											difference.push(req.session.topFifty[i]);
-										}
-
-										found = false;
-									}
-
-									console.log("done");
-									return res.json({changes: difference, updates: updates});
-								});
-							});
-						});
-					});
-				});
-			});
-		});
-	});
-}
-
 exports.getUpdatesWIP = function(req, res){
 
 	var updates = [];
@@ -417,8 +279,12 @@ exports.getUpdatesWIP = function(req, res){
 
 									var found = false;
 
-									for(var i = 0; i < req.session.topFifty; i++){
-										for(var j = 0; j < changes; j++){
+									console.log("old " + req.session.topFifty);
+									console.log("new " + changes);
+
+
+									for(var i = 0; i < req.session.topFifty.length; i++){
+										for(var j = 0; j < changes.length; j++){
 											console.log("looking");
 											if(req.session.topFifty[i].name == changes[j].name){
 												found = true;
