@@ -313,7 +313,7 @@ exports.getUpdatesWIP = function(req, res){
 				return res.render("failure", {message: err});
 			});
 
-			query.on("end", function(err){
+			query.on("end", function(){
 
 				//update rows for specific categories
 				query = client.query("UPDATE row_pre"+
@@ -331,7 +331,7 @@ exports.getUpdatesWIP = function(req, res){
 					return res.render("failure", {message: err});
 				});
 
-				query.on("end", function(err){
+				query.on("end", function(){
 
 					//update product columns
 					query = client.query("UPDATE col_pre"+
@@ -345,7 +345,7 @@ exports.getUpdatesWIP = function(req, res){
 						return res.render("failure", {message: err});
 					});
 
-					query.on("end", function(err){
+					query.on("end", function(){
 
 						//update cells
 						query = client.query("UPDATE cell_pre"+
@@ -360,7 +360,7 @@ exports.getUpdatesWIP = function(req, res){
 							return res.render("failure", {message: err});
 						});
 
-						query.on("end", function(err){
+						query.on("end", function(){
 
 							//get current top 50 after updates
 							query = client.query("SELECT * FROM col_pre WHERE col_pre.cat_name LIKE '%"+req.session.categoryFilter+"%' ORDER BY total DESC FETCH NEXT 50 ROWS ONLY;");
