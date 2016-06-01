@@ -286,9 +286,8 @@ exports.getUpdatesWIP = function(req, res){
 
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
-		var query = client.query("SELECT logs.product_id as id, states.name as name, price as total"+
-								" FROM orders INNER JOIN users ON orders.user_id = users.id INNER JOIN states ON states.id = users.state_id"+
-								" FETCH NEXT 50 ROWS ONLY;");
+		var query = client.query("SELECT log.product_id as id, states.name as name, price as total"+
+								" FROM log INNER JOIN users ON log.user_id = users.id INNER JOIN states ON states.id = users.state_id;");
 
 		query.on("row", function(row){
 			updates.push(row);
