@@ -284,6 +284,8 @@ exports.getUpdatesWIP = function(req, res){
 
 	var difference = [];
 
+	console.log('we here');
+
 	pg.connect(process.env.DATABASE_URL, function(err, client, done){
 
 		var query = client.query("SELECT log.product_id as id, products.name as pname, states.name as name, log.price as total"+
@@ -300,6 +302,8 @@ exports.getUpdatesWIP = function(req, res){
 
 		query.on("end", function(){
 
+			console.log('we here 305');
+
 			//update rows for "all" category
 			query = client.query("UPDATE row_pre"+
 								" SET row_pre.total = total + t"+
@@ -314,6 +318,8 @@ exports.getUpdatesWIP = function(req, res){
 			});
 
 			query.on("end", function(){
+
+				console.log('we here 322');
 
 				//update rows for specific categories
 				query = client.query("UPDATE row_pre"+
@@ -333,6 +339,8 @@ exports.getUpdatesWIP = function(req, res){
 
 				query.on("end", function(){
 
+					console.log('we here 342');
+
 					//update product columns
 					query = client.query("UPDATE col_pre"+
 										" set total = total + t"+
@@ -346,6 +354,8 @@ exports.getUpdatesWIP = function(req, res){
 					});
 
 					query.on("end", function(){
+
+						console.log('we here 358');
 
 						//update cells
 						query = client.query("UPDATE cell_pre"+
@@ -362,7 +372,7 @@ exports.getUpdatesWIP = function(req, res){
 
 						query.on("end", function(){
 
-							console.log(req.session.categoryFilter);
+							console.log('we here 375');
 
 							//get current top 50 after updates
 							query = client.query("SELECT * FROM col_pre WHERE col_pre.cat_name LIKE '%"+req.session.categoryFilter+"%' ORDER BY total DESC FETCH NEXT 50 ROWS ONLY;");
