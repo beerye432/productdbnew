@@ -144,6 +144,8 @@ app.get("/getCells", router.sales.getCells);
 
 app.get("/updates", router.sales.getUpdates);
 
+app.get("/updatesWIP", router.sales.getUpdatesWIP);
+
 app.post("/validatelogin", function(req, res){
 
   var name = req.body.name;

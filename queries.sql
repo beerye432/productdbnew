@@ -56,6 +56,7 @@
  group by col_pre.id, row_pre.name, col_pre.cat_name
  order by total DESC;
 
+
  --insert empty stats into row_pre
  insert into row_pre 
  select states.name, states.id, 0 as total, 'all' as cat_name
