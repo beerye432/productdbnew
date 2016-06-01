@@ -248,25 +248,37 @@ exports.getUpdates = function(req, res){
 
 							query.on("end", function(){
 
-								var found = false;
+								query = client.query("DELETE FROM log;");
 
-								for(var i = 0; i < req.session.topFifty; i++){
-									for(var j = 0; j < changes; j++){
-										if(req.session.topFifty[i].name == changes[j].name){
-											found = true;
+								query.on("error", function(err){
+									done();
+									return res.render("failure", {message: err});
+								});
+
+								query.on("end", function(){
+
+									done();
+
+									var found = false;
+
+									for(var i = 0; i < req.session.topFifty; i++){
+										for(var j = 0; j < changes; j++){
+											console.log("looking");
+											if(req.session.topFifty[i].name == changes[j].name){
+												found = true;
+											}
 										}
+
+										if(found == false){
+											difference.push(req.session.topFifty[i]);
+										}
+
+										found = false;
 									}
 
-									if(found == false){
-										difference.push(req.session.topFifty[i]);
-									}
-
-									found = false;
-								}
-
-								done();
-
-								return res.json({changes: difference, updates: updates});
+									console.log("done");
+									return res.json({changes: difference, updates: updates});
+								});
 							});
 						});
 					});
