@@ -294,30 +294,35 @@ exports.getUpdatesWIP = function(req, res){
 		});
 
 		query.on("error", function(err){
+			done();
 			return res.render("failure", {message: err});
 		});
 
 		query.on("end", function(){
 
-			done();
+			//done();
 
-			return res.json(updates);
+			res.json(updates);
 
-			// //update rows for "all" category
-			// query = client.query("UPDATE row_pre"+
-			// 					" SET row_pre.total = "+
-			// 					" (SELECT log.price "+
-			// 					" FROM log LEFT OUTER JOIN users on log.users_id = users.id"+
-			// 					" LEFT OUTER JOIN states on states.id = users.state_id"+
-			// 					" LEFT OUTER JOIN products on log.product_id = products.id"+
-			// 					" LEFT OUTER JOIN categories ON categories.id = products.category_id"+
-			// 					" WHERE states.name = row_pre.name AND log.product_id = row_pre.id AND category.name = 'all') + row_pre.total;");
+			//update rows for "all" category
+			query = client.query("UPDATE row_pre"+
+								" SET row_pre.total = "+
+								" (SELECT log.price "+
+								" FROM log LEFT OUTER JOIN users on log.users_id = users.id"+
+								" LEFT OUTER JOIN states on states.id = users.state_id"+
+								" LEFT OUTER JOIN products on log.product_id = products.id"+
+								" LEFT OUTER JOIN categories ON categories.id = products.category_id"+
+								" WHERE states.name = row_pre.name AND log.product_id = row_pre.id AND category.name = 'all') + row_pre.total;");
 
-			// query.on("error", function(err){
-			// 	return res.render("failure", {message: err});
-			// });
+			query.on("error", function(err){
+				done();
+				return res.render("failure", {message: err});
+			});
 
-			// query.on("end", function(err){
+			query.on("end", function(err){
+				done();
+				return;
+			});
 
 			// 	//update rows for specific category
 			// 	query = client.query("UPDATE row_pre"+
