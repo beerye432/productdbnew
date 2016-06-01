@@ -142,8 +142,6 @@ app.get("/getHeaders", router.sales.getHeaders);
 
 app.get("/getCells", router.sales.getCells);
 
-app.get("/updates", router.sales.getUpdates);
-
 app.get("/updatesWIP", router.sales.getUpdatesWIP);
 
 app.get("/runProc", router.sales.runProc);
