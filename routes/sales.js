@@ -429,6 +429,7 @@ exports.runProc = function(req, res){
 			// query = client.query("SELECT * FROM orders WHERE id > ")
 
 		});
+	});
 }
 
 
