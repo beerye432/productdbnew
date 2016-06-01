@@ -428,7 +428,8 @@ exports.getUpdatesWIP = function(req, res){
 										found = false;
 									}
 
-									console.log("done");
+									console.log("done" + difference);
+
 									return res.json({changes: difference, updates: updates});
 								});
 							});
