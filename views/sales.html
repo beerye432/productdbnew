@@ -145,21 +145,33 @@
 
 							var cell = document.getElementById(data[i].id+data[i].name);
 
-							console.log("cell: " + cell.innerText);
+							var inner = cell.innerText;
+
+							var total_old = parseFloat(inner.slice(inner.indexOf("$")+1, inner.length));
+
+							console.log("cell " + total_old);
 						}
 
 						if(document.getElementById(data[i].id+data[i].pname) != null){
 
 							var col = document.getElementById(data[i].id+data[i].pname);
 
-							console.log("col: " + col.innerText);
+							var inner = col.innerText;
+
+							var total_old = parseFloat(inner.slice(inner.indexOf("$")+1, inner.length+1));
+
+							console.log("col "+ total_old);
 						}
 
 						if(document.getElementById(data[i].name+"row") != null){
 
 							var row = document.getElementById(data[i].name+"row");
 
-							console.log("row: " + row.innerText);
+							var inner = row.innerText;
+
+							var total_old = parseFloat(inner.slice(inner.indexOf("$")+1, inner.length+1));
+
+							console.log("row " + total_old);
 						}
 
 
