@@ -1,3 +1,9 @@
+alter sequence categories_id_seq restart with 1;
+alter sequence users_id_seq restart with 1;
+alter sequence states_id_seq restart with 1;
+alter sequence orders_id_seq restart with 1;
+alter sequence products_id_seq restart with 1;
+
 \copy states(name) FROM 'states.txt' DELIMITER ',' CSV;
 \copy users(name, role, age, state_id) FROM 'users.txt' DELIMITER ',' CSV;
 \copy categories(name, description) FROM 'categories.txt' DELIMITER ',' CSV;

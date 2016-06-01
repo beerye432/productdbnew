@@ -34,6 +34,8 @@
 
 			<button onclick = "refresh()"> Refresh Table </button>
 
+			<button onclick = "runProc()"> Run Procedue.sql </button>
+
 		</div>
 
 		<div id = "salestable">
@@ -114,6 +116,13 @@
 					for(var i = 0; i < data.length; i++){
 						$("#sales").append("<option value = "+data[i].name+">"+data[i].name+"</option>");
 					}
+				});
+			}
+
+			function runProc(){
+
+				$.get("/runProc", function(data){
+					console.log('running Proc');
 				});
 			}
 

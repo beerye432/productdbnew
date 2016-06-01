@@ -146,6 +146,8 @@ app.get("/updates", router.sales.getUpdates);
 
 app.get("/updatesWIP", router.sales.getUpdatesWIP);
 
+app.get("/runProc", router.sales.runProc);
+
 app.post("/validatelogin", function(req, res){
 
   var name = req.body.name;

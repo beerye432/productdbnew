@@ -401,6 +401,36 @@ exports.getUpdatesWIP = function(req, res){
 	});
 }
 
+exports.runProc = function(req, res){
+
+	var max = [];
+
+	pg.connect(process.env.DATABASE_URL, function(err, client, done){
+		
+		//get max_id from orders
+		var query = client.query("SELECT MAX(id) FROM orders;");
+
+		query.on('row', function(row){
+			max.push(row);
+		});
+
+		query.on("error", function(err){
+			done();
+			return res.render("failure", {message: err});
+		});
+
+		query.on("end", function(){
+
+			done();
+
+			console.log(max[0]);
+
+			// //insert into log orders greater than max_id
+			// query = client.query("SELECT * FROM orders WHERE id > ")
+
+		});
+}
+
 
 function viewStatesTopK(req, res){
 
