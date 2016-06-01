@@ -306,10 +306,10 @@ exports.getUpdatesWIP = function(req, res){
 
 			//update rows for "all" category
 			query = client.query("UPDATE row_pre"+
-								" SET row_pre.total = total + t"+
+								" SET total = total + t"+
 								" FROM (SELECT states.name as sname, sum(log.price) as t"+
-								" FROM log INNER JOIN users on log.users_id = users.id"+
-								" INNER states on states.id = users.state_id GROUP BY sname) z"+
+								" FROM log INNER JOIN users on log.user_id = users.id"+
+								" INNER JOIN states on states.id = users.state_id GROUP BY sname) z"+
 								" WHERE z.sname = row_pre.name and row_pre.cat_name = 'all';");
 
 			query.on("error", function(err){
