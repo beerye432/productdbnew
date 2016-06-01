@@ -141,10 +141,17 @@
 
 					for(var i = 0; i < data.length; i++){
 
-						//color the cell
-						console.log("cell " + document.getElementById(data[i].id+data[i].name).innerText);
-						console.log("column " + document.getElementById(data[i].id+data[i].pname).innerText);
-						console.log("row " + document.getElementById(data[i].name+"row").innerText);
+						console.log("state name: " + data[i].name + " pname: " + data[i].pname + " product id: " + data[i].id);
+						console.log("id, name combo: " + data[i].id+data[i].name);
+						console.log("id, pname combo: " + data[i].id+data[i].pname);
+						console.log("name, row combo: " + data[i].id+data[i].name+"row");
+
+
+
+						// //color the cell
+						// console.log("cell " + document.getElementById(data[i].id+data[i].name).innerText);
+						// console.log("column " + document.getElementById(data[i].id+data[i].pname).innerText);
+						// console.log("row " + document.getElementById(data[i].name+"row").innerText);
 					}
 				});
 
