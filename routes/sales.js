@@ -300,10 +300,6 @@ exports.getUpdatesWIP = function(req, res){
 
 		query.on("end", function(){
 
-			//done();
-
-			res.json(updates);
-
 			//update rows for "all" category
 			query = client.query("UPDATE row_pre"+
 								" SET row_pre.total = "+
@@ -321,7 +317,7 @@ exports.getUpdatesWIP = function(req, res){
 
 			query.on("end", function(err){
 				done();
-				return;
+				return res.json(updates);
 			});
 
 			// 	//update rows for specific category
