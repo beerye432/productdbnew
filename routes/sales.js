@@ -376,6 +376,8 @@ exports.getUpdatesWIP = function(req, res){
 
 							query.on("end", function(){
 
+								console.log("made it");
+
 								//top 50 compares
 								var found = false;
 
