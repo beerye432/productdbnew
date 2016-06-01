@@ -123,7 +123,7 @@ exports.getHeaders = function(req, res){
 					req.session.categoryFilter = "";
 				}
 
-				req.session.topFifty = rows; //update the session's top 50, will check later
+				req.session.topFifty = cols; //update the session's top 50, will check later
 				done();
 				return res.json({rows: rows, cols: cols});
 			});
@@ -297,7 +297,7 @@ exports.getUpdatesWIP = function(req, res){
 										found = false;
 									}
 
-									console.log("done" + difference);
+									console.log("done" + difference.length);
 
 									return res.json({changes: difference, updates: updates});
 								});
