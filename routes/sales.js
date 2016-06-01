@@ -362,6 +362,8 @@ exports.getUpdatesWIP = function(req, res){
 
 						query.on("end", function(){
 
+							console.log(req.session.categoryFilter);
+
 							//get current top 50 after updates
 							query = client.query("SELECT * FROM col_pre WHERE col_pre.cat_name LIKE '%"+req.session.categoryFilter+"%' ORDER BY total DESC FETCH NEXT 50 ROWS ONLY;");
 
