@@ -148,11 +148,11 @@
 
 				$.get("/updatesWIP", function(data){
 
-					for(var i = 0; i < data.length; i++){
+					for(var i = 0; i < data.updates.length; i++){
 
-						if(document.getElementById(data[i].id+data[i].name) != null){
+						if(document.getElementById(data.updates[i].id+data.updates[i].name) != null){
 
-							var cell = document.getElementById(data[i].id+data[i].name);
+							var cell = document.getElementById(data.updates[i].id+data.updates[i].name);
 
 							var inner = cell.innerText;
 
@@ -160,16 +160,16 @@
 
 							var total_old = parseFloat(inner.slice(inner.indexOf("$")+1, inner.length));
 
-							var total_new = total_old + data[i].total;
+							var total_new = total_old + data.updates[i].total;
 
 							cell.innerText = "$"+total_new.toFixed(2);
 
 							console.log("cell " + total_new);
 						}
 
-						if(document.getElementById(data[i].id+data[i].pname) != null){
+						if(document.getElementById(data.updates[i].id+data.updates[i].pname) != null){
 
-							var col = document.getElementById(data[i].id+data[i].pname);
+							var col = document.getElementById(data.updates[i].id+data.updates[i].pname);
 
 							var inner = col.innerText;
 
@@ -177,16 +177,16 @@
 
 							var total_old = parseFloat(inner.slice(inner.indexOf("$")+1, inner.length+1));
 
-							var total_new = total_old + data[i].total;
+							var total_new = total_old + data.updates[i].total;
 
-							col.innerText = data[i].pname+"($"+total_new.toFixed(2)+")"
+							col.innerText = data.updates[i].pname+"($"+total_new.toFixed(2)+")"
 
 							console.log("col "+ total_new);
 						}
 
-						if(document.getElementById(data[i].name+"row") != null){
+						if(document.getElementById(data.updates[i].name+"row") != null){
 
-							var row = document.getElementById(data[i].name+"row");
+							var row = document.getElementById(data.updates[i].name+"row");
 
 							var inner = row.innerText;
 
@@ -194,9 +194,9 @@
 
 							var total_old = parseFloat(inner.slice(inner.indexOf("$")+1, inner.length+1));
 
-							var total_new = total_old + data[i].total;
+							var total_new = total_old + data.updates[i].total;
 
-							row.innerText = data[i].name+"($"+total_new.toFixed(2)+")";
+							row.innerText = data.updates[i].name+"($"+total_new.toFixed(2)+")";
 
 							console.log("row " + total_new);
 						}
@@ -207,6 +207,10 @@
 						// console.log("cell " + document.getElementById(data[i].id+data[i].name).innerText);
 						// console.log("column " + document.getElementById(data[i].id+data[i].pname).innerText);
 						// console.log("row " + document.getElementById(data[i].name+"row").innerText);
+					}
+
+					for(var j = 0; j < data.changes.length; j++){
+						console.log(data.changes[j]);
 					}
 				});
 
