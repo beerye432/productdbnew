@@ -153,6 +153,8 @@
 
 							var total_new = total_old + data[i].total;
 
+							cell.innerText = "$"+total_new;
+
 							console.log("cell " + total_new);
 						}
 
@@ -168,6 +170,8 @@
 
 							var total_new = total_old + data[i].total;
 
+							col.innerText = data[i].pname+"($"+total_new+")"
+
 							console.log("col "+ total_new);
 						}
 
@@ -182,6 +186,8 @@
 							var total_old = parseFloat(inner.slice(inner.indexOf("$")+1, inner.length+1));
 
 							var total_new = total_old + data[i].total;
+
+							row.innerText = data[i].name+"($"+total_new+")";
 
 							console.log("row " + total_new);
 						}
