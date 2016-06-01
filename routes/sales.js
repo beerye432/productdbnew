@@ -370,6 +370,7 @@ exports.getUpdatesWIP = function(req, res){
 							});
 
 							query.on("error", function(err){
+								done();
 								return res.render("failure", {message: err});
 							});
 

@@ -148,6 +148,10 @@
 
 				$.get("/updatesWIP", function(data){
 
+					console.log(data.changes);
+
+					console.log(data.updates);
+
 					for(var i = 0; i < data.updates.length; i++){
 
 						if(document.getElementById(data.updates[i].id+data.updates[i].name) != null){
@@ -209,9 +213,9 @@
 						// console.log("row " + document.getElementById(data[i].name+"row").innerText);
 					}
 
-					for(var j = 0; j < data.changes.length; j++){
-						console.log(data.changes[j]);
-					}
+					// for(var j = 0; j < data.changes.length; j++){
+					// 	console.log(data.changes[j]);
+					// }
 				});
 
 				//get updates here, for each update, change product, state, cell color to red
