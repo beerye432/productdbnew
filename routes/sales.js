@@ -421,13 +421,29 @@ exports.runProc = function(req, res){
 
 		query.on("end", function(){
 
-			done();
+			//run procedure
+			query = client.query("SELECT proc_insert_orders(10, 100);");
 
-			console.log(max[0]);
+			query.on("error", function(err){
+				done();
+				return res.render("failure", {message: err});
+			});
 
-			// //insert into log orders greater than max_id
-			// query = client.query("SELECT * FROM orders WHERE id > ")
+			query.on("end", function(){
 
+				//insert into log new orders
+				query = client.query("INSERT INTO log SELECT * FROM orders WHERE id > "+max[0].max+";");
+
+				query.on("error", function(err){
+					done();
+					return res.render("failure", {message: err});
+				});
+
+				query.on("end", function(){
+					done();
+					return;
+				});
+			});
 		});
 	});
 }
