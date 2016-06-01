@@ -394,7 +394,7 @@ exports.getUpdatesWIP = function(req, res){
 
 								done();
 
-								console.log(difference);
+								console.log("difference" + difference);
 
 								return res.json({changes: difference, updates: updates});
 							});
