@@ -147,9 +147,13 @@
 
 							var inner = cell.innerText;
 
+							cell.style.color = "red";
+
 							var total_old = parseFloat(inner.slice(inner.indexOf("$")+1, inner.length));
 
-							console.log("cell " + total_old);
+							var total_new = total_old + data[i].total;
+
+							console.log("cell " + total_new);
 						}
 
 						if(document.getElementById(data[i].id+data[i].pname) != null){
@@ -158,9 +162,13 @@
 
 							var inner = col.innerText;
 
+							col.style.color = "red";
+
 							var total_old = parseFloat(inner.slice(inner.indexOf("$")+1, inner.length+1));
 
-							console.log("col "+ total_old);
+							var total_new = total_old + data[i].total;
+
+							console.log("col "+ total_new);
 						}
 
 						if(document.getElementById(data[i].name+"row") != null){
@@ -169,9 +177,13 @@
 
 							var inner = row.innerText;
 
+							row.style.color = "red";
+
 							var total_old = parseFloat(inner.slice(inner.indexOf("$")+1, inner.length+1));
 
-							console.log("row " + total_old);
+							var total_new = total_old + data[i].total;
+
+							console.log("row " + total_new);
 						}
 
 
