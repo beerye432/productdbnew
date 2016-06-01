@@ -140,7 +140,11 @@
 				$.get("/updatesWIP", function(data){
 
 					for(var i = 0; i < data.length; i++){
-						console.log("Update: " + data[i].name + " , " + data[i].id);
+
+						//color the cell
+						console.log("cell " + document.getElementById(data[i].id+data[i].name).innerText);
+						console.log("column " + document.getElementById(data[i].id+data[i].pname).innerText);
+						console.log("row " + document.getElementById(data[i].name+"row").innerText);
 					}
 				});
 
