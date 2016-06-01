@@ -302,13 +302,11 @@ exports.getUpdatesWIP = function(req, res){
 
 			//update rows for "all" category
 			query = client.query("UPDATE row_pre"+
-								" SET row_pre.total = "+
-								" (SELECT log.price "+
-								" FROM log LEFT OUTER JOIN users on log.users_id = users.id"+
-								" LEFT OUTER JOIN states on states.id = users.state_id"+
-								" LEFT OUTER JOIN products on log.product_id = products.id"+
-								" LEFT OUTER JOIN categories ON categories.id = products.category_id"+
-								" WHERE states.name = row_pre.name AND log.product_id = row_pre.id AND category.name = 'all') + row_pre.total;");
+								" SET row_pre.total = total + t"+
+								" FROM (SELECT states.name as sname, sum(log.price) as t"+
+								" FROM log INNER JOIN users on log.users_id = users.id"+
+								" INNER states on states.id = users.state_id GROUP BY sname) z"+
+								" WHERE z.sname = row_pre.name and row_pre.cat_name = 'all';");
 
 			query.on("error", function(err){
 				done();
@@ -316,88 +314,92 @@ exports.getUpdatesWIP = function(req, res){
 			});
 
 			query.on("end", function(err){
-				done();
-				return res.json(updates);
+
+				//update rows for specific categories
+				query = client.query("UPDATE row_pre"+
+									" set total = total + t"+
+									" FROM (select states.name as sname, categories.name as cname, sum(log.price) as t"+
+									" from log inner join users on log.user_id = users.id"+
+									" inner join states on users.state_id = states.id"+ 
+									" inner join products on products.id = log.product_id"+ 
+									" inner join categories on categories.id = products.category_id"+ 
+									" group by sname, cname) z"+
+									" where z.sname = row_pre.name AND row_pre.cat_name = z.cname;");
+
+				query.on("error", function(err){
+					done();
+					return res.render("failure", {message: err});
+				});
+
+				query.on("end", function(err){
+
+					//update product columns
+					query = client.query("UPDATE col_pre"+
+										" set total = total + t"+
+										" from (select log.product_id as id, sum(log.price) as t"+
+										" from log group by log.product_id) z"+
+										" where z.id = col_pre.id;");
+
+					query.on("error", function(err){
+						done();
+						return res.render("failure", {message: err});
+					});
+
+					query.on("end", function(err){
+
+						//update cells
+						query = client.query("UPDATE cell_pre"+
+											" set total = total + t"+
+											" FROM (select states.name as sname, log.product_id as id, sum(log.price) as t"+
+											" FROM log inner join users on users.id = log.user_id inner join states on states.id = users.state_id"+
+											" GROUP BY states.name, log.product_id) z"+
+											" WHERE z.sname = cell_pre.name AND z.id = cell_pre.id;");
+
+						query.on("error", function(err){
+							done();
+							return res.render("failure", {message: err});
+						});
+
+						query.on("end", function(err){
+
+							//get current top 50 after updates
+							query = client.query("SELECT * FROM col_pre WHERE col_pre.cat_name LIKE '%"+req.session.categoryFilter+"%' ORDER BY total DESC FETCH NEXT 50 ROWS ONLY;");
+
+							query.on("row", function(row){
+								changes.push(row);
+							});
+
+							query.on("error", function(err){
+								return res.render("failure", {message: err});
+							});
+
+							query.on("end", function(){
+
+								//top 50 compares
+								var found = false;
+
+								for(var i = 0; i < req.session.topFifty; i++){
+									for(var j = 0; j < changes; j++){
+										if(req.session.topFifty[i].name == changes[j].name){
+											found = true;
+										}
+									}
+
+									if(found == false){
+										difference.push(req.session.topFifty[i]);
+									}
+
+									found = false;
+								}
+
+								done();
+
+								return res.json({changes: difference, updates: updates});
+							});
+						});
+					});
+				});
 			});
-
-			// 	//update rows for specific category
-			// 	query = client.query("UPDATE row_pre"+
-			// 					" SET row_pre.total = "+
-			// 					" (SELECT log.price "+
-			// 					" FROM log LEFT OUTER JOIN users on log.users_id = users.id"+
-			// 					" LEFT OUTER JOIN states on states.id = users.state_id"+
-			// 					" LEFT OUTER JOIN products on log.product_id = products.id"+
-			// 					" LEFT OUTER JOIN categories ON categories.id = products.category_id"+
-			// 					" WHERE states.name = row_pre.name AND log.product_id = row_pre.id AND category.name = row_pre.cat_name) + row_pre.total;");
-				
-			// 	query.on("error", function(err){
-			// 		return res.render("failure", {message: err});
-			// 	});
-
-			// 	query.on("end", function(err){
-					
-			// 		//update product columns
-			// 		query = client.query("UPDATE col_pre"+
-			// 							" SET cols_pre.total ="+
-			// 							" (SELECT log.price FROM log"+
-			// 							" WHERE users.log.product_id = cols_pre.id)"+
-			// 							" + cols_pre.total;");
-
-			// 		query.on("error", function(err){
-			// 			return res.render("failure", {message: err});
-			// 		});
-
-			// 		query.on("end", function(){
-
-			// 			//update cells
-			// 			query = client.query("UPDATE cells_pre"+
-			// 								" SET cells_pre.total = (select log.price"+
-			// 								" from log left outer join users on users.id = logs.user_id"+
-			// 								" left outer join states on states.id = users.state_id"+
-			// 								" where cells_pre.name = states.name AND cells_pre.id = logs.product_id) + cells_pre.total;");
-						
-			// 			query.on("error", function(err){
-			// 				return res.render("failure", {message: err});
-			// 			});
-
-			// 			query.on("end", function(){
-
-			// 				query = client.query("SELECT * FROM col_pre WHERE col_pre.cat_name LIKE '%"+req.session.categoryFilter+"%' ORDER BY total DESC FETCH NEXT 50 ROWS ONLY;");
-
-			// 				query.on("row", function(row){
-			// 					changes.push(row);
-			// 				});
-
-			// 				query.on("error", function(err){
-			// 					return res.render("failure", {message: err});
-			// 				});
-
-			// 				query.on("end", function(){
-
-			// 					var found = false;
-
-			// 					for(var i = 0; i < req.session.topFifty; i++){
-			// 						for(var j = 0; j < changes; j++){
-			// 							if(req.session.topFifty[i].name == changes[j].name){
-			// 								found = true;
-			// 							}
-			// 						}
-
-			// 						if(found == false){
-			// 							difference.push(req.session.topFifty[i]);
-			// 						}
-
-			// 						found = false;
-			// 					}
-
-			// 					done();
-
-			// 					return res.json({changes: difference, updates: updates});
-			// 				});
-			// 			});
-			// 		});
-			// 	});
-			// });
 		});
 	});
 }
