@@ -285,8 +285,6 @@ exports.getUpdatesWIP = function(req, res){
 									async.each(req.session.topFifty, function(old, callback1){
 										async.each(changes, function(change, callback2){
 
-											console.log(change.name);
-
 											if(old.name == change.name){
 												found = true;
 											}
@@ -295,18 +293,18 @@ exports.getUpdatesWIP = function(req, res){
 
 										}, function(err){
 
-											console.log(old.name);
-
 											if(found == false){
 												difference.push(old);
 											}
 
-											found == false;
+											found = false;
 
 											async.setImmediate(function(){callback1();});
 										});
 
 									}, function(err){
+
+										console.log(difference);
 
 										return res.json({changes: difference, updates: updates});
 
