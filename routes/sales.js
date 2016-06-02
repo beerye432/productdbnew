@@ -279,8 +279,8 @@ exports.getUpdatesWIP = function(req, res){
 
 									var found = false;
 
-									console.log("old " + req.session.topFifty);
-									console.log("new " + changes);
+									console.log("old " + req.session.topFifty.length);
+									console.log("new " + changes.length);
 
 									async.each(req.session.topFifty, function(old, callback1){
 										async.each(changes, function(change, callback2){
