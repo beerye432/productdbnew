@@ -302,7 +302,7 @@ exports.getUpdatesWIP = function(req, res){
 
 									}, function(err){
 
-										console.log('done');
+										console.log('done: ' + updates);
 
 										return res.json({changes: difference, updates: updates});
 
