@@ -282,36 +282,55 @@ exports.getUpdatesWIP = function(req, res){
 									console.log("old " + req.session.topFifty.length);
 									console.log("new " + changes.length);
 
-									async.each(req.session.topFifty, function(old, callback1){
-										async.each(changes, function(change, callback2){
+									for(var i = 0; i < req.session.topFifty.length; i++){
+										for(var j = 0; j < changes.length; j++){
 
-											if(old.name == change.name){
+											if(req.session.topFifty[i].name == changes[j].name){
 												found = true;
 											}
+										}
 
-											async.setImmediate(function(){callback2();});
+										if(found == false){
+											difference.push(req.session.topFifty[i]);
+										}
 
-										}, function(err){
+										found = false;
+									}
 
-											if(found == true){
-												difference.push(old);
-											}
+									console.log(difference + " " + difference.length);
 
-											if(found == false){
+									return res.json({changes: difference, updates: updates});
 
-												found = false;
-											}
+									// async.each(req.session.topFifty, function(old, callback1){
+									// 	async.each(changes, function(change, callback2){
 
-											async.setImmediate(function(){callback1();});
-										});
+									// 		if(old.name == change.name){
+									// 			found = true;
+									// 		}
 
-									}, function(err){
+									// 		async.setImmediate(function(){callback2();});
 
-										console.log(difference + " " + difference.length);
+									// 	}, function(err){
 
-										return res.json({changes: difference, updates: updates});
+									// 		if(found == false){
+									// 			difference.push(old);
+									// 		}
 
-									});
+									// 		if(found == true){
+
+									// 			found = false;
+									// 		}
+
+									// 		async.setImmediate(function(){callback1();});
+									// 	});
+
+									// }, function(err){
+
+									// 	console.log(difference + " " + difference.length);
+
+									// 	return res.json({changes: difference, updates: updates});
+
+									// });
 								});
 							});
 						});
