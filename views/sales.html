@@ -148,8 +148,13 @@
 
 				$.get("/updatesWIP", function(data){
 
+
+					//make stuff purple
 					for(var j = 0; j < data.changes.length; j++){
-						console.log(data.changes[j]);
+						
+						var id = data.changes[j].id;
+
+						$("[id^="+id+"]").css("color", "purple");
 					}
 
 					for(var i = 0; i < data.updates.length; i++){
