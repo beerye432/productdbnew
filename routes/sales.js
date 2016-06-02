@@ -293,11 +293,11 @@ exports.getUpdatesWIP = function(req, res){
 
 										}, function(err){
 
-											if(found == false){
+											if(found == true){
 												difference.push(old);
 											}
 
-											if(found == true){
+											if(found == false){
 
 												found = false;
 											}
