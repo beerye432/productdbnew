@@ -1,6 +1,6 @@
 CREATE OR REPLACE FUNCTION proc_insert_orders(queries INT, random INT) RETURNS void AS $$
 DECLARE
-   priceList INTEGER[];
+   priceList FLOAT[];
    productList INTEGER[];
    idx INT;
    diff INT;
