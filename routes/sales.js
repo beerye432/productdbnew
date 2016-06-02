@@ -282,24 +282,31 @@ exports.getUpdatesWIP = function(req, res){
 									console.log("old " + req.session.topFifty);
 									console.log("new " + changes);
 
-									//turn this into async
-									for(var i = 0; i < req.session.topFifty.length; i++){
-										for(var j = 0; j < changes.length; j++){
-											if(req.session.topFifty[i].name == changes[j].name){
+									async.each(req.session.topFifty, function(old, calback1){
+										async.each(changes, function(change, callback2){
+
+											if(old.name == change.name){
 												found = true;
 											}
-										}
 
-										if(found == false){
-											difference.push(req.session.topFifty[i]);
-										}
+											callback2();
 
-										found = false;
-									}
+										}, function(err){
 
-									console.log("done" + difference.length);
+											if(found == false){
+												difference.push(old);
+											}
 
-									return res.json({changes: difference, updates: updates});
+											callback1();
+										});
+
+									}, function(err){
+
+										console.log('done');
+
+										return res.json({changes: difference, updates: updates});
+
+									});
 								});
 							});
 						});
