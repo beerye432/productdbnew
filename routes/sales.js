@@ -301,6 +301,8 @@ exports.getUpdatesWIP = function(req, res){
 												difference.push(old);
 											}
 
+											found == false;
+
 											async.setImmediate(function(){callback1();});
 										});
 
