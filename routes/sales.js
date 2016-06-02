@@ -297,7 +297,10 @@ exports.getUpdatesWIP = function(req, res){
 												difference.push(old);
 											}
 
-											found = false;
+											if(found == true){
+
+												found = false;
+											}
 
 											async.setImmediate(function(){callback1();});
 										});
