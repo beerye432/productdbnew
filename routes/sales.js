@@ -282,7 +282,7 @@ exports.getUpdatesWIP = function(req, res){
 									console.log("old " + req.session.topFifty);
 									console.log("new " + changes);
 
-
+									//turn this into async
 									for(var i = 0; i < req.session.topFifty.length; i++){
 										for(var j = 0; j < changes.length; j++){
 											if(req.session.topFifty[i].name == changes[j].name){
