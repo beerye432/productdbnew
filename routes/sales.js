@@ -282,7 +282,7 @@ exports.getUpdatesWIP = function(req, res){
 									console.log("old " + req.session.topFifty);
 									console.log("new " + changes);
 
-									async.each(req.session.topFifty, function(old, calback1){
+									async.each(req.session.topFifty, function(old, callback1){
 										async.each(changes, function(change, callback2){
 
 											if(old.name == change.name){
