@@ -289,7 +289,7 @@ exports.getUpdatesWIP = function(req, res){
 												found = true;
 											}
 
-											callback2();
+											async.setImmediate(function(){callback2();});
 
 										}, function(err){
 
@@ -297,7 +297,7 @@ exports.getUpdatesWIP = function(req, res){
 												difference.push(old);
 											}
 
-											callback1();
+											async.setImmediate(function(){callback1();});
 										});
 
 									}, function(err){
